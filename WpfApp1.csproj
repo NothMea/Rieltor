@@ -170,6 +170,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="1.png" />
+    <Resource Include="2.png" />
     <Content Include="Resources\ofice1.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -28,7 +28,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="White" BorderBrush="LightGray" BorderThickness="1" CornerRadius="10" Margin="10" Padding="15" Width="800" Height="250">
+                        <Border Background="White" BorderBrush="LightGray" BorderThickness="1" CornerRadius="10" Margin="10" Padding="15" Width="535" Height="250">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"/>
@@ -36,7 +36,7 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Изображение объекта -->
-                                <Image Grid.Column="0" Width="100" Height="100" Stretch="UniformToFill" Margin="0,0,10,0" VerticalAlignment="Top">
+                                <Image Grid.Column="0" Width="100" Height="300" Stretch="Uniform" Margin="0,0,10,0" VerticalAlignment="Top">
                                     <Image.Source>
                                         <Binding Path="ImagePath">
                                             <Binding.TargetNullValue>

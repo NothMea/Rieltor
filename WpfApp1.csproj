@@ -66,6 +66,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="BoolToVisibilityConverter.cs" />
+    <Compile Include="ImagePathConverter.cs" />
     <Compile Include="InverseBoolToVisibilityConverter.cs" />
     <Compile Include="LeaseEditView.xaml.cs">
       <DependentUpon>LeaseEditView.xaml</DependentUpon>
@@ -187,9 +188,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\ofice1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Resource Include="Resources\ofice1.png" />
     <Resource Include="Resources\ofice2.png" />
     <Resource Include="Resources\ofice3.png" />
     <Resource Include="Resources\shop.png" />

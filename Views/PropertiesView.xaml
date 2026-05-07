@@ -36,17 +36,8 @@
                                 </Grid.ColumnDefinitions>
 
                                 <!-- Изображение объекта -->
-                                <Image Grid.Column="0" Width="100" Height="100" Stretch="UniformToFill" Margin="0,0,10,0" VerticalAlignment="Top">
-                                    <Image.Source>
-                                        <Binding Path="ImagePath">
-                                            <Binding.TargetNullValue>
-                                                <ImageSource>
-                                                    /Resources/logo.png
-                                                </ImageSource>
-                                            </Binding.TargetNullValue>
-                                        </Binding>
-                                    </Image.Source>
-                                </Image>
+                                <Image Grid.Column="0" Width="100" Height="100" Stretch="UniformToFill" Margin="0,0,10,0" VerticalAlignment="Top"
+                                       Source="{Binding ImagePath, Converter={StaticResource ImagePathConverter}}"/>
 
                                 <!-- Информация об объекте -->
                                 <StackPanel Grid.Column="1" VerticalAlignment="Top">

@@ -66,6 +66,11 @@
             <TextBox x:Name="TxtImagePath" Width="300" Height="30" IsReadOnly="True"/>
             <Button Content="Обзор..." Click="BtnBrowseImage_Click" Margin="10,0,0,0" Width="80"/>
         </StackPanel>
+        
+        <!-- Предпросмотр изображения -->
+        <TextBlock Text="Предпросмотр:" Grid.Row="7" VerticalAlignment="Center" Margin="0,10,0,0"/>
+        <Image Grid.Row="7" Grid.Column="1" Height="150" Margin="10,10,0,0" HorizontalAlignment="Left"
+               Source="{Binding ElementName=TxtImagePath, Text, Converter={StaticResource ImagePathConverter}}"/>
 
         <!-- Кнопки -->
         <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.ColumnSpan="2" 

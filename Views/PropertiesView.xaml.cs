@@ -108,7 +108,31 @@ namespace WpfApp1.Views
         private void BtnRefresh_Click(object sender, RoutedEventArgs e) => LoadData();
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Форма добавления объекта будет реализована далее.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            var editWindow = new PropertyEditView();
+            if (editWindow.ShowDialog() == true)
+            {
+                LoadData(); // Перезагружаем данные после добавления
+            }
+        }
+
+        private void EditPropertyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is DisplayProperty prop)
+            {
+                var editWindow = new PropertyEditView(prop.PropertyID);
+                if (editWindow.ShowDialog() == true)
+                {
+                    LoadData(); // Перезагружаем данные после редактирования
+                }
+            }
+        }
+
+        private void ViewTenantsButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is DisplayProperty prop)
+            {
+                MessageBox.Show($"Функция просмотра арендаторов для объекта \"{prop.Address}\" будет реализована в следующей версии.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

@@ -67,6 +67,12 @@
     <Compile Include="LeaseEditView.xaml.cs">
       <DependentUpon>LeaseEditView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TenantEditView.xaml.cs">
+      <DependentUpon>TenantEditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PropertyEditView.xaml.cs">
+      <DependentUpon>PropertyEditView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Leases.cs">
       <DependentUpon>RieltorBD.tt</DependentUpon>
     </Compile>
@@ -107,6 +113,14 @@
       <DependentUpon>PropertiesView.xaml</DependentUpon>
     </Compile>
     <Page Include="LeaseEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TenantEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PropertyEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

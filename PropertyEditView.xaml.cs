@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Microsoft.Win32;
+using System.Data.Entity;
 
 namespace WpfApp1
 {
@@ -117,7 +118,7 @@ namespace WpfApp1
                 if (_propertyId.HasValue)
                 {
                     // Обновление существующего
-                    _db.Entry(_currentProperty).State = System.Data.Entity.EntityState.Modified;
+                    _db.Entry(_currentProperty).State = EntityState.Modified;
                 }
                 else
                 {

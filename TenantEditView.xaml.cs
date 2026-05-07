@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data.Entity;
 
 namespace WpfApp1
 {
@@ -93,7 +94,7 @@ namespace WpfApp1
                 if (_tenantId.HasValue)
                 {
                     // Обновление существующего
-                    _db.Entry(_currentTenant).State = System.Data.Entity.EntityState.Modified;
+                    _db.Entry(_currentTenant).State = EntityState.Modified;
                 }
                 else
                 {

@@ -14,21 +14,26 @@ namespace WpfApp1
             // Если имя файла пустое или null, возвращаем заглушку
             if (string.IsNullOrWhiteSpace(imageName))
             {
-                return new BitmapImage(new Uri("/Resources/logo.png", UriKind.Relative));
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/logo.png"));
             }
 
-            // Формируем полный путь к ресурсу внутри приложения
-            // Предполагается, что картинки лежат в папке Resources и имеют свойство "Build Action" = Resource
-            string fullPath = $"/Resources/{imageName}";
+            // Формируем полный Pack URI к ресурсу внутри приложения
+            string fullPath = $"pack://application:,,,/Resources/{imageName}";
             
             try
             {
-                return new BitmapImage(new Uri(fullPath, UriKind.Relative));
+                var bitmap = new BitmapImage();
+                bitmap.BeginInit();
+                bitmap.UriSource = new Uri(fullPath);
+                bitmap.CacheOption = BitmapCacheOption.OnLoad;
+                bitmap.EndInit();
+                bitmap.Freeze(); // Делаем объект неизменяемым для лучшей производительности
+                return bitmap;
             }
             catch
             {
                 // Если файл не найден, возвращаем заглушку
-                return new BitmapImage(new Uri("/Resources/logo.png", UriKind.Relative));
+                return new BitmapImage(new Uri("pack://application:,,,/Resources/logo.png"));
             }
         }
 

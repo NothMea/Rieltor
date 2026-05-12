@@ -1,23 +1,38 @@
-﻿<Window x:Class="WpfApp1.LoginWindow"
+<Window x:Class="WpfApp1.LoginWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-                Title="Авторизация" Height="300" Width="300" WindowStartupLocation="CenterScreen">
-    <Grid Margin="20">
-        <StackPanel>
-            <TextBlock Text="Вход в систему" FontSize="18" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+        Title="Вход в систему" Height="450" Width="400"
+        WindowStartupLocation="CenterScreen" Background="#E8F4F8">
+    <Grid Margin="30">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-            <TextBlock Text="Логин:" Margin="0,0,0,5"/>
-            <TextBox x:Name="txtLogin" Height="25"/>
-
-            <TextBlock Text="Пароль:" Margin="0,10,0,5"/>
-            <PasswordBox x:Name="txtPassword" Height="25"/>
-
-            <Button Content="Войти" Click="BtnLogin_Click" Height="30" Margin="0,20,0,0"/>
+        <!-- Заголовок -->
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,30">
+            <Image Source="/Resources/logo.png" Width="80" Height="70" Margin="0,0,0,10"/>
+            <TextBlock Text="АРЕНДА-УПРАВЛЕНИЕ" FontSize="20" FontWeight="Bold" Foreground="#2C5F7F" HorizontalAlignment="Center"/>
+            <TextBlock Text="Вход в систему" FontSize="14" Foreground="#666666" HorizontalAlignment="Center" Margin="0,5,0,0"/>
         </StackPanel>
+
+        <!-- Форма входа -->
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+            <TextBlock Text="Имя пользователя:" Margin="0,0,0,5" Foreground="#333333" FontWeight="SemiBold"/>
+            <TextBox x:Name="TxtUsername" Height="35" Margin="0,0,0,15" BorderBrush="#CCCCCC"/>
+
+            <TextBlock Text="Пароль:" Margin="0,0,0,5" Foreground="#333333" FontWeight="SemiBold"/>
+            <PasswordBox x:Name="TxtPassword" Height="35" Margin="0,0,0,20" BorderBrush="#CCCCCC"/>
+
+            <Button Content="Войти" Click="BtnLogin_Click" Height="40" FontSize="16" FontWeight="Bold"/>
+        </StackPanel>
+
+        <!-- Футер -->
+        <TextBlock Grid.Row="2" Text="© 2024 Система управления арендой" Foreground="#999999" FontSize="11" HorizontalAlignment="Center"/>
     </Grid>
 </Window>
-

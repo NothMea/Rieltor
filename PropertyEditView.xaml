@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Редактирование объекта недвижимости" Height="550" Width="650"
+        Title="Редактирование объекта недвижимости" Height="370" Width="650"
         WindowStartupLocation="CenterScreen">
     <Grid Margin="20">
         <Grid.RowDefinitions>
@@ -16,7 +16,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -60,17 +59,7 @@
         <TextBox x:Name="TxtMonthlyRent" Grid.Row="5" Grid.Column="1" Height="30" Margin="10,5"
                  PreviewTextInput="TxtNumeric_PreviewTextInput"/>
 
-        <!-- Путь к изображению -->
-        <TextBlock Text="Изображение:" Grid.Row="6" VerticalAlignment="Center"/>
-        <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Horizontal" Margin="10,5">
-            <TextBox x:Name="TxtImagePath" Width="300" Height="30" IsReadOnly="True"/>
-            <Button Content="Обзор..." Click="BtnBrowseImage_Click" Margin="10,0,0,0" Width="80"/>
-        </StackPanel>
-        
-        <!-- Предпросмотр изображения -->
-        <TextBlock Text="Предпросмотр:" Grid.Row="7" VerticalAlignment="Center" Margin="0,10,0,0"/>
-        <Image Grid.Row="7" Grid.Column="1" Height="150" Margin="10,10,0,0" HorizontalAlignment="Left"
-               Source="{Binding ElementName=TxtImagePath, Text, Converter={StaticResource ImagePathConverter}}"/>
+       
 
         <!-- Кнопки -->
         <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.ColumnSpan="2" 

@@ -29,7 +29,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="White" BorderBrush="LightGray" BorderThickness="1" CornerRadius="10" Margin="10" Padding="15" Width="800" Height="250">
+                        <Border Background="White" BorderBrush="LightGray" BorderThickness="1" CornerRadius="10" Margin="10" Padding="15" Width="538" Height="250">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"/>

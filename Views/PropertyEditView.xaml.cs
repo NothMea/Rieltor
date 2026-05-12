@@ -62,7 +62,7 @@ namespace WpfApp1.Views
             TxtMonthlyRent.Text = property.MonthlyRent.ToString();
 
             // Установка статуса
-            string[] statuses = { "Свободен", "Занят", "На обслуживании" };
+            string[] statuses = { "Свободен", "Сдан" };
             int statusIndex = Array.IndexOf(statuses, property.Status);
             if (statusIndex >= 0)
                 CmbStatus.SelectedIndex = statusIndex;
@@ -169,6 +169,11 @@ namespace WpfApp1.Views
                 window.DialogResult = false;
                 window.Close();
             }
+        }
+
+        private void TxtMonthlyRent_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

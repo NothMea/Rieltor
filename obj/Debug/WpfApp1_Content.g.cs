@@ -9,6 +9,11 @@
 //------------------------------------------------------------------------------
 
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/ofice1.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/ofice2.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/ofice3.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/shop.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/storage.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/logo.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("rieltorbd.context.tt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("rieltorbd.tt")]
 

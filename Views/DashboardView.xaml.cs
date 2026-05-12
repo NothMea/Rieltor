@@ -34,6 +34,8 @@ namespace WpfApp1.Views
             var totalProperties = db.Property.Count();
             var activeLeases = db.Leases.Count(l => l.Status == "Активен");
             var overduePayments = db.Payments.Count(p => p.Status == "Просрочен");
+            var freeProperties = db.Property.Count(p => p.Status == "Свободен");
+            var totalTenants = db.Tenants.Count();
 
             TxtTotalProperties.Text = totalProperties.ToString();
             TxtActiveLeases.Text = activeLeases.ToString();
@@ -42,10 +44,21 @@ namespace WpfApp1.Views
             // Уведомления
             var warnings = new List<string>();
             if (overduePayments > 0)
-                warnings.Add($"Найдено {overduePayments} просроченный(х) платеж(ей). Требуется вмешательство.");
+                warnings.Add($"⚠️ Найдено {overduePayments} просроченный(х) платеж(ей). Требуется вмешательство.");
 
-            if (db.Property.Any(p => p.Status == "Свободен" && p.MonthlyRent == 0))
-                warnings.Add("Обнаружены объекты со статусом 'Свободен', но без установленной арендной платы.");
+            if (freeProperties > 0)
+                warnings.Add($"🏢 {freeProperties} объектов свободны — можно искать новых арендаторов.");
+
+            // Договоры, истекающие в течение 30 дней
+            var expiringLeases = db.Leases
+                .Where(l => l.Status == "Активен" && l.EndDate <= DateTime.Today.AddDays(30))
+                .ToList();
+            
+            foreach (var lease in expiringLeases)
+            {
+                var daysLeft = (lease.EndDate - DateTime.Today).Days;
+                warnings.Add($"📅 Договор №{lease.LeaseNumber} истекает через {daysLeft} дн. ({lease.EndDate:d})");
+            }
 
             WarningsList.ItemsSource = warnings;
 
@@ -60,12 +73,16 @@ namespace WpfApp1.Views
 
             if (nearestLease != null)
             {
-                upcoming.Add($"Окончание договора №{nearestLease.LeaseNumber} ({nearestLease.Property.Address}) — {nearestLease.EndDate:d}");
+                var property = db.Property.Find(nearestLease.PropertyID);
+                upcoming.Add($"📋 Окончание договора №{nearestLease.LeaseNumber} ({property?.Address}) — {nearestLease.EndDate:d}");
             }
 
             // Ближайший платёж
             var nextPaymentDate = DateTime.Today.AddMonths(1);
-            upcoming.Add($"Планируемые платежи за {nextPaymentDate:Y}");
+            upcoming.Add($"💰 Планируемые платежи за {nextPaymentDate:Y}");
+
+            // Дни рождения арендаторов (если есть данные)
+            // Можно добавить позже при наличии поля даты рождения
 
             UpcomingEvents.ItemsSource = upcoming;
         }

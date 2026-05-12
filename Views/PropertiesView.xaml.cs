@@ -32,9 +32,11 @@ namespace WpfApp1.Views
             {
                 if (prop.ActiveLease != null)
                 {
-
                     var leaseEdit = new LeaseEditView(prop.ActiveLease.LeaseID);
-                    leaseEdit.Show(); // Откроем как отдельное окно (Window)
+                    if (leaseEdit.ShowDialog() == true)
+                    {
+                        LoadData();
+                    }
                 }
             }
         }
@@ -75,6 +77,7 @@ namespace WpfApp1.Views
                     PropertyType = item.PropertyType,
                     Area = item.Area,
                     MonthlyRent = item.MonthlyRent,
+                    ImagePath = GetFullImagePath(item.ImagePath),
                     ActiveLease = item.ActiveLease != null ? new LeaseInfo
                     {
                         LeaseID = item.ActiveLease.LeaseID,
@@ -89,6 +92,19 @@ namespace WpfApp1.Views
             }).ToList();
 
             ItemsList.ItemsSource = displayList;
+        }
+
+        private string GetFullImagePath(string imagePath)
+        {
+            if (string.IsNullOrEmpty(imagePath))
+                return null;
+
+            // Если путь уже абсолютный или начинается с /Resources/, возвращаем как есть
+            if (imagePath.StartsWith("/Resources/") || imagePath.StartsWith("pack://"))
+                return imagePath;
+
+            // Иначе добавляем префикс /Resources/
+            return $"/Resources/{imagePath}";
         }
 
         private string GetPaymentStatus(int leaseId)
@@ -106,9 +122,33 @@ namespace WpfApp1.Views
         }
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e) => LoadData();
+        
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Форма добавления объекта будет реализована далее.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
+            var propertyEdit = new PropertyEditView(() => LoadData());
+            var window = new Window
+            {
+                Title = "Добавление объекта недвижимости",
+                Width = 850,
+                Height = 650,
+                Content = propertyEdit,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Background = (Brush)new BrushConverter().ConvertFrom("#f38c77")
+            };
+            
+            if (window.ShowDialog() == true)
+            {
+                LoadData();
+            }
+        }
+
+        private void BtnAddLease_Click(object sender, RoutedEventArgs e)
+        {
+            var leaseEdit = new LeaseEditView();
+            if (leaseEdit.ShowDialog() == true)
+            {
+                LoadData();
+            }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

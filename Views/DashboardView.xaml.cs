@@ -50,8 +50,9 @@ namespace WpfApp1.Views
                 warnings.Add($"🏢 {freeProperties} объектов свободны — можно искать новых арендаторов.");
 
             // Договоры, истекающие в течение 30 дней
+            var thresholdDate = DateTime.Today.AddDays(30);
             var expiringLeases = db.Leases
-                .Where(l => l.Status == "Активен" && l.EndDate <= DateTime.Today.AddDays(30))
+                .Where(l => l.Status == "Активен" && l.EndDate <= thresholdDate)
                 .ToList();
             
             foreach (var lease in expiringLeases)

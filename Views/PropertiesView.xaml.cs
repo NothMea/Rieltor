@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,11 +20,14 @@ namespace WpfApp1.Views
     /// </summary>
     public partial class PropertiesView : UserControl
     {
+        private List<DisplayProperty> _allProperties;
+
         public PropertiesView()
         {
             InitializeComponent();
             LoadData();
         }
+
         private void EditLeaseButton_Click(object sender, RoutedEventArgs e)
         {
             // Получаем DataContext кнопки — это объект DisplayProperty
@@ -40,6 +43,88 @@ namespace WpfApp1.Views
                 }
             }
         }
+
+        private void EditPropertyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is DisplayProperty prop)
+            {
+                var propertyEdit = new PropertyEditView(prop.PropertyID, () => LoadData());
+                var window = new Window
+                {
+                    Title = "Редактирование объекта недвижимости",
+                    Width = 850,
+                    Height = 650,
+                    Content = propertyEdit,
+                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                    Background = (Brush)new BrushConverter().ConvertFrom("#E8F4F8")
+                };
+
+                if (window.ShowDialog() == true)
+                {
+                    LoadData();
+                }
+            }
+        }
+
+        private async void DeletePropertyButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is DisplayProperty prop)
+            {
+                var result = MessageBox.Show(
+                    $"Вы уверены, что хотите удалить объект \"{prop.Address}\"?\n\nЭто действие нельзя отменить!",
+                    "Подтверждение удаления",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Warning);
+
+                if (result == MessageBoxResult.Yes)
+                {
+                    try
+                    {
+                        using (var db = RieltorEntities.GetContext())
+                        {
+                            var property = db.Property.Find(prop.PropertyID);
+                            if (property != null)
+                            {
+                                // Проверяем наличие активных договоров
+                                var hasActiveLeases = db.Leases.Any(l => l.PropertyID == prop.PropertyID && l.Status == "Активен");
+                                if (hasActiveLeases)
+                                {
+                                    MessageBox.Show(
+                                        "Нельзя удалить объект с активными договорами аренды.\nСначала завершите или удалите все активные договоры.",
+                                        "Ошибка",
+                                        MessageBoxButton.OK,
+                                        MessageBoxImage.Error);
+                                    return;
+                                }
+
+                                // Удаляем связанные платежи (если есть)
+                                var leases = db.Leases.Where(l => l.PropertyID == prop.PropertyID).ToList();
+                                foreach (var lease in leases)
+                                {
+                                    var payments = db.Payments.Where(p => p.LeaseID == lease.LeaseID).ToList();
+                                    foreach (var payment in payments)
+                                    {
+                                        db.Payments.Remove(payment);
+                                    }
+                                    db.Leases.Remove(lease);
+                                }
+
+                                db.Property.Remove(property);
+                                await Task.Run(() => db.SaveChanges());
+
+                                MessageBox.Show("Объект успешно удален!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                                LoadData();
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Ошибка при удалении: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+        }
+
         private void LoadData()
         {
             var db = RieltorEntities.GetContext();
@@ -53,19 +138,20 @@ namespace WpfApp1.Views
                 p.Area,
                 p.MonthlyRent,
                 p.ImagePath,
+                p.Status,
                 ActiveLease = p.Leases
-                .Where(l => l.Status == "Активен")
-                .Select(l => new
-            {
-                l.LeaseID,        
-                l.LeaseNumber,
-                l.StartDate,
-                l.EndDate
+                    .Where(l => l.Status == "Активен")
+                    .Select(l => new
+                    {
+                        l.LeaseID,
+                        l.LeaseNumber,
+                        l.StartDate,
+                        l.EndDate
+                    })
+                    .OrderByDescending(x => x.StartDate)
+                    .FirstOrDefault()
             })
-            .OrderByDescending(x => x.StartDate)
-            .FirstOrDefault()
-    })
-    .ToList();
+            .ToList();
 
             // Преобразуем в список для отображения
             var displayList = propertiesWithLease.Select(item =>
@@ -78,6 +164,7 @@ namespace WpfApp1.Views
                     Area = item.Area,
                     MonthlyRent = item.MonthlyRent,
                     ImagePath = GetFullImagePath(item.ImagePath),
+                    Status = item.Status,
                     ActiveLease = item.ActiveLease != null ? new LeaseInfo
                     {
                         LeaseID = item.ActiveLease.LeaseID,
@@ -91,7 +178,8 @@ namespace WpfApp1.Views
                 return obj;
             }).ToList();
 
-            ItemsList.ItemsSource = displayList;
+            _allProperties = displayList;
+            ApplyFiltersAndSort();
         }
 
         private string GetFullImagePath(string imagePath)
@@ -121,8 +209,53 @@ namespace WpfApp1.Views
             return latestPayment.Status; // "Оплачен", "Просрочен", "Ожидает"
         }
 
-        private void BtnRefresh_Click(object sender, RoutedEventArgs e) => LoadData();
-        
+        private void CmbSortStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFiltersAndSort();
+        }
+
+        private void CmbSortOccupancy_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            ApplyFiltersAndSort();
+        }
+
+        private void ApplyFiltersAndSort()
+        {
+            if (_allProperties == null)
+                return;
+
+            var filtered = _allProperties.AsEnumerable();
+
+            // Фильтр по статусу
+            if (CmbSortStatus.SelectedItem is ComboBoxItem statusItem)
+            {
+                string statusText = statusItem.Content?.ToString();
+                if (!string.IsNullOrEmpty(statusText) && statusText != "Все статусы")
+                {
+                    filtered = filtered.Where(p => p.Status == statusText);
+                }
+            }
+
+            // Фильтр по занятости
+            if (CmbSortOccupancy.SelectedItem is ComboBoxItem occupancyItem)
+            {
+                string occupancyText = occupancyItem.Content?.ToString();
+                if (!string.IsNullOrEmpty(occupancyText) && occupancyText != "Все объекты")
+                {
+                    if (occupancyText == "Свободные")
+                    {
+                        filtered = filtered.Where(p => !p.HasActiveLease);
+                    }
+                    else if (occupancyText == "Занятые")
+                    {
+                        filtered = filtered.Where(p => p.HasActiveLease);
+                    }
+                }
+            }
+
+            ItemsList.ItemsSource = filtered.ToList();
+        }
+
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             var propertyEdit = new PropertyEditView(() => LoadData());
@@ -133,9 +266,9 @@ namespace WpfApp1.Views
                 Height = 650,
                 Content = propertyEdit,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                Background = (Brush)new BrushConverter().ConvertFrom("#f38c77")
+                Background = (Brush)new BrushConverter().ConvertFrom("#E8F4F8")
             };
-            
+
             if (window.ShowDialog() == true)
             {
                 LoadData();
@@ -150,11 +283,6 @@ namespace WpfApp1.Views
                 LoadData();
             }
         }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
     }
 
     // Класс для отображения
@@ -166,6 +294,7 @@ namespace WpfApp1.Views
         public decimal Area { get; set; }
         public decimal MonthlyRent { get; set; }
         public string ImagePath { get; set; }
+        public string Status { get; set; }
         public LeaseInfo ActiveLease { get; set; }
         public bool HasActiveLease => ActiveLease != null;
     }
@@ -206,5 +335,4 @@ namespace WpfApp1.Views
             throw new NotImplementedException();
         }
     }
-
 }

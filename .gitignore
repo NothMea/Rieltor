@@ -1,2 +1,44 @@
-Nothing should be ignored based on the provided file changes. The only modified file is 'Views/DashboardView.xaml.cs', which is a source code file and should not be added to .gitignore.
-/.vs
+```gitignore
+# Compiled and build artifacts
+*.obj
+*.exe
+*.dll
+*.pdb
+*.userprefs
+*.cache
+bin/
+obj/
+Debug/
+Release/
+
+# Dependencies
+packages/
+node_modules/
+.nuget/
+.nuget.packages/
+
+# Logs and temp files
+*.log
+*.tmp
+*.temp
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vs/
+.vshost/
+.user
+.userosscache
+.suo
+.ReSharper*/
+_UpgradeReport_Files/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
+```

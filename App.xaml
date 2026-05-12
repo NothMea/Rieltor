@@ -9,6 +9,9 @@
 
         <!-- Конвертер для !bool -> Visibility -->
         <local:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+        
+        <!-- Конвертер для пути к изображению -->
+        <local:ImagePathConverter x:Key="ImagePathConverter"/>
         <Style x:Key="TabButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Foreground" Value="Black"/>

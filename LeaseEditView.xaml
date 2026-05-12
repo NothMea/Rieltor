@@ -5,9 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="LeaseEditView" Height="450" Width="800">
+        Title="Редактирование договора аренды" Height="550" Width="700"
+        WindowStartupLocation="CenterScreen">
     <Grid Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -17,21 +21,67 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Редактирование договора аренды" FontSize="20" FontWeight="Bold" Margin="0,0,0,20"/>
+        <TextBlock Text="Редактирование договора аренды" FontSize="20" FontWeight="Bold" 
+                   Grid.ColumnSpan="2" Margin="0,0,0,20" HorizontalAlignment="Center"/>
 
-        <TextBlock Text="Номер договора:" Grid.Row="1"/>
-        <TextBox x:Name="TxtLeaseNumber" Grid.Row="2" Height="30" Margin="0,5"/>
+        <!-- Номер договора -->
+        <TextBlock Text="Номер договора:" Grid.Row="1" VerticalAlignment="Center"/>
+        <TextBox x:Name="TxtLeaseNumber" Grid.Row="1" Grid.Column="1" Height="30" Margin="10,5"/>
 
-        <TextBlock Text="Объект недвижимости:" Grid.Row="3"/>
-        <TextBox x:Name="TxtProperty" Grid.Row="4" Height="30" IsEnabled="False" Margin="0,5"/>
+        <!-- Объект недвижимости -->
+        <TextBlock Text="Объект недвижимости:" Grid.Row="2" VerticalAlignment="Center"/>
+        <ComboBox x:Name="CmbProperty" Grid.Row="2" Grid.Column="1" Height="30" Margin="10,5"
+                  DisplayMemberPath="Address" SelectedValuePath="PropertyID"
+                  SelectionChanged="CmbProperty_SelectionChanged"/>
 
-        <TextBlock Text="Арендатор:" Grid.Row="5"/>
-        <TextBox x:Name="TxtTenant" Grid.Row="6" Height="30" IsEnabled="False" Margin="0,5"/>
+        <!-- Арендатор -->
+        <TextBlock Text="Арендатор:" Grid.Row="3" VerticalAlignment="Center"/>
+        <ComboBox x:Name="CmbTenant" Grid.Row="3" Grid.Column="1" Height="30" Margin="10,5"
+                  DisplayMemberPath="Name" SelectedValuePath="TenantID"
+                  SelectionChanged="CmbTenant_SelectionChanged"/>
 
-        <StackPanel Orientation="Horizontal" Grid.Row="7" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Сохранить" Click="BtnSave_Click" Width="100" Margin="0,0,10,0"/>
-            <Button Content="Отмена" Click="BtnCancel_Click" Width="100"/>
+        <!-- Дата начала -->
+        <TextBlock Text="Дата начала:" Grid.Row="4" VerticalAlignment="Center"/>
+        <DatePicker x:Name="DpStartDate" Grid.Row="4" Grid.Column="1" Height="30" Margin="10,5"/>
+
+        <!-- Дата окончания -->
+        <TextBlock Text="Дата окончания:" Grid.Row="5" VerticalAlignment="Center"/>
+        <DatePicker x:Name="DpEndDate" Grid.Row="5" Grid.Column="1" Height="30" Margin="10,5"/>
+
+        <!-- Ежемесячная сумма -->
+        <TextBlock Text="Ежемесячная сумма (₽):" Grid.Row="6" VerticalAlignment="Center"/>
+        <TextBox x:Name="TxtMonthlyAmount" Grid.Row="6" Grid.Column="1" Height="30" Margin="10,5" 
+                 PreviewTextInput="TxtMonthlyAmount_PreviewTextInput"/>
+
+        <!-- Статус -->
+        <TextBlock Text="Статус:" Grid.Row="7" VerticalAlignment="Center"/>
+        <ComboBox x:Name="CmbStatus" Grid.Row="7" Grid.Column="1" Height="30" Margin="10,5">
+            <ComboBoxItem Content="Активен"/>
+            <ComboBoxItem Content="Завершен"/>
+            <ComboBoxItem Content="Расторгнут"/>
+            <ComboBoxItem Content="Ожидает подписания"/>
+        </ComboBox>
+
+        <!-- Информация о связанных данных (только для просмотра) -->
+        <Border Grid.Row="8" Grid.ColumnSpan="2" Background="#F5F5F5" BorderBrush="#DDD" 
+                BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,10,0,0">
+            <StackPanel>
+                <TextBlock Text="Информация о договоре:" FontWeight="Bold" Margin="0,0,0,5"/>
+                <TextBlock x:Name="TxtPropertyInfo" Text="" Margin="0,2"/>
+                <TextBlock x:Name="TxtTenantInfo" Text="" Margin="0,2"/>
+            </StackPanel>
+        </Border>
+
+        <!-- Кнопки -->
+        <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.ColumnSpan="2" 
+                    HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Сохранить" Click="BtnSave_Click" Width="120" Margin="0,0,10,0"/>
+            <Button Content="Отмена" Click="BtnCancel_Click" Width="120"/>
         </StackPanel>
     </Grid>
 </Window>

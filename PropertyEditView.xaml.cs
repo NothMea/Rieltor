@@ -55,7 +55,7 @@ namespace WpfApp1
             TxtAddress.Text = _currentProperty.Address;
             TxtArea.Text = _currentProperty.Area.ToString();
             TxtMonthlyRent.Text = _currentProperty.MonthlyRent.ToString();
-            TxtImagePath.Text = _currentProperty.ImagePath ?? "";
+
 
             // Установка типа объекта
             var typeItems = CmbPropertyType.Items.Cast<ComboBoxItem>().ToList();
@@ -113,7 +113,7 @@ namespace WpfApp1
                 _currentProperty.Area = area;
                 _currentProperty.Status = ((ComboBoxItem)CmbStatus.SelectedItem).Content.ToString();
                 _currentProperty.MonthlyRent = monthlyRent;
-                _currentProperty.ImagePath = string.IsNullOrWhiteSpace(TxtImagePath.Text) ? null : TxtImagePath.Text.Trim();
+
 
                 if (_propertyId.HasValue)
                 {
@@ -150,18 +150,7 @@ namespace WpfApp1
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void BtnBrowseImage_Click(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = "Файлы изображений|*.jpg;*.jpeg;*.png;*.bmp;*.gif|Все файлы|*.*",
-                Title = "Выберите изображение объекта"
-            };
-
-            if (openFileDialog.ShowDialog() == true)
-            {
-                TxtImagePath.Text = openFileDialog.FileName;
-            }
+        
         }
     }
 }

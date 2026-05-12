@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="RieltorModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Leases">
+    <Key>
+      <PropertyRef Name="LeaseID" />
+    </Key>
+    <Property Name="LeaseID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LeaseNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PropertyID" Type="Int32" Nullable="false" />
+    <Property Name="TenantID" Type="Int32" Nullable="false" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="MonthlyAmount" Type="Decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Property" Relationship="Self.FK_Leases_Property" FromRole="Leases" ToRole="Property" />
+    <NavigationProperty Name="Tenants" Relationship="Self.FK_Leases_Tenant" FromRole="Leases" ToRole="Tenants" />
+    <NavigationProperty Name="Payments" Relationship="Self.FK_Payments_Lease" FromRole="Leases" ToRole="Payments" />
+  </EntityType>
+  <EntityType Name="Payments">
+    <Key>
+      <PropertyRef Name="PaymentID" />
+    </Key>
+    <Property Name="PaymentID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LeaseID" Type="Int32" Nullable="false" />
+    <Property Name="PaymentDate" Type="DateTime" Nullable="false" Precision="0" />
+    <Property Name="Amount" Type="Decimal" Precision="12" Scale="2" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Notes" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Leases" Relationship="Self.FK_Payments_Lease" FromRole="Payments" ToRole="Leases" />
+  </EntityType>
+  <EntityType Name="Property">
+    <Key>
+      <PropertyRef Name="PropertyID" />
+    </Key>
+    <Property Name="PropertyID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Address" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Area" Type="Decimal" Precision="10" Scale="2" Nullable="false" />
+    <Property Name="PropertyType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="MonthlyRent" Type="Decimal" Precision="12" Scale="2" Nullable="false" />
+    <NavigationProperty Name="Leases" Relationship="Self.FK_Leases_Property" FromRole="Property" ToRole="Leases" />
+    <Property Name="ImagePath" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="Tenants">
+    <Key>
+      <PropertyRef Name="TenantID" />
+    </Key>
+    <Property Name="TenantID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Phone" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="INN" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Leases" Relationship="Self.FK_Leases_Tenant" FromRole="Tenants" ToRole="Leases" />
+  </EntityType>
+  <EntityType Name="Users">
+    <Key>
+      <PropertyRef Name="UserID" />
+    </Key>
+    <Property Name="UserID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FullName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Role" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Leases_Property">
+    <End Role="Property" Type="Self.Property" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Leases" Type="Self.Leases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Property">
+        <PropertyRef Name="PropertyID" />
+      </Principal>
+      <Dependent Role="Leases">
+        <PropertyRef Name="PropertyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Leases_Tenant">
+    <End Role="Tenants" Type="Self.Tenants" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Leases" Type="Self.Leases" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tenants">
+        <PropertyRef Name="TenantID" />
+      </Principal>
+      <Dependent Role="Leases">
+        <PropertyRef Name="TenantID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Payments_Lease">
+    <End Role="Leases" Type="Self.Leases" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Payments" Type="Self.Payments" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Leases">
+        <PropertyRef Name="LeaseID" />
+      </Principal>
+      <Dependent Role="Payments">
+        <PropertyRef Name="LeaseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="RieltorEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Leases" EntityType="Self.Leases" />
+    <EntitySet Name="Payments" EntityType="Self.Payments" />
+    <EntitySet Name="Property" EntityType="Self.Property" />
+    <EntitySet Name="Tenants" EntityType="Self.Tenants" />
+    <EntitySet Name="Users" EntityType="Self.Users" />
+    <AssociationSet Name="FK_Leases_Property" Association="Self.FK_Leases_Property">
+      <End Role="Property" EntitySet="Property" />
+      <End Role="Leases" EntitySet="Leases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Leases_Tenant" Association="Self.FK_Leases_Tenant">
+      <End Role="Tenants" EntitySet="Tenants" />
+      <End Role="Leases" EntitySet="Leases" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Payments_Lease" Association="Self.FK_Payments_Lease">
+      <End Role="Leases" EntitySet="Leases" />
+      <End Role="Payments" EntitySet="Payments" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,36 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\\u0422\u0438\u043C\u0443\u0440\\Desktop\\\u0412\u041E\u0422 \u041E\u041D\u041E\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{C23104A5-7AD2-4633-85AF-4CEE35345E5C}|WpfApp1.csproj|c:\\users\\\u0442\u0438\u043C\u0443\u0440\\desktop\\\u0432\u043E\u0442 \u043E\u043D\u043E\\views\\propertiesview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{C23104A5-7AD2-4633-85AF-4CEE35345E5C}|WpfApp1.csproj|solutionrelative:views\\propertiesview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 1,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedHeight": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PropertiesView.xaml",
+              "DocumentMoniker": "C:\\Users\\\u0422\u0438\u043C\u0443\u0440\\Desktop\\\u0412\u041E\u0422 \u041E\u041D\u041E\\Views\\PropertiesView.xaml",
+              "RelativeDocumentMoniker": "Views\\PropertiesView.xaml",
+              "ToolTip": "C:\\Users\\\u0422\u0438\u043C\u0443\u0440\\Desktop\\\u0412\u041E\u0422 \u041E\u041D\u041E\\Views\\PropertiesView.xaml",
+              "RelativeToolTip": "Views\\PropertiesView.xaml",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-05-12T20:24:24.449Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

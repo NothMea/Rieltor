@@ -28,7 +28,8 @@ namespace WpfApp1.Views
 
         private void LoadDashboard()
         {
-            var db = RieltorEntities.GetContext();
+            using (var db = new RieltorEntities())
+        {
 
             // Статистика
             var totalProperties = db.Property.Count();
@@ -86,6 +87,7 @@ namespace WpfApp1.Views
             // Можно добавить позже при наличии поля даты рождения
 
             UpcomingEvents.ItemsSource = upcoming;
+            }
         }
     }
 }

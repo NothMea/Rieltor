@@ -80,7 +80,7 @@ namespace WpfApp1.Views
                 {
                     try
                     {
-                        using (var db = RieltorEntities.GetContext())
+                        using (var db = new RieltorEntities())
                         {
                             var property = db.Property.Find(prop.PropertyID);
                             if (property != null)
@@ -127,59 +127,60 @@ namespace WpfApp1.Views
 
         private void LoadData()
         {
-            var db = RieltorEntities.GetContext();
-
-            // Получаем все объекты и для каждого — активный договор (если есть)
-            var propertiesWithLease = db.Property.Select(p => new
+            using (var db = new RieltorEntities())
             {
-                p.PropertyID,
-                p.Address,
-                p.PropertyType,
-                p.Area,
-                p.MonthlyRent,
-                p.ImagePath,
-                p.Status,
-                ActiveLease = p.Leases
-                    .Where(l => l.Status == "Активен")
-                    .Select(l => new
-                    {
-                        l.LeaseID,
-                        l.LeaseNumber,
-                        l.StartDate,
-                        l.EndDate
-                    })
-                    .OrderByDescending(x => x.StartDate)
-                    .FirstOrDefault()
-            })
-            .ToList();
-
-            // Преобразуем в список для отображения
-            var displayList = propertiesWithLease.Select(item =>
-            {
-                var obj = new DisplayProperty
+                // Получаем все объекты и для каждого — активный договор (если есть)
+                var propertiesWithLease = db.Property.Select(p => new
                 {
-                    PropertyID = item.PropertyID,
-                    Address = item.Address,
-                    PropertyType = item.PropertyType,
-                    Area = item.Area,
-                    MonthlyRent = item.MonthlyRent,
-                    ImagePath = GetFullImagePath(item.ImagePath),
-                    Status = item.Status,
-                    ActiveLease = item.ActiveLease != null ? new LeaseInfo
+                    p.PropertyID,
+                    p.Address,
+                    p.PropertyType,
+                    p.Area,
+                    p.MonthlyRent,
+                    p.ImagePath,
+                    p.Status,
+                    ActiveLease = p.Leases
+                        .Where(l => l.Status == "Активен")
+                        .Select(l => new
+                        {
+                            l.LeaseID,
+                            l.LeaseNumber,
+                            l.StartDate,
+                            l.EndDate
+                        })
+                        .OrderByDescending(x => x.StartDate)
+                        .FirstOrDefault()
+                })
+                .ToList();
+
+                // Преобразуем в список для отображения
+                var displayList = propertiesWithLease.Select(item =>
+                {
+                    var obj = new DisplayProperty
                     {
-                        LeaseID = item.ActiveLease.LeaseID,
-                        LeaseNumber = item.ActiveLease.LeaseNumber,
-                        StartDate = item.ActiveLease.StartDate,
-                        EndDate = item.ActiveLease.EndDate,
-                        PaymentStatus = GetPaymentStatus(item.ActiveLease.LeaseID)
-                    } : null
-                };
+                        PropertyID = item.PropertyID,
+                        Address = item.Address,
+                        PropertyType = item.PropertyType,
+                        Area = item.Area,
+                        MonthlyRent = item.MonthlyRent,
+                        ImagePath = GetFullImagePath(item.ImagePath),
+                        Status = item.Status,
+                        ActiveLease = item.ActiveLease != null ? new LeaseInfo
+                        {
+                            LeaseID = item.ActiveLease.LeaseID,
+                            LeaseNumber = item.ActiveLease.LeaseNumber,
+                            StartDate = item.ActiveLease.StartDate,
+                            EndDate = item.ActiveLease.EndDate,
+                            PaymentStatus = GetPaymentStatus(item.ActiveLease.LeaseID)
+                        } : null
+                    };
 
-                return obj;
-            }).ToList();
+                    return obj;
+                }).ToList();
 
-            _allProperties = displayList;
-            ApplyFiltersAndSort();
+                _allProperties = displayList;
+                ApplyFiltersAndSort();
+            }
         }
 
         private string GetFullImagePath(string imagePath)
@@ -197,16 +198,18 @@ namespace WpfApp1.Views
 
         private string GetPaymentStatus(int leaseId)
         {
-            var db = RieltorEntities.GetContext();
-            var latestPayment = db.Payments
-                .Where(p => p.LeaseID == leaseId)
-                .OrderByDescending(p => p.PaymentDate)
-                .FirstOrDefault();
+            using (var db = new RieltorEntities())
+            {
+                var latestPayment = db.Payments
+                    .Where(p => p.LeaseID == leaseId)
+                    .OrderByDescending(p => p.PaymentDate)
+                    .FirstOrDefault();
 
-            if (latestPayment == null)
-                return "Не оплачен";
+                if (latestPayment == null)
+                    return "Не оплачен";
 
-            return latestPayment.Status; // "Оплачен", "Просрочен", "Ожидает"
+                return latestPayment.Status; // "Оплачен", "Просрочен", "Ожидает"
+            }
         }
 
         private void CmbSortStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)

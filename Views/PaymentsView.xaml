@@ -45,25 +45,30 @@
                     <DataGridTextColumn Header="Договор №" Binding="{Binding LeaseNumber}" Width="100"/>
                     <DataGridTextColumn Header="Дата платежа" Binding="{Binding PaymentDate, StringFormat=dd.MM.yyyy}" Width="110"/>
                     <DataGridTextColumn Header="Сумма (₽)" Binding="{Binding Amount, StringFormat=N2}" Width="100"/>
-                    <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="100">
-                        <DataGrid.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="Foreground" Value="Black"/>
-                                <Setter Property="FontWeight" Value="SemiBold"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Status}" Value="Оплачен">
-                                        <Setter Property="Foreground" Value="Green"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="Просрочен">
-                                        <Setter Property="Foreground" Value="Red"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Status}" Value="Ожидает">
-                                        <Setter Property="Foreground" Value="Orange"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </DataGrid.ElementStyle>
-                    </DataGridTextColumn>
+                    <DataGridTemplateColumn Header="Статус" Width="100">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Status}" FontWeight="SemiBold">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="Black"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Status}" Value="Оплачен">
+                                                    <Setter Property="Foreground" Value="Green"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="Просрочен">
+                                                    <Setter Property="Foreground" Value="Red"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Status}" Value="Ожидает">
+                                                    <Setter Property="Foreground" Value="Orange"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
                     <DataGridTextColumn Header="Адрес объекта" Binding="{Binding Address}" Width="200"/>
                     <DataGridTextColumn Header="Арендатор" Binding="{Binding TenantName}" Width="150"/>
                     <DataGridTemplateColumn Header="Действия" Width="120">

@@ -21,20 +21,24 @@ namespace WpfApp1
     {
         private readonly int? _leaseId;
 
-        public LeaseEditView(int leaseId)
+        public LeaseEditView() 
         {
             InitializeComponent();
-            _leaseId = leaseId;
+            _leaseId = null;
             using (var db = new RieltorEntities())
             {
-                LoadLeaseData(db);
-                LoadPayments(db);
+                LoadComboBoxes(db);
+                Title = "Добавление договора аренды";
+                // Установить даты по умолчанию
+                DpStartDate.SelectedDate = DateTime.Today;
+                DpEndDate.SelectedDate = DateTime.Today.AddYears(1);
+                CmbStatus.SelectedIndex = 0; // "Активен" по умолчанию
             }
         }
 
-        public LeaseEditView() : this(null)
+        public LeaseEditView(int leaseId) : this((int?)leaseId)
         {
-            // Конструктор для создания нового договора
+            // Конструктор для редактирования существующего договора
         }
 
         public LeaseEditView(int? leaseId)

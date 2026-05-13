@@ -28,7 +28,7 @@ namespace WpfApp1
             using (var db = new RieltorEntities())
             {
                 LoadComboBoxes(db);
-                Title = "Добавление договора аренды";
+                Title = "Добавление договора аренды"; 
                 // Установить даты по умолчанию
                 DpStartDate.SelectedDate = DateTime.Today;
                 DpEndDate.SelectedDate = DateTime.Today.AddYears(1);

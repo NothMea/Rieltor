@@ -16,16 +16,16 @@
         </Grid.RowDefinitions>
 
         <!-- Header -->
-        <Border Grid.Row="0" Background="#2C5F7F">
+        <Border Grid.Row="0" Background="#2C5F7F" Padding="0,15">
             <StackPanel Margin="20,0">
                 <WrapPanel HorizontalAlignment="Center">
-                    <Image Source="/resources/logo.png" Width="60" Height="50" Margin="10"/>
-                    <TextBlock Text="АРЕНДА-УПРАВЛЕНИЕ" FontSize="24" FontWeight="Bold" Foreground="White" Width="300" Height="30"/>
+                    <Image Source="/resources/logo.png" Width="70" Height="60" Margin="10"/>
+                    <TextBlock Text="АРЕНДА-УПРАВЛЕНИЕ" FontSize="28" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
                 </WrapPanel>
 
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                    <Button x:Name="BtnHome" Content="Главная" Click="MenuItem_Home_Click" Style="{StaticResource TabButtonStyle}" Margin="0,0,5,0"/>
-                    <Button x:Name="BtnProperties" Content="Объекты" Click="MenuItem_Properties_Click" Style="{StaticResource TabButtonStyle}" Margin="0,0,5,0"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,15,0,0">
+                    <Button x:Name="BtnHome" Content="🏠 Главная" Click="MenuItem_Home_Click" Style="{StaticResource TabButtonStyle}" Margin="0,0,10,0" Padding="15,10"/>
+                    <Button x:Name="BtnProperties" Content="🏢 Объекты" Click="MenuItem_Properties_Click" Style="{StaticResource TabButtonStyle}" Padding="15,10"/>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -38,8 +38,8 @@
         <!-- Footer -->
         <Grid Grid.Row="2" Background="#2C5F7F" VerticalAlignment="Stretch">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0">
-                <TextBlock Text="Готов к работе" Foreground="White" VerticalAlignment="Center" Margin="0,0,20,0"/>
-                <Button Content="Выход" Click="BtnExit_Click" Width="80" Height="30" Margin="0,0,10,0"/>
+                <TextBlock Text="✅ Готов к работе" Foreground="White" VerticalAlignment="Center" Margin="0,0,20,0" FontSize="14"/>
+                <Button Content="🚪 Выход" Click="BtnExit_Click" Width="100" Height="35" Margin="0,0,10,0" Background="#CD5C5C" Foreground="White" BorderThickness="0" Cursor="Hand"/>
             </StackPanel>
         </Grid>
     </Grid>

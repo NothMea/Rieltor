@@ -1,29 +1,5 @@
 ```
 # Build artifacts
-*.dll
-*.exe
-*.pdb
-*.nupkg
-*.snupkg
-bin/
-obj/
-Debug/
-Release/
-
-# Dependencies
-packages/
-node_modules/
-vendor/
-
-# IDE files
-.vs/
-.vscode/
-.idea/
-*.userprefs
-
-# OS files
-.DS_Store
-Thumbs.db
 *.o
 *.obj
 *.exe
@@ -42,21 +18,12 @@ __pycache__/
 target/
 .gradle/
 
-# IDE files
+# Editor/IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
 *.tmp
-
-# Logs
-*.log
-
-# Environment
-# Coverage
-coverage/
-htmlcov/
-.coverage
 
 # System files
 .DS_Store
@@ -65,10 +32,14 @@ Thumbs.db
 .env.local
 *.env.*
 
-# Temporary files
-*.tmp
-*.temp
-```
+# Logs
+*.log
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
 # Compressed files
 *.zip
 *.gz
@@ -93,4 +64,3 @@ Thumbs.db
 *.tar.xz
 *.tar.zst
 ```
-/.vs

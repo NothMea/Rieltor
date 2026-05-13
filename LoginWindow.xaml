@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Вход в систему" Height="450" Width="400"
+        Title="Вход в систему" Height="510" Width="400"
         WindowStartupLocation="CenterScreen" Background="#E8F4F8">
     <Grid Margin="30">
         <Grid.RowDefinitions>
@@ -23,16 +23,16 @@
 
         <!-- Форма входа -->
         <StackPanel Grid.Row="1" VerticalAlignment="Center">
-            <TextBlock Text="Имя пользователя:" Margin="0,0,0,5" Foreground="#333333" FontWeight="SemiBold"/>
-            <TextBox x:Name="TxtUsername" Height="35" Margin="0,0,0,15" BorderBrush="#CCCCCC"/>
+            <TextBlock Text="Логин:" Margin="0,10,0,0" Foreground="#333333" FontWeight="SemiBold"/>
+            <TextBox x:Name="txtLogin" Height="35" Margin="0,0,0,15" BorderBrush="#CCCCCC"/>
 
-            <TextBlock Text="Пароль:" Margin="0,0,0,5" Foreground="#333333" FontWeight="SemiBold"/>
-            <PasswordBox x:Name="TxtPassword" Height="35" Margin="0,0,0,20" BorderBrush="#CCCCCC"/>
+            <TextBlock Text="Пароль:" Margin="0,10,0,0" Foreground="#333333" FontWeight="SemiBold"/>
+            <PasswordBox x:Name="txtPassword" Height="35" Margin="0,0,0,20" BorderBrush="#CCCCCC"/>
 
             <Button Content="Войти" Click="BtnLogin_Click" Height="40" FontSize="16" FontWeight="Bold"/>
         </StackPanel>
 
         <!-- Футер -->
-        <TextBlock Grid.Row="2" Text="© 2024 Система управления арендой" Foreground="#999999" FontSize="11" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Text="© 2026 Система управления арендой" Foreground="#999999" FontSize="11" HorizontalAlignment="Center"/>
     </Grid>
 </Window>

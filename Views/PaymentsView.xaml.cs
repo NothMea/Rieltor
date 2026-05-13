@@ -61,7 +61,7 @@ namespace WpfApp1.Views
             var filtered = _allPayments.AsEnumerable();
 
             // Фильтр по статусу
-            if (CmbFilterStatus.SelectedItem is ComboBoxItem statusItem)
+            if (CmbFilterStatus.SelectedItem is System.Windows.Controls.ComboBoxItem statusItem)
             {
                 string statusText = statusItem.Content?.ToString();
                 if (!string.IsNullOrEmpty(statusText) && statusText != "Все статусы")
@@ -163,7 +163,10 @@ namespace WpfApp1.Views
             }
         }
     }
+}
 
+namespace WpfApp1.Views
+{
     public class PaymentDisplay
     {
         public int PaymentID { get; set; }

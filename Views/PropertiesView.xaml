@@ -44,7 +44,7 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="10" Margin="10" Padding="15" Width="538" Height="280">
+                        <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="10" Margin="10" Padding="15" Width="538" Height="319">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"/>

@@ -14,20 +14,20 @@
         </Grid.RowDefinitions>
 
         <!-- Панель управления -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="10">
-            <Button Content="Добавить объект" Click="BtnAdd_Click" Width="140" Margin="0,0,10,0"/>
-            <Button Content="Добавить договор" Click="BtnAddLease_Click" Width="140"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="15">
+            <Button Content="Добавить объект" Click="BtnAdd_Click" Width="140" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
+            <Button Content="Добавить договор" Click="BtnAddLease_Click" Width="140" Style="{StaticResource TabButtonStyle}"/>
         </StackPanel>
 
         <!-- Панель сортировки и фильтров -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10,0,10,10">
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="15,0,15,15">
             <TextBlock Text="Сортировка:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
-            <ComboBox x:Name="CmbSortStatus" Width="150" SelectionChanged="CmbSortStatus_SelectionChanged" Margin="0,0,10,0">
+            <ComboBox x:Name="CmbSortStatus" Width="150" SelectionChanged="CmbSortStatus_SelectionChanged" Margin="0,0,15,0">
                 <ComboBoxItem Content="Все статусы"/>
                 <ComboBoxItem Content="Свободен"/>
                 <ComboBoxItem Content="Сдан"/>
             </ComboBox>
-            <ComboBox x:Name="CmbSortOccupancy" Width="150" SelectionChanged="CmbSortOccupancy_SelectionChanged" Margin="0,0,10,0">
+            <ComboBox x:Name="CmbSortOccupancy" Width="150" SelectionChanged="CmbSortOccupancy_SelectionChanged" Margin="0,0,15,0">
                 <ComboBoxItem Content="Все объекты"/>
                 <ComboBoxItem Content="Свободные"/>
                 <ComboBoxItem Content="Занятые"/>
@@ -35,7 +35,7 @@
         </StackPanel>
 
         <!-- Карточки объектов -->
-        <ScrollViewer Grid.Row="2" Margin="10">
+        <ScrollViewer Grid.Row="2" Margin="15,0,15,15">
             <ItemsControl x:Name="ItemsList">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -44,11 +44,10 @@
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="10" Margin="10" Padding="15" Width="538" Height="319">
-                        <Border Background="White" BorderBrush="LightGray" BorderThickness="1" CornerRadius="10" Margin="10" Padding="15" Width="535" Height="250">
+                        <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="8" Margin="0,0,15,15" Padding="15" Width="520">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="120"/>
+                                    <ColumnDefinition Width="110"/>
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <Grid.RowDefinitions>
@@ -57,8 +56,7 @@
                                 </Grid.RowDefinitions>
 
                                 <!-- Изображение объекта -->
-                                <Image Grid.Column="0" Grid.Row="0" Width="100" Height="100" Stretch="UniformToFill" Margin="0,0,10,0" VerticalAlignment="Top">
-                                <Image Grid.Column="0" Width="100" Height="300" Stretch="Uniform" Margin="0,0,10,0" VerticalAlignment="Top">
+                                <Image Grid.Column="0" Width="90" Height="90" Stretch="UniformToFill" Margin="0,0,10,0" VerticalAlignment="Top">
                                     <Image.Source>
                                         <Binding Path="ImagePath">
                                             <Binding.TargetNullValue>

@@ -15,24 +15,24 @@
         </Grid.RowDefinitions>
 
         <!-- Заголовок -->
-        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,30">
-            <Image Source="/Resources/logo.png" Width="80" Height="70" Margin="0,0,0,10"/>
-            <TextBlock Text="АРЕНДА-УПРАВЛЕНИЕ" FontSize="20" FontWeight="Bold" Foreground="#2C5F7F" HorizontalAlignment="Center"/>
-            <TextBlock Text="Вход в систему" FontSize="14" Foreground="#666666" HorizontalAlignment="Center" Margin="0,5,0,0"/>
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,40">
+            <Image Source="/Resources/logo.png" Width="90" Height="80" Margin="0,0,0,15"/>
+            <TextBlock Text="АРЕНДА-УПРАВЛЕНИЕ" FontSize="22" FontWeight="Bold" Foreground="#2C5F7F" HorizontalAlignment="Center"/>
+            <TextBlock Text="Вход в систему" FontSize="15" Foreground="#666666" HorizontalAlignment="Center" Margin="0,8,0,0"/>
         </StackPanel>
 
         <!-- Форма входа -->
-        <StackPanel Grid.Row="1" VerticalAlignment="Center">
-            <TextBlock Text="Логин:" Margin="0,10,0,0" Foreground="#333333" FontWeight="SemiBold"/>
-            <TextBox x:Name="txtLogin" Height="35" Margin="0,0,0,15" BorderBrush="#CCCCCC"/>
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" MaxWidth="300">
+            <TextBlock Text="Логин:" Margin="0,0,0,5" Foreground="#333333" FontWeight="SemiBold"/>
+            <TextBox x:Name="txtLogin"/>
 
-            <TextBlock Text="Пароль:" Margin="0,10,0,0" Foreground="#333333" FontWeight="SemiBold"/>
-            <PasswordBox x:Name="txtPassword" Height="35" Margin="0,0,0,20" BorderBrush="#CCCCCC"/>
+            <TextBlock Text="Пароль:" Margin="0,15,0,5" Foreground="#333333" FontWeight="SemiBold"/>
+            <PasswordBox x:Name="txtPassword"/>
 
-            <Button Content="Войти" Click="BtnLogin_Click" Height="40" FontSize="16" FontWeight="Bold"/>
+            <Button Content="Войти" Click="BtnLogin_Click" Height="42" FontSize="16" FontWeight="Bold" Margin="0,25,0,0" Style="{StaticResource TabButtonStyle}"/>
         </StackPanel>
 
         <!-- Футер -->
-        <TextBlock Grid.Row="2" Text="© 2026 Система управления арендой" Foreground="#999999" FontSize="11" HorizontalAlignment="Center"/>
+        <TextBlock Grid.Row="2" Text="© 2026 Система управления арендой" Foreground="#999999" FontSize="11" HorizontalAlignment="Center" Margin="0,0,0,10"/>
     </Grid>
 </Window>

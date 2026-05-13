@@ -13,7 +13,6 @@ namespace WpfApp1.Views
     public partial class PropertyEditView : UserControl
     {
         private readonly int? _propertyId;
-        private RieltorEntities _db = new RieltorEntities();
         private event Action OnDataSaved;
 
         public PropertyEditView(int propertyId, Action onDataSaved = null)
@@ -21,7 +20,10 @@ namespace WpfApp1.Views
             InitializeComponent();
             _propertyId = propertyId;
             OnDataSaved = onDataSaved;
-            LoadPropertyData();
+            using (var db = new RieltorEntities())
+            {
+                LoadPropertyData(db);
+            }
         }
 
         public PropertyEditView(Action onDataSaved = null)
@@ -39,9 +41,9 @@ namespace WpfApp1.Views
             CmbStatus.SelectedIndex = 0;
         }
 
-        private void LoadPropertyData()
+        private void LoadPropertyData(RieltorEntities db)
         {
-            var property = _db.Property.Find(_propertyId);
+            var property = db.Property.Find(_propertyId);
             if (property == null)
             {
                 MessageBox.Show("Объект не найден.");
@@ -62,7 +64,7 @@ namespace WpfApp1.Views
             TxtMonthlyRent.Text = property.MonthlyRent.ToString();
 
             // Установка статуса
-            string[] statuses = { "Свободен", "Занят", "На обслуживании" };
+            string[] statuses = { "Свободен", "Сдан" };
             int statusIndex = Array.IndexOf(statuses, property.Status);
             if (statusIndex >= 0)
                 CmbStatus.SelectedIndex = statusIndex;
@@ -121,43 +123,46 @@ namespace WpfApp1.Views
                 return;
             }
 
-            Property property;
-            if (_propertyId.HasValue)
+            using (var db = new RieltorEntities())
             {
-                // Редактирование существующего объекта
-                property = _db.Property.Find(_propertyId);
-                if (property == null)
+                Property property;
+                if (_propertyId.HasValue)
                 {
-                    MessageBox.Show("Объект не найден.");
-                    return;
+                    // Редактирование существующего объекта
+                    property = db.Property.Find(_propertyId);
+                    if (property == null)
+                    {
+                        MessageBox.Show("Объект не найден.");
+                        return;
+                    }
                 }
-            }
-            else
-            {
-                // Создание нового объекта
-                property = new Property();
-                _db.Property.Add(property);
-            }
+                else
+                {
+                    // Создание нового объекта
+                    property = new Property();
+                    db.Property.Add(property);
+                }
 
-            property.Address = TxtAddress.Text.Trim();
-            property.PropertyType = ((ComboBoxItem)CmbPropertyType.SelectedItem)?.Content?.ToString() ?? "Офис";
-            property.Area = area;
-            property.MonthlyRent = rent;
-            property.Status = ((ComboBoxItem)CmbStatus.SelectedItem)?.Content?.ToString() ?? "Свободен";
-            property.ImagePath = TxtImagePath.Text;
+                property.Address = TxtAddress.Text.Trim();
+                property.PropertyType = ((ComboBoxItem)CmbPropertyType.SelectedItem)?.Content?.ToString() ?? "Офис";
+                property.Area = area;
+                property.MonthlyRent = rent;
+                property.Status = ((ComboBoxItem)CmbStatus.SelectedItem)?.Content?.ToString() ?? "Свободен";
+                property.ImagePath = TxtImagePath.Text;
 
-            _db.SaveChanges();
+                db.SaveChanges();
 
-            MessageBox.Show($"Объект успешно {(_propertyId.HasValue ? "обновлён" : "добавлен")}!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-            
-            OnDataSaved?.Invoke();
-            
-            // Если это UserControl в окне, закрываем окно
-            var window = Window.GetWindow(this);
-            if (window != null)
-            {
-                window.DialogResult = true;
-                window.Close();
+                MessageBox.Show($"Объект успешно {(_propertyId.HasValue ? "обновлён" : "добавлен")}!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                
+                OnDataSaved?.Invoke();
+                
+                // Если это UserControl в окне, закрываем окно
+                var window = Window.GetWindow(this);
+                if (window != null)
+                {
+                    window.DialogResult = true;
+                    window.Close();
+                }
             }
         }
 
@@ -169,6 +174,11 @@ namespace WpfApp1.Views
                 window.DialogResult = false;
                 window.Close();
             }
+        }
+
+        private void TxtMonthlyRent_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
         }
     }
 }

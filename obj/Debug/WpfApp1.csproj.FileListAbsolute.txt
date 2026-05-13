@@ -29,3 +29,10 @@ C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\WpfApp1.csproj.CoreCompileIn
 C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\WpfApp1.csproj.Up2Date
 C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\WpfApp1.exe
 C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\WpfApp1.pdb
+C:\Users\Тимур\Desktop\ВОТ ОНО\bin\Debug\Resources\ofice2.png
+C:\Users\Тимур\Desktop\ВОТ ОНО\bin\Debug\Resources\ofice3.png
+C:\Users\Тимур\Desktop\ВОТ ОНО\bin\Debug\Resources\shop.png
+C:\Users\Тимур\Desktop\ВОТ ОНО\bin\Debug\Resources\storage.png
+C:\Users\Тимур\Desktop\ВОТ ОНО\bin\Debug\Resources\logo.png
+C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\Views\PropertyEditView.g.cs
+C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\Views\PropertyEditView.baml

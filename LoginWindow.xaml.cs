@@ -35,18 +35,21 @@ namespace WpfApp1
                 return;
             }
 
-            var user = RieltorEntities.GetContext().Users
-                .FirstOrDefault(u => u.Login == login && u.PasswordHash == password);
+            using (var db = new RieltorEntities())
+            {
+                var user = db.Users
+                    .FirstOrDefault(u => u.Login == login && u.PasswordHash == password);
 
-            if (user != null)
-            {
-                var main = new MainWindow();
-                main.Show();
-                this.Close();
-            }
-            else
-            {
-                MessageBox.Show("Неверный логин или пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                if (user != null)
+                {
+                    var main = new MainWindow();
+                    main.Show();
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("Неверный логин или пароль", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
             }
         }
     }

@@ -26,6 +26,10 @@ namespace WpfApp1
         public MainWindow()
         {
             InitializeComponent();
+            // Устанавливаем полноэкранный режим
+            this.WindowState = WindowState.Maximized;
+            this.WindowStyle = WindowStyle.SingleBorderWindow;
+            this.ResizeMode = ResizeMode.CanResize;
             LoadHome();
         }
         private void LoadHome()
@@ -42,6 +46,7 @@ namespace WpfApp1
         }
         private void MenuItem_Home_Click(object sender, RoutedEventArgs e) => LoadHome();
         private void MenuItem_Properties_Click(object sender, RoutedEventArgs e) => MainContent.Content = new PropertiesView();
+        private void MenuItem_Payments_Click(object sender, RoutedEventArgs e) => MainContent.Content = new PaymentsView();
     }
 }
 

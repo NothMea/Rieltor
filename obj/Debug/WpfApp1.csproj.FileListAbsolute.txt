@@ -36,3 +36,5 @@ C:\Users\Тимур\Desktop\ВОТ ОНО\bin\Debug\Resources\storage.png
 C:\Users\Тимур\Desktop\ВОТ ОНО\bin\Debug\Resources\logo.png
 C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\Views\PropertyEditView.g.cs
 C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\Views\PropertyEditView.baml
+C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\PaymentEditDialog.g.cs
+C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\Views\PaymentsView.g.cs

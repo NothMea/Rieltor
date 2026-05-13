@@ -126,6 +126,7 @@
                                     </Border>
                                 </Grid>
                             </Border>
+                        </Border>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

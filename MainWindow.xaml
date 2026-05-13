@@ -12,7 +12,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
 
         <!-- Header -->
@@ -38,8 +38,7 @@
         <!-- Footer -->
         <Grid Grid.Row="2" Background="#2C5F7F">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0,0,20,0">
-                <TextBlock Text="Готов к работе" Foreground="White" VerticalAlignment="Center" Margin="0,0,20,0"/>
-                <Button Content="Выход" Click="BtnExit_Click" Width="80" Height="30" Margin="0,0,10,0"/>
+                <Button Content="Выход" Click="BtnExit_Click" Width="80" Height="35" Margin="0,0,10,0"/>
             </StackPanel>
         </Grid>
     </Grid>

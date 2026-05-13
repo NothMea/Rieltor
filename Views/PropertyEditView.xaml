@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:WpfApp1.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="600" d:DesignWidth="800">
+             d:DesignHeight="470" Height="500" d:DesignWidth="800">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -15,7 +15,6 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -23,7 +22,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="{Binding TitleText}" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Grid.ColumnSpan="2" Foreground="#2C5F7F"/>
+        <TextBlock Text="Редактирование объекта недвижимости" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Grid.ColumnSpan="2" Foreground="#2C5F7F"/>
 
         <!-- Адрес -->
         <TextBlock Text="Адрес:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
@@ -63,8 +62,8 @@
 
         <!-- Кнопки -->
         <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Сохранить" Click="BtnSave_Click" Width="120" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
-            <Button Content="Отмена" Click="BtnCancel_Click" Width="120" Style="{StaticResource TabButtonStyle}"/>
+            <Button Content="Сохранить" Click="BtnSave_Click" Width="180" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
+            <Button Content="Отмена" Click="BtnCancel_Click" Width="180" Style="{StaticResource TabButtonStyle}"/>
         </StackPanel>
     </Grid>
 </UserControl>

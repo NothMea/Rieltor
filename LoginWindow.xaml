@@ -26,8 +26,8 @@
             <TextBlock Text="Логин:" Margin="0,0,0,5" Foreground="#333333" FontWeight="SemiBold"/>
             <TextBox x:Name="txtLogin"/>
 
-            <TextBlock Text="Пароль:" Margin="0,15,0,5" Foreground="#333333" FontWeight="SemiBold"/>
-            <PasswordBox x:Name="txtPassword"/>
+            <TextBlock Text="Пароль:" Margin="0,1,0,5" Foreground="#333333" FontWeight="SemiBold"/>
+            <PasswordBox Height="34" x:Name="txtPassword"/>
 
             <Button Content="Войти" Click="BtnLogin_Click" Height="42" FontSize="16" FontWeight="Bold" Margin="0,25,0,0" Style="{StaticResource TabButtonStyle}"/>
         </StackPanel>

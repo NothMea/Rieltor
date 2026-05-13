@@ -62,9 +62,11 @@
         </StackPanel>
 
         <!-- Кнопки -->
-        <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Сохранить" Click="BtnSave_Click" Width="120" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
-            <Button Content="Отмена" Click="BtnCancel_Click" Width="120" Style="{StaticResource TabButtonStyle}"/>
-        </StackPanel>
+        <Border Grid.Row="8" Grid.ColumnSpan="2" Background="#F9F9F9" Padding="15,20" Margin="0,20,0,0" CornerRadius="8" BorderBrush="#EEEEEE" BorderThickness="0,1,0,0">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button Content="💾 Сохранить" Click="BtnSave_Click" Width="140" Margin="0,0,10,0" Padding="10,8" Background="#5B9BD5" Foreground="White" BorderThickness="0" Cursor="Hand"/>
+                <Button Content="❌ Отмена" Click="BtnCancel_Click" Width="140" Padding="10,8" Background="#999999" Foreground="White" BorderThickness="0" Cursor="Hand"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

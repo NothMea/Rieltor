@@ -1,5 +1,29 @@
 ```
 # Build artifacts
+*.dll
+*.exe
+*.pdb
+*.nupkg
+*.snupkg
+bin/
+obj/
+Debug/
+Release/
+
+# Dependencies
+packages/
+node_modules/
+vendor/
+
+# IDE files
+.vs/
+.vscode/
+.idea/
+*.userprefs
+
+# OS files
+.DS_Store
+Thumbs.db
 *.o
 *.obj
 *.exe
@@ -28,6 +52,7 @@ target/
 # Logs
 *.log
 
+# Environment
 # Coverage
 coverage/
 htmlcov/
@@ -40,6 +65,10 @@ Thumbs.db
 .env.local
 *.env.*
 
+# Temporary files
+*.tmp
+*.temp
+```
 # Compressed files
 *.zip
 *.gz

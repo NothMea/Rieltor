@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Вход в систему" Height="510" Width="400"
+        Title="Вход в систему" Height="570" Width="400"
         WindowStartupLocation="CenterScreen" Background="#E8F4F8">
     <Grid Margin="30">
         <Grid.RowDefinitions>
@@ -17,7 +17,9 @@
         <!-- Заголовок -->
         <StackPanel Grid.Row="0" HorizontalAlignment="Center" Margin="0,0,0,40">
             <Image Source="/Resources/logo.png" Width="90" Height="80" Margin="0,0,0,15"/>
-            <TextBlock Text="АРЕНДА-УПРАВЛЕНИЕ" FontSize="22" FontWeight="Bold" Foreground="#2C5F7F" HorizontalAlignment="Center"/>
+            <TextBlock Text="АРЕНДА" FontSize="22" FontWeight="Bold" Foreground="#2C5F7F" HorizontalAlignment="Center"/>
+            <TextBlock Text="-" FontSize="22" FontWeight="Bold" Foreground="#2C5F7F" HorizontalAlignment="Center"/>
+            <TextBlock Text="УПРАВЛЕНИЕ" FontSize="22" FontWeight="Bold" Foreground="#2C5F7F" HorizontalAlignment="Center"/>
             <TextBlock Text="Вход в систему" FontSize="15" Foreground="#666666" HorizontalAlignment="Center" Margin="0,8,0,0"/>
         </StackPanel>
 

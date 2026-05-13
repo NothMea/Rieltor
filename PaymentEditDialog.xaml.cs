@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows;
+using WpfApp1.Views;
 
 namespace WpfApp1
 {

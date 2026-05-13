@@ -43,6 +43,7 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="10" Margin="10" Padding="0" Width="600" Height="320">
+                        <Border Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="10" Margin="10" Padding="15" Width="538" Height="319">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="180"/>

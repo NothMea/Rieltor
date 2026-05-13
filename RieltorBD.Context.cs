@@ -15,15 +15,6 @@ namespace WpfApp1
     
     public partial class RieltorEntities : DbContext
     {
-        private static RieltorEntities _context;
-
-        public static RieltorEntities GetContext()
-        {
-            if( _context == null )
-                _context = new RieltorEntities();
-            return _context;
-        }
-
         public RieltorEntities()
             : base("name=RieltorEntities")
         {

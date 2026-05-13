@@ -79,6 +79,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,20,0,0">
             <Button Content="Сохранить" Click="BtnSave_Click" Width="120" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
             <Button Content="Отмена" Click="BtnCancel_Click" Width="120" Style="{StaticResource TabButtonStyle}"/>
+            <Button x:Name="BtnDeleteLease" Content="🗑️ Удалить договор" Click="BtnDeleteLease_Click" Width="150" Margin="10,0,0,0" Style="{StaticResource TabButtonStyle}" Visibility="Collapsed" Background="#CD5C5C"/>
         </StackPanel>
     </Grid>
 </Window>

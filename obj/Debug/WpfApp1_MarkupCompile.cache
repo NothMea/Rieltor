@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-C:\Users\Тимур\Desktop\ВОТ ОНО\obj\Debug\
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\
 WpfApp1
 none
 false
 DEBUG;TRACE
-C:\Users\Тимур\Desktop\ВОТ ОНО\App.xaml
-81425589430
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\App.xaml
+8-534119021
 81600305643
-2240197139
-18-1514128196
-LeaseEditView.xaml;LoginWindow.xaml;MainWindow.xaml;Views\DashboardView.xaml;Views\PropertiesView.xaml;Views\PropertyEditView.xaml;PaymentEditDialog.xaml;Views\PaymentsView.xaml;
+22-1208392242
+18-1702967544
+LeaseEditView.xaml;LoginWindow.xaml;MainWindow.xaml;Views\DashboardView.xaml;Views\PropertiesView.xaml;Views\PropertyEditView.xaml;TenantEditView.xaml;Views\TenantsView.xaml;
 
-True
+False
 

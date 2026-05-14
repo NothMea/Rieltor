@@ -74,3 +74,7 @@ C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\WpfApp1.csproj.CoreCo
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\WpfApp1.csproj.Up2Date
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\WpfApp1.exe
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\WpfApp1.pdb
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\TenantEditView.g.cs
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\Views\TenantsView.g.cs
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\TenantEditView.baml
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\Views\TenantsView.baml

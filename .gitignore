@@ -1,37 +1,34 @@
-<<<<<<<<< Temporary merge branch 1
-Nothing should be ignored based on the provided file changes. The only modified file is 'Views/PaymentsView.xaml', which appears to be a source code file and not a build artifact, dependency, or temporary file.
-=========
 ```
-# Build outputs
-bin/
-obj/
+# Build artifacts
+*.o
+*.obj
 *.exe
 *.dll
-*.pdb
-*.userprefs
+*.so
+*.a
+*.out
 
 # Dependencies
 packages/
+bin/
+obj/
+Debug/
+Release/
 
-# Logs
+# Logs and temp files
 *.log
+*.tmp
+*.swp
+
+# Editors
+.vs/
+.vshost.exe
+.userprefs
+.user
+.suo
+.nuspec
 
 # OS generated files
 .DS_Store
 Thumbs.db
-
-# Visual Studio files
-*.user
-*.suo
-*.userosscache
-*.sln.docstates
-
-# Visual Studio Code files
-.vscode/
-
-# Temporary files
-*.tmp
-*.temp
 ```
-/.vs
->>>>>>>>> Temporary merge branch 2

@@ -124,12 +124,6 @@
     <Compile Include="Views\PropertyEditView.xaml.cs">
       <DependentUpon>PropertyEditView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="PaymentEditDialog.xaml.cs">
-      <DependentUpon>PaymentEditDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\PaymentsView.xaml.cs">
-      <DependentUpon>PaymentsView.xaml</DependentUpon>
-    </Compile>
     <Page Include="LeaseEditView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -159,14 +153,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\PropertyEditView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="PaymentEditDialog.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\PaymentsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

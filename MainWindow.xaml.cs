@@ -46,7 +46,7 @@ namespace WpfApp1
         }
         private void MenuItem_Home_Click(object sender, RoutedEventArgs e) => LoadHome();
         private void MenuItem_Properties_Click(object sender, RoutedEventArgs e) => MainContent.Content = new PropertiesView();
-        private void MenuItem_Payments_Click(object sender, RoutedEventArgs e) => MainContent.Content = new PaymentsView();
+
     }
 }
 

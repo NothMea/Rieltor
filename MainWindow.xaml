@@ -19,6 +19,7 @@
         <Border Grid.Row="0" Background="#2C5F7F">
             <StackPanel Margin="20,10">
                 <WrapPanel HorizontalAlignment="Center">
+                    <TextBlock Text="RIELTOR" FontSize="24" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
                     <Image Source="/resources/logo.png" Width="60" Height="50" Margin="10,10,10,5"/>
                     <TextBlock Text="АРЕНДА-УПРАВЛЕНИЕ" FontSize="24" FontWeight="Bold" Foreground="White" VerticalAlignment="Center"/>
                 </WrapPanel>
@@ -26,7 +27,6 @@
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,0">
                     <Button x:Name="BtnHome" Content="Главная" Click="MenuItem_Home_Click" Style="{StaticResource TabButtonStyle}"/>
                     <Button x:Name="BtnProperties" Content="Объекты" Click="MenuItem_Properties_Click" Style="{StaticResource TabButtonStyle}"/>
-                    <Button x:Name="BtnPayments" Content="Платежи" Click="MenuItem_Payments_Click" Style="{StaticResource TabButtonStyle}"/>
                 </StackPanel>
             </StackPanel>
         </Border>

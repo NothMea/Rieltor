@@ -28,15 +28,21 @@
 
         <!-- Телефон -->
         <TextBlock Text="Телефон:" Grid.Row="2" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
-        <TextBox x:Name="TxtPhone" Grid.Row="2" Grid.Column="1"/>
+        <TextBox x:Name="TxtPhone" Grid.Row="2" Grid.Column="1">
+            <TextBox.ToolTip>Формат: +7 (XXX) XXX-XX-XX (10-15 цифр)</TextBox.ToolTip>
+        </TextBox>
 
         <!-- ИНН -->
         <TextBlock Text="ИНН:" Grid.Row="3" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
-        <TextBox x:Name="TxtINN" Grid.Row="3" Grid.Column="1"/>
+        <TextBox x:Name="TxtINN" Grid.Row="3" Grid.Column="1">
+            <TextBox.ToolTip>10 цифр для организаций или 12 цифр для физических лиц</TextBox.ToolTip>
+        </TextBox>
 
         <!-- Email -->
         <TextBlock Text="Email:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
-        <TextBox x:Name="TxtEmail" Grid.Row="4" Grid.Column="1"/>
+        <TextBox x:Name="TxtEmail" Grid.Row="4" Grid.Column="1">
+            <TextBox.ToolTip>Пример: example@mail.ru</TextBox.ToolTip>
+        </TextBox>
 
         <!-- Кнопки -->
         <StackPanel Orientation="Horizontal" Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,20,0,0">

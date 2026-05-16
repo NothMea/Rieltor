@@ -95,7 +95,7 @@ namespace WpfApp1
             TxtMonthlyAmount.Text = lease.MonthlyAmount.ToString();
             
             // Установка статуса
-            string[] statuses = { "Активен", "Завершен", "Расторгнут", "На подписании" };
+            string[] statuses = { "Активен", "Завершен", "Расторгнут" };
             int statusIndex = Array.IndexOf(statuses, lease.Status);
             if (statusIndex >= 0)
                 CmbStatus.SelectedIndex = statusIndex;

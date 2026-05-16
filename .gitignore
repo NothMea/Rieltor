@@ -18,23 +18,21 @@ __pycache__/
 target/
 .gradle/
 
-# Editors
+# Editors/IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# System
+# System files
 .DS_Store
 Thumbs.db
 .env
 .env.local
 *.env.*
 
-# Logs
+# Logs and coverage
 *.log
-
-# Coverage
 coverage/
 htmlcov/
 .coverage
@@ -63,4 +61,3 @@ htmlcov/
 *.tar.xz
 *.tar.zst
 ```
-/.vs

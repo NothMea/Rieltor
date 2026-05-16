@@ -58,7 +58,6 @@
             <ComboBoxItem Content="Активен"/>
             <ComboBoxItem Content="Завершен"/>
             <ComboBoxItem Content="Расторгнут"/>
-            <ComboBoxItem Content="На подписании"/>
         </ComboBox>
 
         <!-- Информация о платежах -->

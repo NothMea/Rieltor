@@ -143,6 +143,13 @@ namespace WpfApp1
                 return;
             }
 
+            // Проверка: дата начала не должна быть больше даты конца
+            if (DpStartDate.SelectedDate.Value > DpEndDate.SelectedDate.Value)
+            {
+                MessageBox.Show("Дата начала договора не может быть позже даты окончания.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (!decimal.TryParse(TxtMonthlyAmount.Text, out decimal monthlyAmount))
             {
                 MessageBox.Show("Введите корректную сумму ежемесячного платежа.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);

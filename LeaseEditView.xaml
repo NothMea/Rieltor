@@ -26,7 +26,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Text="Редактирование договора аренды" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Grid.ColumnSpan="2" Foreground="#2C5F7F"/>
+        <TextBlock Text="Редактирование договора аренды" FontSize="24" FontWeight="Bold" Margin="0,0,0,20" Grid.ColumnSpan="2" Foreground="#2C5F7F" x:Name="LblTitle"/>
 
         <!-- Номер договора -->
         <TextBlock Text="Номер договора:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
@@ -61,7 +61,7 @@
         </ComboBox>
 
         <!-- Информация о платежах -->
-        <Border Grid.Row="8" Grid.ColumnSpan="2" Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,15,0,10">
+        <Border x:Name="PaymentsBorder" Grid.Row="8" Grid.ColumnSpan="2" Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,15,0,10">
             <StackPanel>
                 <TextBlock Text="Последние платежи" FontSize="16" FontWeight="Bold" Margin="0,0,0,10" Foreground="#2C5F7F"/>
                 <DataGrid x:Name="PaymentsGrid" AutoGenerateColumns="False" Height="150" IsReadOnly="True" CanUserAddRows="False">

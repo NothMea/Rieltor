@@ -28,14 +28,16 @@ namespace WpfApp1
             using (var db = new RieltorEntities())
             {
                 LoadComboBoxes(db);
-                Title = "Добавление договора аренды"; 
+                Title = "Добавление договора аренды";
+                LblTitle.Text = "Добавление договора аренды";
                 // Установить даты по умолчанию
                 DpStartDate.SelectedDate = DateTime.Today;
                 DpEndDate.SelectedDate = DateTime.Today.AddYears(1);
                 
-                // При добавлении скрываем выбор статуса и устанавливаем "Активен" по умолчанию
+                // При добавлении скрываем выбор статуса и панель последних платежей
                 LblStatus.Visibility = System.Windows.Visibility.Collapsed;
                 CmbStatus.Visibility = System.Windows.Visibility.Collapsed;
+                PaymentsBorder.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
 
@@ -61,13 +63,15 @@ namespace WpfApp1
                 else
                 {
                     Title = "Добавление договора аренды";
+                    LblTitle.Text = "Добавление договора аренды";
                     // Установить даты по умолчанию
                     DpStartDate.SelectedDate = DateTime.Today;
                     DpEndDate.SelectedDate = DateTime.Today.AddYears(1);
                     
-                    // При добавлении скрываем выбор статуса и устанавливаем "Активен" по умолчанию
+                    // При добавлении скрываем выбор статуса и панель последних платежей
                     LblStatus.Visibility = System.Windows.Visibility.Collapsed;
                     CmbStatus.Visibility = System.Windows.Visibility.Collapsed;
+                    PaymentsBorder.Visibility = System.Windows.Visibility.Collapsed;
                 }
             }
         }

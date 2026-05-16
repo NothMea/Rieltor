@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace WpfApp1
+namespace WpfApp1.Views
 {
     public class BoolToVisibilityConverter : IValueConverter
     {

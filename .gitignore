@@ -1,68 +1,31 @@
 ```
 # Build artifacts
-bin/
-obj/
+*.o
+*.obj
 *.exe
 *.dll
-*.pdb
-*.userprefs
-*.cache
-*.compiled
-*.nupkg
-*.snk
-*.licx
-*.resources
-*.xml
-*.manifest
-*.config.install.xdt
-*.config.transform
-*.template
-*.min.js
-*.min.css
-*.bundle.js
-*.bundle.css
+*.so
+*.a
+*.out
 
 # Dependencies
 packages/
-node_modules/
-bower_components/
-jspm_packages/
-vendor/bundle/
-.nuget/
-packages/
+bin/
+obj/
 
-# Logs
+# Logs and temp files
 *.log
-*.out
-*.err
+*.tmp
+*.swp
 
-# User-specific files
-.vs/
-.vshost.exe
-.user
-.userosscache
-.suo
-.vbproj.user
-.builds
-.testadapter/
-.TestResults/
-.vscode/
-.idea/
-
-# Environment specific
+# Environment
 .env
 .env.local
-.env.*
-!env.example
+*.env.*
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-desktop.ini
-Icon?
+# Editors
+.vscode/
+.idea/
+*.userprefs
+*.user
 ```

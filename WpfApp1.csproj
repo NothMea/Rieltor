@@ -77,8 +77,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="BoolToVisibilityConverter.cs" />
-    <Compile Include="InverseBoolToVisibilityConverter.cs" />
+    <Compile Include="Views\BoolToVisibilityConverter.cs" />
+    <Compile Include="Views\InverseBoolToVisibilityConverter.cs" />
+    <Compile Include="Views\StatusColorConverter.cs" />
     <Compile Include="LeaseEditView.xaml.cs">
       <DependentUpon>LeaseEditView.xaml</DependentUpon>
     </Compile>

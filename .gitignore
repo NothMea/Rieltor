@@ -18,11 +18,12 @@ __pycache__/
 target/
 .gradle/
 
-# Editors
+# IDE files
 .vscode/
 .idea/
 *.swp
 *.swo
+*.tmp
 
 # System files
 .DS_Store
@@ -31,9 +32,8 @@ Thumbs.db
 .env.local
 *.env.*
 
-# Logs and temp files
+# Logs
 *.log
-*.tmp
 
 # Coverage
 coverage/

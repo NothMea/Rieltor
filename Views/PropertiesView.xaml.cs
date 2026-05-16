@@ -200,15 +200,45 @@ namespace WpfApp1.Views
         {
             using (var db = new RieltorEntities())
             {
-                var latestPayment = db.Payments
+                var lease = db.Leases.Find(leaseId);
+                if (lease == null)
+                    return "Неизвестно";
+
+                // Получаем все платежи по договору
+                var payments = db.Payments
                     .Where(p => p.LeaseID == leaseId)
+                    .ToList();
+
+                // Если платежей нет вообще
+                if (payments.Count == 0)
+                {
+                    // Если дата начала договора уже прошла или сегодня — значит просрочен
+                    if (lease.StartDate <= DateTime.Today)
+                        return "Просрочен";
+                    else
+                        return "Ожидает";
+                }
+
+                // Проверяем, есть ли оплаченный платеж за текущий период
+                // Определяем дату следующего платежа (дата начала договора + количество полных месяцев)
+                var monthsSinceStart = (DateTime.Today.Year - lease.StartDate.Year) * 12 + (DateTime.Today.Month - lease.StartDate.Month);
+                var expectedPaymentDate = lease.StartDate.AddMonths(monthsSinceStart);
+
+                // Если ожидаемая дата платежа в будущем — статус "Ожидает"
+                if (expectedPaymentDate > DateTime.Today)
+                    return "Ожидает";
+
+                // Ищем платеж с датой >= expectedPaymentDate и статусом "Оплачен"
+                var paidPayment = payments
+                    .Where(p => p.PaymentDate >= expectedPaymentDate && p.Status == "Оплачен")
                     .OrderByDescending(p => p.PaymentDate)
                     .FirstOrDefault();
 
-                if (latestPayment == null)
-                    return "Не оплачен";
+                if (paidPayment != null)
+                    return "Оплачен";
 
-                return latestPayment.Status; // "Оплачен", "Просрочен", "Ожидает"
+                // Если платеж должен был быть (expectedPaymentDate <= Today), но не оплачен
+                return "Просрочен";
             }
         }
 

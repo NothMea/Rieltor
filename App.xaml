@@ -10,6 +10,9 @@
         <!-- Конвертер для !bool -> Visibility -->
         <local:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
         
+        <!-- Конвертер для цвета статуса платежа -->
+        <local:StatusColorConverter x:Key="StatusColorConverter"/>
+        
         <!-- Стиль для кнопок навигации -->
         <Style x:Key="TabButtonStyle" TargetType="Button">
             <Setter Property="Background" Value="#74aded"/>

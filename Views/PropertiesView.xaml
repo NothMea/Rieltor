@@ -22,10 +22,11 @@
         <!-- Панель сортировки и фильтров -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="15,0,15,15">
             <TextBlock Text="Сортировка:" VerticalAlignment="Center" Margin="0,0,10,0" FontWeight="Bold"/>
-            <ComboBox x:Name="CmbSortStatus" Width="150" SelectionChanged="CmbSortStatus_SelectionChanged" Margin="0,0,15,0">
-                <ComboBoxItem Content="Все статусы"/>
-                <ComboBoxItem Content="Свободен"/>
-                <ComboBoxItem Content="Сдан"/>
+            <ComboBox x:Name="CmbSortPaymentStatus" Width="150" SelectionChanged="CmbSortPaymentStatus_SelectionChanged" Margin="0,0,15,0">
+                <ComboBoxItem Content="Все платежи"/>
+                <ComboBoxItem Content="Оплачен"/>
+                <ComboBoxItem Content="Просрочен"/>
+                <ComboBoxItem Content="Ожидает"/>
             </ComboBox>
             <ComboBox x:Name="CmbSortOccupancy" Width="150" SelectionChanged="CmbSortOccupancy_SelectionChanged" Margin="0,0,15,0">
                 <ComboBoxItem Content="Все объекты"/>

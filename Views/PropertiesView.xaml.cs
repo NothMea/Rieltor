@@ -212,7 +212,7 @@ namespace WpfApp1.Views
             }
         }
 
-        private void CmbSortStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CmbSortPaymentStatus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             ApplyFiltersAndSort();
         }
@@ -229,13 +229,13 @@ namespace WpfApp1.Views
 
             var filtered = _allProperties.AsEnumerable();
 
-            // Фильтр по статусу
-            if (CmbSortStatus.SelectedItem is ComboBoxItem statusItem)
+            // Фильтр по статусу платежа
+            if (CmbSortPaymentStatus.SelectedItem is ComboBoxItem paymentStatusItem)
             {
-                string statusText = statusItem.Content?.ToString();
-                if (!string.IsNullOrEmpty(statusText) && statusText != "Все статусы")
+                string paymentStatusText = paymentStatusItem.Content?.ToString();
+                if (!string.IsNullOrEmpty(paymentStatusText) && paymentStatusText != "Все платежи")
                 {
-                    filtered = filtered.Where(p => p.Status == statusText);
+                    filtered = filtered.Where(p => p.ActiveLease != null && p.ActiveLease.PaymentStatus == paymentStatusText);
                 }
             }
 

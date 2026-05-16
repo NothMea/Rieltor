@@ -32,7 +32,10 @@ namespace WpfApp1
                 // Установить даты по умолчанию
                 DpStartDate.SelectedDate = DateTime.Today;
                 DpEndDate.SelectedDate = DateTime.Today.AddYears(1);
-                CmbStatus.SelectedIndex = 0; // "Активен" по умолчанию
+                
+                // При добавлении скрываем выбор статуса и устанавливаем "Активен" по умолчанию
+                LblStatus.Visibility = System.Windows.Visibility.Collapsed;
+                CmbStatus.Visibility = System.Windows.Visibility.Collapsed;
             }
         }
 
@@ -61,7 +64,10 @@ namespace WpfApp1
                     // Установить даты по умолчанию
                     DpStartDate.SelectedDate = DateTime.Today;
                     DpEndDate.SelectedDate = DateTime.Today.AddYears(1);
-                    CmbStatus.SelectedIndex = 0; // "Активен" по умолчанию
+                    
+                    // При добавлении скрываем выбор статуса и устанавливаем "Активен" по умолчанию
+                    LblStatus.Visibility = System.Windows.Visibility.Collapsed;
+                    CmbStatus.Visibility = System.Windows.Visibility.Collapsed;
                 }
             }
         }
@@ -165,7 +171,17 @@ namespace WpfApp1
                 lease.StartDate = DpStartDate.SelectedDate.Value;
                 lease.EndDate = DpEndDate.SelectedDate.Value;
                 lease.MonthlyAmount = monthlyAmount;
-                lease.Status = ((ComboBoxItem)CmbStatus.SelectedItem)?.Content?.ToString() ?? "Активен";
+                
+                // При добавлении нового договора статус всегда "Активен"
+                // При редактировании берем выбранный статус из ComboBox
+                if (_leaseId.HasValue)
+                {
+                    lease.Status = ((ComboBoxItem)CmbStatus.SelectedItem)?.Content?.ToString() ?? "Активен";
+                }
+                else
+                {
+                    lease.Status = "Активен";
+                }
 
                 db.SaveChanges();
                 

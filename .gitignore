@@ -18,7 +18,7 @@ __pycache__/
 target/
 .gradle/
 
-# Editors/IDEs
+# Editors
 .vscode/
 .idea/
 *.swp
@@ -31,8 +31,11 @@ Thumbs.db
 .env.local
 *.env.*
 
-# Logs and coverage
+# Logs and temp files
 *.log
+*.tmp
+
+# Coverage
 coverage/
 htmlcov/
 .coverage

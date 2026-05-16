@@ -195,6 +195,21 @@ namespace WpfApp1
                 }
 
                 db.SaveChanges();
+
+                // При добавлении нового договора создаём первую запись о платеже в таблице Payments
+                if (!_leaseId.HasValue)
+                {
+                    var firstPayment = new Payments
+                    {
+                        LeaseID = lease.LeaseID,
+                        PaymentDate = lease.StartDate,
+                        Amount = lease.MonthlyAmount,
+                        Status = "Ожидает", // По умолчанию статус "Ожидает", так как договор ещё не начался или только начался
+                        Notes = "Первый платёж по договору"
+                    };
+                    db.Payments.Add(firstPayment);
+                    db.SaveChanges();
+                }
                 
                 MessageBox.Show($"Договор успешно {( _leaseId.HasValue ? "обновлён" : "создан")}!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.DialogResult = true;

@@ -1,17 +1,17 @@
 ﻿<Application x:Class="WpfApp1.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:WpfApp1"
+             xmlns:views="clr-namespace:WpfApp1.Views"
              StartupUri="LoginWindow.xaml">
     <Application.Resources>
         <!-- Конвертер для bool -> Visibility -->
-        <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <views:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
 
         <!-- Конвертер для !bool -> Visibility -->
-        <local:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
+        <views:InverseBoolToVisibilityConverter x:Key="InverseBoolToVisibilityConverter"/>
         
         <!-- Конвертер для цвета статуса платежа -->
-        <local:StatusColorConverter x:Key="StatusColorConverter"/>
+        <views:StatusColorConverter x:Key="StatusColorConverter"/>
         
         <!-- Стиль для кнопок навигации -->
         <Style x:Key="TabButtonStyle" TargetType="Button">

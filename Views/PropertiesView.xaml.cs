@@ -341,31 +341,5 @@ namespace WpfApp1.Views
         public string PaymentStatus { get; set; }
     }
 
-    // Конвертер для цвета статуса
-    public class StatusColorConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            if (value is string status)
-            {
-                switch (status)
-                {
-                    case "Оплачен":
-                        return Brushes.Green;
-                    case "Просрочен":
-                        return Brushes.Red;
-                    case "Ожидает":
-                        return Brushes.Orange;
-                    default:
-                        return Brushes.Gray;
-                }
-            }
-            return Brushes.Gray;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
-    }
+    // Конвертер для цвета статуса - перемещён в отдельный файл Views/StatusColorConverter.cs
 }

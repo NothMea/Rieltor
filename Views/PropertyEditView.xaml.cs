@@ -10,7 +10,7 @@ namespace WpfApp1.Views
     /// <summary>
     /// Логика взаимодействия для PropertyEditView.xaml
     /// </summary>
-    public partial class PropertyEditView : UserControl
+    public partial class PropertyEditView : Window
     {
         private readonly int? _propertyId;
         private event Action OnDataSaved;

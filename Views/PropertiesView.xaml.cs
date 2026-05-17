@@ -279,20 +279,7 @@ namespace WpfApp1.Views
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             var propertyEdit = new PropertyEditView(() => LoadData());
-            var window = new Window
-            {
-                Title = "Добавление объекта недвижимости",
-                Width = 850,
-                Height = 650,
-                Content = propertyEdit,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                Background = (Brush)new BrushConverter().ConvertFrom("#E8F4F8")
-            };
-
-            if (window.ShowDialog() == true)
-            {
-                LoadData();
-            }
+            propertyEdit.ShowDialog();
         }
 
         private void BtnAddLease_Click(object sender, RoutedEventArgs e)

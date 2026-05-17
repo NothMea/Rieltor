@@ -9,7 +9,7 @@ namespace WpfApp1
     /// <summary>
     /// Логика взаимодействия для TenantEditView.xaml
     /// </summary>
-    public partial class TenantEditView : UserControl
+    public partial class TenantEditView : Window
     {
         private readonly int? _tenantId;
         private event Action OnDataSaved;

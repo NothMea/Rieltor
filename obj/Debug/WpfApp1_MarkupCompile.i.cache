@@ -10,11 +10,15 @@ none
 false
 DEBUG;TRACE
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\App.xaml
-8-534119021
+102122259262
 81600305643
+<<<<<<< HEAD
 24-1577524519
+=======
+26-53148422
+>>>>>>> много ошибок с платежами
 18-1702967544
-LeaseEditView.xaml;LoginWindow.xaml;MainWindow.xaml;Views\DashboardView.xaml;Views\PropertiesView.xaml;Views\PropertyEditView.xaml;TenantEditView.xaml;Views\TenantsView.xaml;
+LeaseEditView.xaml;LoginWindow.xaml;MainWindow.xaml;Views\DashboardView.xaml;Views\PropertiesView.xaml;Views\PropertyEditView.xaml;TenantEditView.xaml;Views\TenantsView.xaml;Views\PaymentsView.xaml;PaymentEditView.xaml;
 
 False
 

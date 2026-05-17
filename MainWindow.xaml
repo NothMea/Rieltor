@@ -28,6 +28,7 @@
                     <Button x:Name="BtnHome" Content="Главная" Click="MenuItem_Home_Click" Style="{StaticResource TabButtonStyle}"/>
                     <Button x:Name="BtnProperties" Content="Объекты" Click="MenuItem_Properties_Click" Style="{StaticResource TabButtonStyle}"/>
                     <Button x:Name="BtnTenants" Content="Арендаторы" Click="MenuItem_Tenants_Click" Style="{StaticResource TabButtonStyle}"/>
+                    <Button x:Name="BtnPayments" Content="Платежи" Click="MenuItem_Payments_Click" Style="{StaticResource TabButtonStyle}"/>
                 </StackPanel>
             </StackPanel>
         </Border>

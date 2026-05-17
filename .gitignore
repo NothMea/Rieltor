@@ -1,6 +1,5 @@
 ```
-# Build artifacts
-*.o
+# Compiled and build artifacts
 *.obj
 *.exe
 *.dll
@@ -9,24 +8,17 @@
 *.out
 
 # Dependencies
-packages/
 bin/
 obj/
+Debug/
+Release/
 
 # Logs and temp files
 *.log
 *.tmp
 *.swp
 
-# Environment
-.env
-.env.local
-*.env.*
-
 # Editors
-.vscode/
+.vs/
 .idea/
-*.userprefs
-*.user
 ```
-/.vs

@@ -49,20 +49,7 @@ namespace WpfApp1.Views
             if (sender is FrameworkElement element && element.DataContext is DisplayProperty prop)
             {
                 var propertyEdit = new PropertyEditView(prop.PropertyID, () => LoadData());
-                var window = new Window
-                {
-                    Title = "Редактирование объекта недвижимости",
-                    Width = 850,
-                    Height = 650,
-                    Content = propertyEdit,
-                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                    Background = (Brush)new BrushConverter().ConvertFrom("#E8F4F8")
-                };
-
-                if (window.ShowDialog() == true)
-                {
-                    LoadData();
-                }
+                propertyEdit.ShowDialog();
             }
         }
 

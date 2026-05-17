@@ -38,20 +38,7 @@ namespace WpfApp1.Views
         private void BtnAdd_Click(object sender, RoutedEventArgs e)
         {
             var tenantEdit = new TenantEditView(() => LoadData());
-            var window = new Window
-            {
-                Title = "Добавление арендатора",
-                Width = 600,
-                Height = 500,
-                Content = tenantEdit,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                Background = (Brush)new BrushConverter().ConvertFrom("#E8F4F8")
-            };
-
-            if (window.ShowDialog() == true)
-            {
-                LoadData();
-            }
+            tenantEdit.ShowDialog();
         }
 
         private void EditTenantButton_Click(object sender, RoutedEventArgs e)
@@ -59,20 +46,7 @@ namespace WpfApp1.Views
             if (sender is FrameworkElement element && element.DataContext is Tenants tenant)
             {
                 var tenantEdit = new TenantEditView(tenant.TenantID, () => LoadData());
-                var window = new Window
-                {
-                    Title = "Редактирование арендатора",
-                    Width = 600,
-                    Height = 500,
-                    Content = tenantEdit,
-                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                    Background = (Brush)new BrushConverter().ConvertFrom("#E8F4F8")
-                };
-
-                if (window.ShowDialog() == true)
-                {
-                    LoadData();
-                }
+                tenantEdit.ShowDialog();
             }
         }
 

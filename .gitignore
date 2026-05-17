@@ -1,22 +1,19 @@
 ```
-# Build artifacts
-*.o
-*.obj
-*.exe
+# Build outputs
+bin/
+obj/
+Debug/
+Release/
 *.dll
-*.so
-*.a
-*.out
+*.exe
+*.pdb
+*.userprefs
 
 # Dependencies
 packages/
-bin/
-obj/
 
-# Logs and temp files
+# Logs
 *.log
-*.tmp
-*.swp
 
 # Environment
 .env
@@ -24,9 +21,16 @@ obj/
 *.env.*
 
 # Editors
-.vscode/
+.vs/
 .idea/
-*.userprefs
+*.suo
 *.user
+*.userosscache
+*.sln.docstates
+
+# OS generated files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Icon?
 ```
-/.vs

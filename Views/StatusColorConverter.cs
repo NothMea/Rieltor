@@ -15,16 +15,20 @@ namespace WpfApp1.Views
                 switch (status)
                 {
                     case "Оплачен":
-                        return Brushes.Green;
+                        return new SolidColorBrush(Color.FromRgb(0x27, 0xAE, 0x60)); // Зеленый
                     case "Просрочен":
-                        return Brushes.Red;
+                        return new SolidColorBrush(Color.FromRgb(0xE7, 0x4C, 0x3C)); // Красный
+                    case "В ожидании":
+                        return new SolidColorBrush(Color.FromRgb(0xF3, 0x9C, 0x12)); // Оранжевый
+                    case "Отменен":
+                        return new SolidColorBrush(Color.FromRgb(0x95, 0xA5, 0xA6)); // Серый
                     case "Ожидает":
-                        return Brushes.Orange;
+                        return new SolidColorBrush(Color.FromRgb(0xF3, 0x9C, 0x12)); // Оранжевый
                     default:
-                        return Brushes.Gray;
+                        return new SolidColorBrush(Color.FromRgb(0x95, 0xA5, 0xA6)); // Серый
                 }
             }
-            return Brushes.Gray;
+            return new SolidColorBrush(Color.FromRgb(0x95, 0xA5, 0xA6));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

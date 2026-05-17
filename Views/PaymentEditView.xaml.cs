@@ -4,7 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace WpfApp1
+namespace WpfApp1.Views
 {
     /// <summary>
     /// Логика взаимодействия для PaymentEditView.xaml

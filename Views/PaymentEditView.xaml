@@ -1,11 +1,11 @@
-<UserControl x:Class="WpfApp1.PaymentEditView"
+<UserControl x:Class="WpfApp1.Views.PaymentEditView"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WpfApp1"
+        xmlns:local="clr-namespace:WpfApp1.Views"
         mc:Ignorable="d"
-        Title="Редактирование платежа" Height="500" Width="600">
+        Height="500" Width="600">
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>

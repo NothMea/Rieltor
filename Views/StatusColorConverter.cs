@@ -15,8 +15,10 @@ namespace WpfApp1.Views
                 switch (status)
                 {
                     case "Оплачен":
+                    case "Подтверждён":
                         return Brushes.Green;
                     case "Просрочен":
+                    case "Отклонён":
                         return Brushes.Red;
                     case "Ожидает":
                         return Brushes.Orange;

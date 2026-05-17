@@ -12,6 +12,8 @@
 packages/
 bin/
 obj/
+Debug/
+Release/
 
 # Logs and temp files
 *.log
@@ -27,6 +29,10 @@ obj/
 .vscode/
 .idea/
 *.userprefs
+*.suo
 *.user
+
+# OS generated files
+.DS_Store
+Thumbs.db
 ```
-/.vs

@@ -1,22 +1,35 @@
 ```
 # Build artifacts
-*.o
 *.obj
 *.exe
 *.dll
-*.so
-*.a
-*.out
+*.pdb
+*.user
+*.userosscache
+*.suo
+*.cache
+*.ilk
+*.exp
+*.lib
+*.iobj
+*.ipdb
+*.builds
+*.gch
+*.gcda
+*.gcno
 
 # Dependencies
 packages/
 bin/
 obj/
+Debug/
+Release/
+x64/
+x86/
+*.nupkg
 
-# Logs and temp files
+# Logs
 *.log
-*.tmp
-*.swp
 
 # Environment
 .env
@@ -24,8 +37,20 @@ obj/
 *.env.*
 
 # Editors
+.vs/
 .vscode/
-.idea/
-*.userprefs
-*.user
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
 ```

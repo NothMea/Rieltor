@@ -78,3 +78,10 @@ C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\TenantEditView.g.cs
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\Views\TenantsView.g.cs
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\TenantEditView.baml
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\Views\TenantsView.baml
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\Views\PaymentsView.g.cs
+<<<<<<< HEAD
+=======
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\PaymentEditView.g.cs
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\Views\PaymentsView.baml
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\PaymentEditView.baml
+>>>>>>> много ошибок с платежами

@@ -98,17 +98,8 @@ namespace WpfApp1.Views
         private void BtnAddPayment_Click(object sender, RoutedEventArgs e)
         {
             var paymentEdit = new PaymentEditView(null, () => LoadData());
-            var window = new Window
-            {
-                Title = "Добавление платежа",
-                Width = 650,
-                Height = 550,
-                Content = paymentEdit,
-                WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                Background = (Brush)new BrushConverter().ConvertFrom("#E8F4F8")
-            };
-
-            if (window.ShowDialog() == true)
+            
+            if (paymentEdit.ShowDialog() == true)
             {
                 LoadData();
             }
@@ -119,17 +110,8 @@ namespace WpfApp1.Views
             if (sender is FrameworkElement element && element.DataContext is Payments payment)
             {
                 var paymentEdit = new PaymentEditView(payment.PaymentID, () => LoadData());
-                var window = new Window
-                {
-                    Title = "Редактирование платежа",
-                    Width = 650,
-                    Height = 550,
-                    Content = paymentEdit,
-                    WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                    Background = (Brush)new BrushConverter().ConvertFrom("#E8F4F8")
-                };
 
-                if (window.ShowDialog() == true)
+                if (paymentEdit.ShowDialog() == true)
                 {
                     LoadData();
                 }

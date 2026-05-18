@@ -47,6 +47,7 @@ namespace WpfApp1
         private void MenuItem_Home_Click(object sender, RoutedEventArgs e) => LoadHome();
         private void MenuItem_Properties_Click(object sender, RoutedEventArgs e) => MainContent.Content = new PropertiesView();
         private void MenuItem_Tenants_Click(object sender, RoutedEventArgs e) => MainContent.Content = new TenantsView();
+        private void MenuItem_History_Click(object sender, RoutedEventArgs e) => MainContent.Content = new LeaseHistoryView();
 
     }
 }

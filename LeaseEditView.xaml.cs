@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -58,7 +59,8 @@ namespace WpfApp1
                 {
                     LoadLeaseData(db);
                     LoadPayments(db);
-                    BtnDeleteLease.Visibility = System.Windows.Visibility.Visible;
+                    // Показываем кнопку расторжения только для активных договоров
+                    BtnTerminateLease.Visibility = System.Windows.Visibility.Visible;
                 }
                 else
                 {
@@ -68,9 +70,11 @@ namespace WpfApp1
                     DpStartDate.SelectedDate = DateTime.Today;
                     DpEndDate.SelectedDate = DateTime.Today.AddYears(1);
                     
-                    // При добавлении скрываем выбор статуса и панель последних платежей
+                    // При добавлении скрываем статус, причину расторжения и панель последних платежей
                     LblStatus.Visibility = System.Windows.Visibility.Collapsed;
-                    CmbStatus.Visibility = System.Windows.Visibility.Collapsed;
+                    TxtStatus.Visibility = System.Windows.Visibility.Collapsed;
+                    LblTerminationReason.Visibility = System.Windows.Visibility.Collapsed;
+                    TxtTerminationReason.Visibility = System.Windows.Visibility.Collapsed;
                     PaymentsBorder.Visibility = System.Windows.Visibility.Collapsed;
                 }
             }
@@ -104,11 +108,32 @@ namespace WpfApp1
             DpEndDate.SelectedDate = lease.EndDate;
             TxtMonthlyAmount.Text = lease.MonthlyAmount.ToString();
             
-            // Установка статуса
-            string[] statuses = { "Активен", "Завершен", "Расторгнут" };
-            int statusIndex = Array.IndexOf(statuses, lease.Status);
-            if (statusIndex >= 0)
-                CmbStatus.SelectedIndex = statusIndex;
+            // Установка статуса (только для просмотра)
+            TxtStatus.Text = lease.Status;
+            
+            // Отображение причины расторжения если договор расторгнут или завершен
+            if (lease.Status == "Расторгнут" || lease.Status == "Завершен")
+            {
+                LblTerminationReason.Visibility = System.Windows.Visibility.Visible;
+                TxtTerminationReason.Visibility = System.Windows.Visibility.Visible;
+                TxtTerminationReason.Text = lease.TerminationReason ?? "";
+                
+                // Блокируем все поля для завершенных/расторгнутых договоров
+                TxtLeaseNumber.IsEnabled = false;
+                CmbProperty.IsEnabled = false;
+                CmbTenant.IsEnabled = false;
+                DpStartDate.IsEnabled = false;
+                DpEndDate.IsEnabled = false;
+                TxtMonthlyAmount.IsEnabled = false;
+                BtnTerminateLease.Visibility = System.Windows.Visibility.Collapsed;
+            }
+            else if (lease.Status == "Активен")
+            {
+                // Для активных договоров показываем кнопку расторжения
+                BtnTerminateLease.Visibility = System.Windows.Visibility.Visible;
+                LblTerminationReason.Visibility = System.Windows.Visibility.Collapsed;
+                TxtTerminationReason.Visibility = System.Windows.Visibility.Collapsed;
+            }
         }
 
         private void LoadPayments(RieltorEntities db)
@@ -168,6 +193,32 @@ namespace WpfApp1
                         MessageBox.Show("Договор не найден.");
                         return;
                     }
+                    
+                    // Запрет на редактирование завершенных/расторгнутых договоров
+                    if (lease.Status == "Завершен" || lease.Status == "Расторгнут")
+                    {
+                        MessageBox.Show("Редактирование завершенных или расторгнутых договоров запрещено.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+                    
+                    // Запрет на изменение ключевых данных если есть оплаченные платежи
+                    var paidPayments = db.Payments.Count(p => p.LeaseID == _leaseId && p.Status == "Оплачен");
+                    if (paidPayments > 0)
+                    {
+                        // Проверяем, меняются ли ключевые поля
+                        bool datesChanged = DpStartDate.SelectedDate.Value != lease.StartDate || 
+                                          DpEndDate.SelectedDate.Value != lease.EndDate;
+                        bool amountChanged = monthlyAmount != lease.MonthlyAmount;
+                        
+                        if (datesChanged || amountChanged)
+                        {
+                            MessageBox.Show(
+                                "Изменение дат или суммы договора с оплаченными платежами запрещено.\n" +
+                                "Для изменения условий необходимо создать дополнительное соглашение.",
+                                "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                            return;
+                        }
+                    }
                 }
                 else
                 {
@@ -184,12 +235,7 @@ namespace WpfApp1
                 lease.MonthlyAmount = monthlyAmount;
                 
                 // При добавлении нового договора статус всегда "Активен"
-                // При редактировании берем выбранный статус из ComboBox
-                if (_leaseId.HasValue)
-                {
-                    lease.Status = ((ComboBoxItem)CmbStatus.SelectedItem)?.Content?.ToString() ?? "Активен";
-                }
-                else
+                if (!_leaseId.HasValue)
                 {
                     lease.Status = "Активен";
                 }
@@ -204,7 +250,7 @@ namespace WpfApp1
                         LeaseID = lease.LeaseID,
                         PaymentDate = lease.StartDate,
                         Amount = lease.MonthlyAmount,
-                        Status = "Ожидает", // По умолчанию статус "Ожидает", так как договор ещё не начался или только начался
+                        Status = "Ожидает",
                         Notes = "Первый платёж по договору"
                     };
                     db.Payments.Add(firstPayment);
@@ -223,108 +269,180 @@ namespace WpfApp1
             this.Close();
         }
 
-        private async void BtnDeleteLease_Click(object sender, RoutedEventArgs e)
+        private async void BtnTerminateLease_Click(object sender, RoutedEventArgs e)
         {
             if (!_leaseId.HasValue)
                 return;
 
-            var result = MessageBox.Show(
-                "Для подтверждения удаления договора введите: Удалить договор",
-                "Подтверждение удаления",
-                MessageBoxButton.OKCancel,
-                MessageBoxImage.Warning);
-
-            if (result != MessageBoxResult.OK)
-                return;
-
-            // Создаем окно для ввода подтверждения
-            var inputWindow = new Window
+            using (var db = new RieltorEntities())
             {
-                Title = "Подтверждение удаления",
-                Width = 400,
-                Height = 150,
+                var lease = db.Leases.Find(_leaseId);
+                if (lease == null)
+                {
+                    MessageBox.Show("Договор не найден.");
+                    return;
+                }
+
+                // Проверка: нельзя расторгнуть уже завершенный договор
+                if (lease.Status == "Завершен" || lease.Status == "Расторгнут")
+                {
+                    MessageBox.Show("Этот договор уже завершен или расторгнут.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
+
+                // Проверка на наличие задолженностей
+                var unpaidPayments = db.Payments.Count(p => p.LeaseID == _leaseId && (p.Status == "Просрочен" || p.Status == "Ожидает"));
+                if (unpaidPayments > 0)
+                {
+                    var confirmResult = MessageBox.Show(
+                        $"У договора есть {unpaidPayments} неоплаченных платежей. Все равно расторгнуть?",
+                        "Подтверждение",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question);
+                    
+                    if (confirmResult != MessageBoxResult.Yes)
+                        return;
+                }
+            }
+
+            // Создаем окно для ввода причины расторжения
+            var terminationWindow = new Window
+            {
+                Title = "Расторжение договора",
+                Width = 500,
+                Height = 250,
                 WindowStartupLocation = WindowStartupLocation.CenterScreen,
-                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#E8F4F8")
+                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#E8F4F8"),
+                ResizeMode = ResizeMode.NoResize
             };
 
             var grid = new Grid();
             grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
             grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
 
-            var textBlock = new TextBlock
+            var titleText = new TextBlock
             {
-                Text = "Введите \"Удалить договор\":",
-                Margin = new System.Windows.Thickness(10),
+                Text = "Расторжение договора аренды",
+                FontSize = 18,
+                FontWeight = System.Windows.FontWeights.Bold,
+                Margin = new System.Windows.Thickness(10, 10, 10, 15),
+                Foreground = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#2C5F7F")
+            };
+            Grid.SetRow(titleText, 0);
+            Grid.SetColumn(titleText, 0);
+            Grid.SetColumnSpan(titleText, 2);
+
+            var reasonText = new TextBlock
+            {
+                Text = "Причина расторжения:",
+                Margin = new System.Windows.Thickness(10, 5, 10, 5),
+                VerticalAlignment = System.Windows.VerticalAlignment.Top
+            };
+            Grid.SetRow(reasonText, 1);
+            Grid.SetColumn(reasonText, 0);
+
+            var reasonTextBox = new TextBox
+            {
+                Margin = new System.Windows.Thickness(10, 5, 10, 10),
+                Height = 80,
+                AcceptsReturn = true,
+                TextWrapping = TextWrapping.Wrap,
+                VerticalScrollBarVisibility = ScrollBarVisibility.Auto
+            };
+            Grid.SetRow(reasonTextBox, 1);
+            Grid.SetColumn(reasonTextBox, 1);
+
+            var whoText = new TextBlock
+            {
+                Text = "Инициатор расторжения:",
+                Margin = new System.Windows.Thickness(10, 5, 10, 5),
                 VerticalAlignment = System.Windows.VerticalAlignment.Center
             };
-            Grid.SetRow(textBlock, 0);
-            Grid.SetColumn(textBlock, 0);
-            Grid.SetColumnSpan(textBlock, 2);
+            Grid.SetRow(whoText, 2);
+            Grid.SetColumn(whoText, 0);
 
-            var textBox = new TextBox
+            var whoComboBox = new ComboBox
             {
-                Margin = new System.Windows.Thickness(10),
+                Margin = new System.Windows.Thickness(10, 5, 10, 10),
                 Height = 30
             };
-            Grid.SetRow(textBox, 1);
-            Grid.SetColumn(textBox, 0);
-            Grid.SetColumnSpan(textBox, 2);
+            whoComboBox.Items.Add("По соглашению сторон");
+            whoComboBox.Items.Add("По инициативе арендодателя");
+            whoComboBox.Items.Add("По инициативе арендатора");
+            whoComboBox.SelectedIndex = 0;
+            Grid.SetRow(whoComboBox, 2);
+            Grid.SetColumn(whoComboBox, 1);
+
+            var buttonPanel = new StackPanel
+            {
+                Orientation = Orientation.Horizontal,
+                HorizontalAlignment = System.Windows.HorizontalAlignment.Center,
+                Margin = new System.Windows.Thickness(0, 10, 0, 10)
+            };
+            Grid.SetRow(buttonPanel, 3);
+            Grid.SetColumnSpan(buttonPanel, 2);
 
             var confirmButton = new Button
             {
-                Content = "Удалить",
-                Width = 100,
-                Margin = new System.Windows.Thickness(10),
-                HorizontalAlignment = System.Windows.HorizontalAlignment.Right,
-                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#CD5C5C"),
+                Content = "Расторгнуть",
+                Width = 120,
+                Height = 35,
+                Margin = new System.Windows.Thickness(0, 0, 10, 0),
+                Background = (System.Windows.Media.Brush)new System.Windows.Media.BrushConverter().ConvertFrom("#FF9800"),
                 Foreground = System.Windows.Media.Brushes.White
             };
-            Grid.SetRow(confirmButton, 2);
-            Grid.SetColumn(confirmButton, 0);
 
             var cancelButton = new Button
             {
                 Content = "Отмена",
-                Width = 100,
-                Margin = new System.Windows.Thickness(10),
-                HorizontalAlignment = System.Windows.HorizontalAlignment.Left
+                Width = 120,
+                Height = 35
             };
-            Grid.SetRow(cancelButton, 2);
-            Grid.SetColumn(cancelButton, 1);
 
-            bool confirmed = false;
+            bool? dialogResult = null;
 
             confirmButton.Click += (s, args) =>
             {
-                if (textBox.Text == "Удалить договор")
+                if (string.IsNullOrWhiteSpace(reasonTextBox.Text))
                 {
-                    confirmed = true;
-                    inputWindow.DialogResult = true;
-                    inputWindow.Close();
+                    MessageBox.Show("Укажите причину расторжения.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return;
                 }
-                else
+
+                dialogResult = true;
+                terminationWindow.Tag = new
                 {
-                    MessageBox.Show("Неверная строка подтверждения. Введите точно: Удалить договор", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
+                    Reason = reasonTextBox.Text,
+                    TerminatedBy = whoComboBox.SelectedItem.ToString()
+                };
+                terminationWindow.Close();
             };
 
             cancelButton.Click += (s, args) =>
             {
-                inputWindow.DialogResult = false;
-                inputWindow.Close();
+                dialogResult = false;
+                terminationWindow.Close();
             };
 
-            grid.Children.Add(textBlock);
-            grid.Children.Add(textBox);
-            grid.Children.Add(confirmButton);
-            grid.Children.Add(cancelButton);
+            buttonPanel.Children.Add(confirmButton);
+            buttonPanel.Children.Add(cancelButton);
 
-            inputWindow.Content = grid;
+            grid.Children.Add(titleText);
+            grid.Children.Add(reasonText);
+            grid.Children.Add(reasonTextBox);
+            grid.Children.Add(whoText);
+            grid.Children.Add(whoComboBox);
+            grid.Children.Add(buttonPanel);
 
-            if (inputWindow.ShowDialog() != true || !confirmed)
+            terminationWindow.Content = grid;
+
+            terminationWindow.ShowDialog();
+
+            if (dialogResult != true)
                 return;
 
             try
@@ -338,24 +456,46 @@ namespace WpfApp1
                         return;
                     }
 
-                    // Удаляем связанные платежи
-                    var payments = db.Payments.Where(p => p.LeaseID == _leaseId).ToList();
-                    foreach (var payment in payments)
+                    // Получаем данные из окна
+                    dynamic terminationData = terminationWindow.Tag;
+                    string reason = terminationData.Reason;
+                    string terminatedBy = terminationData.TerminatedBy;
+
+                    // Обновляем статус договора
+                    lease.Status = "Расторгнут";
+                    lease.TerminationReason = reason;
+                    
+                    // Сохраняем изменения
+                    db.SaveChanges();
+
+                    // Вызываем хранимую процедуру для переноса в историю (если существует)
+                    try
                     {
-                        db.Payments.Remove(payment);
+                        db.Database.ExecuteSqlCommand(
+                            "EXEC [dbo].[sp_ArchiveLease] @LeaseID = {0}, @TerminationReason = {1}, @TerminatedBy = {2}",
+                            _leaseId.Value, reason, terminatedBy);
+                    }
+                    catch
+                    {
+                        // Если хранимой процедуры нет, просто продолжаем
+                        // Данные все равно сохранены в основной таблице
                     }
 
-                    db.Leases.Remove(lease);
-                    await Task.Run(() => db.SaveChanges());
+                    MessageBox.Show(
+                        $"Договор №{lease.LeaseNumber} расторгнут.\n" +
+                        $"Причина: {reason}\n" +
+                        $"Данные сохранены в истории договоров.",
+                        "Расторжение успешно",
+                        MessageBoxButton.OK,
+                        MessageBoxImage.Information);
 
-                    MessageBox.Show("Договор успешно удален!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                     this.DialogResult = true;
                     this.Close();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при удалении: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show($"Ошибка при расторжении: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

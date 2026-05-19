@@ -15,6 +15,9 @@
     <NavigationProperty Name="Property" Relationship="Self.FK_Leases_Property" FromRole="Leases" ToRole="Property" />
     <NavigationProperty Name="Tenants" Relationship="Self.FK_Leases_Tenant" FromRole="Leases" ToRole="Tenants" />
     <NavigationProperty Name="Payments" Relationship="Self.FK_Payments_Lease" FromRole="Leases" ToRole="Payments" />
+    <Property Name="IsArchived" Type="Boolean" Nullable="false" />
+    <Property Name="TerminationReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="LeaseHistory" Relationship="RieltorModel.FK_LeaseHistory_Leases" FromRole="Leases" ToRole="LeaseHistory" />
   </EntityType>
   <EntityType Name="Payments">
     <Key>
@@ -39,7 +42,8 @@
     <Property Name="Status" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="MonthlyRent" Type="Decimal" Precision="12" Scale="2" Nullable="false" />
     <NavigationProperty Name="Leases" Relationship="Self.FK_Leases_Property" FromRole="Property" ToRole="Leases" />
-    <Property Name="ImagePath" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ImagePath" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="LeaseHistory" Relationship="RieltorModel.FK_LeaseHistory_Property" FromRole="Property" ToRole="LeaseHistory" />
   </EntityType>
   <EntityType Name="Tenants">
     <Key>
@@ -51,6 +55,7 @@
     <Property Name="INN" Type="String" MaxLength="12" FixedLength="false" Unicode="true" />
     <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="Leases" Relationship="Self.FK_Leases_Tenant" FromRole="Tenants" ToRole="Leases" />
+    <NavigationProperty Name="LeaseHistory" Relationship="RieltorModel.FK_LeaseHistory_Tenants" FromRole="Tenants" ToRole="LeaseHistory" />
   </EntityType>
   <EntityType Name="Users">
     <Key>
@@ -122,5 +127,75 @@
       <End Role="Leases" EntitySet="Leases" />
       <End Role="Payments" EntitySet="Payments" />
     </AssociationSet>
+    <EntitySet Name="LeaseHistory" EntityType="RieltorModel.LeaseHistory" />
+    <AssociationSet Name="FK_LeaseHistory_Leases" Association="RieltorModel.FK_LeaseHistory_Leases">
+      <End Role="Leases" EntitySet="Leases" />
+      <End Role="LeaseHistory" EntitySet="LeaseHistory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LeaseHistory_Property" Association="RieltorModel.FK_LeaseHistory_Property">
+      <End Role="Property" EntitySet="Property" />
+      <End Role="LeaseHistory" EntitySet="LeaseHistory" />
+    </AssociationSet>
+    <AssociationSet Name="FK_LeaseHistory_Tenants" Association="RieltorModel.FK_LeaseHistory_Tenants">
+      <End Role="Tenants" EntitySet="Tenants" />
+      <End Role="LeaseHistory" EntitySet="LeaseHistory" />
+    </AssociationSet>
   </EntityContainer>
+  <EntityType Name="LeaseHistory">
+    <Key>
+      <PropertyRef Name="HistoryID" />
+    </Key>
+    <Property Name="HistoryID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="LeaseID" Type="Int32" Nullable="false" />
+    <Property Name="LeaseNumber" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="PropertyID" Type="Int32" Nullable="false" />
+    <Property Name="TenantID" Type="Int32" Nullable="false" />
+    <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="MonthlyAmount" Type="Decimal" Nullable="false" Precision="18" Scale="2" />
+    <Property Name="OriginalStatus" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="TerminationDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TerminationReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Name="TerminatedBy" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="CreatedAt" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="Leases" Relationship="RieltorModel.FK_LeaseHistory_Leases" FromRole="LeaseHistory" ToRole="Leases" />
+    <NavigationProperty Name="Property" Relationship="RieltorModel.FK_LeaseHistory_Property" FromRole="LeaseHistory" ToRole="Property" />
+    <NavigationProperty Name="Tenants" Relationship="RieltorModel.FK_LeaseHistory_Tenants" FromRole="LeaseHistory" ToRole="Tenants" />
+  </EntityType>
+  <Association Name="FK_LeaseHistory_Leases">
+    <End Type="RieltorModel.Leases" Role="Leases" Multiplicity="1" />
+    <End Type="RieltorModel.LeaseHistory" Role="LeaseHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Leases">
+        <PropertyRef Name="LeaseID" />
+      </Principal>
+      <Dependent Role="LeaseHistory">
+        <PropertyRef Name="LeaseID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LeaseHistory_Property">
+    <End Type="RieltorModel.Property" Role="Property" Multiplicity="1" />
+    <End Type="RieltorModel.LeaseHistory" Role="LeaseHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Property">
+        <PropertyRef Name="PropertyID" />
+      </Principal>
+      <Dependent Role="LeaseHistory">
+        <PropertyRef Name="PropertyID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_LeaseHistory_Tenants">
+    <End Type="RieltorModel.Tenants" Role="Tenants" Multiplicity="1" />
+    <End Type="RieltorModel.LeaseHistory" Role="LeaseHistory" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Tenants">
+        <PropertyRef Name="TenantID" />
+      </Principal>
+      <Dependent Role="LeaseHistory">
+        <PropertyRef Name="TenantID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

@@ -12,14 +12,9 @@ namespace WpfApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class Leases
+    public partial class LeaseHistory
     {
-        public Leases()
-        {
-            this.Payments = new HashSet<Payments>();
-            this.LeaseHistory = new HashSet<LeaseHistory>();
-        }
-    
+        public int HistoryID { get; set; }
         public int LeaseID { get; set; }
         public string LeaseNumber { get; set; }
         public int PropertyID { get; set; }
@@ -27,13 +22,14 @@ namespace WpfApp1
         public System.DateTime StartDate { get; set; }
         public System.DateTime EndDate { get; set; }
         public decimal MonthlyAmount { get; set; }
-        public string Status { get; set; }
-        public bool IsArchived { get; set; }
+        public string OriginalStatus { get; set; }
+        public System.DateTime TerminationDate { get; set; }
         public string TerminationReason { get; set; }
+        public string TerminatedBy { get; set; }
+        public System.DateTime CreatedAt { get; set; }
     
+        public virtual Leases Leases { get; set; }
         public virtual Property Property { get; set; }
         public virtual Tenants Tenants { get; set; }
-        public virtual ICollection<Payments> Payments { get; set; }
-        public virtual ICollection<LeaseHistory> LeaseHistory { get; set; }
     }
 }

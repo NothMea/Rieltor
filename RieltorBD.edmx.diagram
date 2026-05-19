@@ -13,6 +13,10 @@
         <AssociationConnector Association="RieltorModel.FK_Leases_Property" ManuallyRouted="false" />
         <AssociationConnector Association="RieltorModel.FK_Leases_Tenant" ManuallyRouted="false" />
         <AssociationConnector Association="RieltorModel.FK_Payments_Lease" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="RieltorModel.LeaseHistory" Width="1.5" PointX="5.25" PointY="5.375" />
+        <AssociationConnector Association="RieltorModel.FK_LeaseHistory_Leases" />
+        <AssociationConnector Association="RieltorModel.FK_LeaseHistory_Property" />
+        <AssociationConnector Association="RieltorModel.FK_LeaseHistory_Tenants" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -125,3 +125,4 @@ Thumbs.db
 *.tar.xz
 *.tar.zst
 ```
+/.vs

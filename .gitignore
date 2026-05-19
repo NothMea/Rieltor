@@ -1,22 +1,25 @@
 ```
-# Compiled and build artifacts
+# Build artifacts
+bin/
 obj/
-*.g.cs
-*.g.i.cs
-*.tmp
+*.exe
+*.dll
+*.pdb
+*.userprefs
+*.cache
 *.log
 
 # Dependencies
-bin/
-Debug/
-Release/
+packages/
 
-# Environment
-.env
-.env.local
-*.env.*
+# IDE specific
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
 
-# Editors
-.vscode/
-.idea/
+# OS generated
+.DS_Store
+Thumbs.db
 ```

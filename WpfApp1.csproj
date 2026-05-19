@@ -114,6 +114,9 @@
     <Compile Include="TenantEditView.xaml.cs">
       <DependentUpon>TenantEditView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TerminationWindow.xaml.cs">
+      <DependentUpon>TerminationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Users.cs">
       <DependentUpon>RieltorBD.tt</DependentUpon>
     </Compile>
@@ -161,6 +164,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TenantEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TerminationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

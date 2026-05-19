@@ -90,7 +90,7 @@ namespace WpfApp1.Views
                                 if (hasActiveLeases)
                                 {
                                     MessageBox.Show(
-                                        "Нельзя удалить объект с активными договорами аренды.\nСначала завершите или удалите все активные договоры.",
+                                        "Нельзя удалить объект с активными договорами аренды.",
                                         "Ошибка",
                                         MessageBoxButton.OK,
                                         MessageBoxImage.Error);

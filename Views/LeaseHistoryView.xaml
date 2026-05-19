@@ -26,6 +26,8 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
@@ -37,9 +39,18 @@
                 </ComboBox>
 
                 <TextBlock Text="Поиск:" Grid.Column="2" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <TextBox x:Name="TxtSearch" Grid.Column="3" Width="200" Margin="0,0,10,0" TextChanged="TxtSearch_TextChanged"/>
+                <TextBox x:Name="TxtSearch" Grid.Column="3" Width="150" Margin="0,0,10,0" TextChanged="TxtSearch_TextChanged"/>
 
-                <Button Grid.Column="4" Content="Экспорт в Excel" Click="BtnExport_Click" Width="120" HorizontalAlignment="Right" Style="{StaticResource TabButtonStyle}"/>
+                <TextBlock Text="Город:" Grid.Column="4" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                <TextBox x:Name="TxtCitySearch" Grid.Column="5" Width="120" Margin="0,0,10,0" TextChanged="TxtCitySearch_TextChanged"/>
+
+                <StackPanel Grid.Column="6" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <TextBlock Text="Период:" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <DatePicker x:Name="DpFromDate" Width="100" Margin="0,0,5,0" SelectedDateChanged="DateFilter_Changed"/>
+                    <TextBlock Text="—" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <DatePicker x:Name="DpToDate" Width="100" Margin="0,0,10,0" SelectedDateChanged="DateFilter_Changed"/>
+                    <Button Content="Сбросить" Click="BtnResetFilters_Click" Width="80" Style="{StaticResource TabButtonStyle}"/>
+                </StackPanel>
             </Grid>
         </Border>
 

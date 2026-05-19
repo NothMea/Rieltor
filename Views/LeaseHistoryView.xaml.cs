@@ -21,6 +21,9 @@ namespace WpfApp1.Views
     /// </summary>
     public partial class LeaseHistoryView : UserControl
     {
+        private DateTime? _fromDate;
+        private DateTime? _toDate;
+
         public LeaseHistoryView()
         {
             InitializeComponent();
@@ -39,6 +42,7 @@ namespace WpfApp1.Views
                     {
                         l.LeaseNumber,
                         PropertyAddress = l.Property.Address,
+                        City = l.Property.Address ?? "",
                         TenantName = l.Tenants.Name,
                         l.StartDate,
                         l.EndDate,
@@ -64,6 +68,28 @@ namespace WpfApp1.Views
             FilterHistory();
         }
 
+        private void TxtCitySearch_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            FilterHistory();
+        }
+
+        private void DateFilter_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            FilterHistory();
+        }
+
+        private void BtnResetFilters_Click(object sender, RoutedEventArgs e)
+        {
+            CmbStatusFilter.SelectedIndex = 0;
+            TxtSearch.Text = "";
+            TxtCitySearch.Text = "";
+            DpFromDate.SelectedDate = null;
+            DpToDate.SelectedDate = null;
+            _fromDate = null;
+            _toDate = null;
+            LoadHistory();
+        }
+
         private void FilterHistory()
         {
             if (CmbStatusFilter == null || TxtSearch == null)
@@ -74,6 +100,8 @@ namespace WpfApp1.Views
                 var selectedStatus = (CmbStatusFilter.SelectedItem as ComboBoxItem)?.Content?.ToString();
                 var searchText = TxtSearch.Text ?? string.Empty;
                 searchText = searchText.ToLower();
+                var cityText = TxtCitySearch.Text ?? string.Empty;
+                cityText = cityText.ToLower();
 
                 var query = db.Leases
                     .Where(l => l.Status == "Завершен" || l.Status == "Расторгнут");
@@ -92,11 +120,31 @@ namespace WpfApp1.Views
                         l.Tenants.Name.ToLower().Contains(searchText));
                 }
 
+                // Поиск по городу (в части адреса)
+                if (!string.IsNullOrWhiteSpace(cityText))
+                {
+                    query = query.Where(l => l.Property.Address != null && l.Property.Address.ToLower().Contains(cityText));
+                }
+
+                // Фильтр по диапазону дат
+                if (DpFromDate.SelectedDate.HasValue)
+                {
+                    _fromDate = DpFromDate.SelectedDate.Value.Date;
+                    query = query.Where(l => l.EndDate >= _fromDate.Value);
+                }
+
+                if (DpToDate.SelectedDate.HasValue)
+                {
+                    _toDate = DpToDate.SelectedDate.Value.Date.AddDays(1).AddTicks(-1); // Конец дня
+                    query = query.Where(l => l.EndDate <= _toDate.Value);
+                }
+
                 var historyQuery = query
                     .Select(l => new
                     {
                         l.LeaseNumber,
                         PropertyAddress = l.Property.Address,
+                        City = l.Property.Address ?? "",
                         TenantName = l.Tenants.Name,
                         l.StartDate,
                         l.EndDate,
@@ -110,11 +158,6 @@ namespace WpfApp1.Views
 
                 HistoryGrid.ItemsSource = historyQuery;
             }
-        }
-
-        private void BtnExport_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Функция экспорта будет реализована в следующей версии.", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

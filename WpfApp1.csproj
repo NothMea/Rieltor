@@ -122,6 +122,9 @@
     <Compile Include="Views\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\LeaseHistoryView.xaml.cs">
+      <DependentUpon>LeaseHistoryView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\PropertiesView.xaml.cs">
       <DependentUpon>PropertiesView.xaml</DependentUpon>
     </Compile>
@@ -152,6 +155,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\DashboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\LeaseHistoryView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

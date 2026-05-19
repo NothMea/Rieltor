@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
-using System.Data.Entity.Core.Objects;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -45,7 +44,7 @@ namespace WpfApp1.Views
                         l.EndDate,
                         l.MonthlyAmount,
                         OriginalStatus = l.Status,
-                        TerminationDate = ObjectFunctions.TruncateTime(DateTime.Today), // Временное значение
+                        TerminationDate = (DateTime?)DateTime.Today, // Временное значение
                         TerminationReason = l.TerminationReason ?? "Не указана"
                     })
                     .OrderByDescending(l => l.EndDate)
@@ -99,7 +98,7 @@ namespace WpfApp1.Views
                         l.EndDate,
                         l.MonthlyAmount,
                         OriginalStatus = l.Status,
-                        TerminationDate = ObjectFunctions.TruncateTime(DateTime.Today),
+                        TerminationDate = (DateTime?)DateTime.Today,
                         TerminationReason = l.TerminationReason ?? "Не указана"
                     })
                     .OrderByDescending(l => l.EndDate)

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp1;
 
 namespace WpfApp1.Views
 {
@@ -35,8 +36,9 @@ namespace WpfApp1.Views
             {
                 if (prop.ActiveLease != null)
                 {
-                    var leaseEdit = new LeaseEditView(prop.ActiveLease.LeaseID);
-                    if (leaseEdit.ShowDialog() == true)
+                    // Сразу открываем окно расторжения договора
+                    var terminationWindow = new TerminationWindow(prop.ActiveLease.LeaseID);
+                    if (terminationWindow.ShowDialog() == true)
                     {
                         LoadData();
                     }
@@ -310,11 +312,12 @@ namespace WpfApp1.Views
 
         private void BtnAddLease_Click(object sender, RoutedEventArgs e)
         {
-            var leaseEdit = new LeaseEditView();
-            if (leaseEdit.ShowDialog() == true)
-            {
-                LoadData();
-            }
+            MessageBox.Show(
+                "Для создания нового договора аренды обратитесь к администратору системы.\n\n" +
+                "Создание договоров требует согласования и не может быть выполнено через данное приложение.",
+                "Информация",
+                MessageBoxButton.OK,
+                MessageBoxImage.Information);
         }
     }
 

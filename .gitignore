@@ -1,106 +1,82 @@
 ```
-# Compiled and build artifacts
-*.pyc
-__pycache__/
-*.o
-*.obj
-*.exe
-*.dll
-*.so
-*.class
-*.out
-
-# Dependencies
-node_modules/
-venv/
-.venv/
-.env
-.env.local
-*.env.*
-
-# Build directories
-dist/
-build/
-target/
-.gradle/
-
-# Python specific
-*.pyc
-__pycache__/
-*.pyo
-*.pyd
-.Python
-*.so
-.Python
-*.egg-info/
-.eggs/
-.mypy_cache/
-.pytest_cache/
-.coverage
-coverage/
-htmlcov/
-
-# Dotnet specific
+# Build artifacts
 bin/
 obj/
+*.exe
+*.dll
+*.pdb
 *.userprefs
-*.userosscache
+*.cache
+*.manifest
+*.lockb
 *.suo
 *.user
 *.aps
-*.pch
-*.vspscc
-*.vssscc
-*_i.c
-*_p.c
 *.ncb
-*.opendb
-*.opensdf
-*.sdf
-*.cachefile
-*.VC.db
-*.VC.VC.opendb
-*.VC.VC.sdf
-*.VC.VC.user
-*.VC.VC.userosscache
-*.VC.VC.userprefs
-*.VC.VC.suo
-*.VC.VC.user
-*.VC.VC.aps
-*.VC.VC.pch
-*.VC.VC.ncb
-*.VC.VC.opendb
-*.VC.VC.opensdf
-*.VC.VC.sdf
-*.VC.VC.cachefile
-*.VC.VC.VC.db
-*.VC.VC.VC.opendb
-*.VC.VC.VC.sdf
-*.VC.VC.VC.user
-*.VC.VC.VC.userosscache
-*.VC.VC.VC.userprefs
-*.VC.VC.VC.suo
-*.VC.VC.VC.user
-*.VC.VC.VC.aps
-*.VC.VC.VC.pch
-*.VC.VC.VC.ncb
-
-# Logs and temp files
+*.opt
+*.plg
+*.ilk
+*.iobj
+*.ipdb
+*.tlog
 *.log
-*.tmp
-*.swp
-*.swo
+*.nupkg
+*.snupkg
+packages/
+TestResults/
+
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment
+.env
+.env.local
+.env.*
+!.env.example
 
 # Editors
-.vscode/
-.idea/
+.vs/
 *.swp
 *.swo
+*~
+.vscode/
+.idea/
 
-# System files
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
+desktop.ini
 
+# User-specific files
+*.userprefs
+*.useroptions
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio Code
+.vscode/tasks.json
+.vscode/launch.json
+```
 # Archives
 *.zip
 *.gz

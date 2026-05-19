@@ -17,6 +17,7 @@ namespace WpfApp1
         public Tenants()
         {
             this.Leases = new HashSet<Leases>();
+            this.LeaseHistory = new HashSet<LeaseHistory>();
         }
     
         public int TenantID { get; set; }
@@ -26,5 +27,6 @@ namespace WpfApp1
         public string Email { get; set; }
     
         public virtual ICollection<Leases> Leases { get; set; }
+        public virtual ICollection<LeaseHistory> LeaseHistory { get; set; }
     }
 }

@@ -17,6 +17,7 @@ namespace WpfApp1
         public Property()
         {
             this.Leases = new HashSet<Leases>();
+            this.LeaseHistory = new HashSet<LeaseHistory>();
         }
     
         public int PropertyID { get; set; }
@@ -28,5 +29,6 @@ namespace WpfApp1
         public string ImagePath { get; set; }
     
         public virtual ICollection<Leases> Leases { get; set; }
+        public virtual ICollection<LeaseHistory> LeaseHistory { get; set; }
     }
 }

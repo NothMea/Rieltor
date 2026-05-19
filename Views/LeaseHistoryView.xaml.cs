@@ -66,10 +66,14 @@ namespace WpfApp1.Views
 
         private void FilterHistory()
         {
+            if (CmbStatusFilter == null || TxtSearch == null)
+                return;
+
             using (var db = new RieltorEntities())
             {
                 var selectedStatus = (CmbStatusFilter.SelectedItem as ComboBoxItem)?.Content?.ToString();
-                var searchText = TxtSearch.Text.ToLower();
+                var searchText = TxtSearch.Text ?? string.Empty;
+                searchText = searchText.ToLower();
 
                 var query = db.Leases
                     .Where(l => l.Status == "Завершен" || l.Status == "Расторгнут");

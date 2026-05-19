@@ -52,16 +52,16 @@
         <TextBlock Text="Ежемесячная сумма (₽):" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
         <TextBox x:Name="TxtMonthlyAmount" Grid.Row="6" Grid.Column="1"/>
 
-        <!-- Статус -->
+        <!-- Статус (только для просмотра) -->
         <TextBlock Text="Статус:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5" x:Name="LblStatus"/>
-        <ComboBox x:Name="CmbStatus" Grid.Row="7" Grid.Column="1">
-            <ComboBoxItem Content="Активен"/>
-            <ComboBoxItem Content="Завершен"/>
-            <ComboBoxItem Content="Расторгнут"/>
-        </ComboBox>
+        <TextBox x:Name="TxtStatus" Grid.Row="7" Grid.Column="1" IsReadOnly="True" Background="#F5F5F5"/>
+        
+        <!-- Причина расторжения (видима только при расторжении) -->
+        <TextBlock x:Name="LblTerminationReason" Text="Причина расторжения:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5" Visibility="Collapsed"/>
+        <TextBox x:Name="TxtTerminationReason" Grid.Row="8" Grid.Column="1" Margin="0,0,0,5" Visibility="Collapsed" AcceptsReturn="True" TextWrapping="Wrap" Height="60"/>
 
         <!-- Информация о платежах -->
-        <Border x:Name="PaymentsBorder" Grid.Row="8" Grid.ColumnSpan="2" Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,15,0,10">
+        <Border x:Name="PaymentsBorder" Grid.Row="9" Grid.ColumnSpan="2" Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="10" Margin="0,15,0,10">
             <StackPanel>
                 <TextBlock Text="Последние платежи" FontSize="16" FontWeight="Bold" Margin="0,0,0,10" Foreground="#2C5F7F"/>
                 <DataGrid x:Name="PaymentsGrid" AutoGenerateColumns="False" Height="150" IsReadOnly="True" CanUserAddRows="False">
@@ -78,7 +78,7 @@
         <StackPanel Orientation="Horizontal" Grid.Row="10" Grid.ColumnSpan="2" HorizontalAlignment="Center" Margin="0,20,0,0">
             <Button Content="Сохранить" Click="BtnSave_Click" Width="180" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
             <Button Content="Отмена" Click="BtnCancel_Click" Width="180" Style="{StaticResource TabButtonStyle}"/>
-            <Button x:Name="BtnDeleteLease" Content="🗑️ Удалить договор" Click="BtnDeleteLease_Click" Width="180" Margin="10,0,0,0" Style="{StaticResource TabButtonStyle}" Visibility="Collapsed" Background="#CD5C5C"/>
+            <Button x:Name="BtnTerminateLease" Content="📄 Расторгнуть договор" Click="BtnTerminateLease_Click" Width="200" Margin="10,0,0,0" Style="{StaticResource TabButtonStyle}" Visibility="Collapsed" Background="#FF9800" Foreground="White"/>
         </StackPanel>
     </Grid>
 </Window>

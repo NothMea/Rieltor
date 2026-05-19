@@ -1,16 +1,15 @@
 ```
-# Build artifacts
+# Compiled and build artifacts
 obj/
-bin/
 *.g.cs
 *.g.i.cs
+*.tmp
+*.log
 
 # Dependencies
-packages/
-
-# Logs and temp files
-*.log
-*.tmp
+bin/
+Debug/
+Release/
 
 # Environment
 .env

@@ -1,0 +1,46 @@
+<Window x:Class="WpfApp1.TerminationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WpfApp1"
+        mc:Ignorable="d"
+        Title="Расторжение договора аренды" Height="450" Width="600"
+        WindowStartupLocation="CenterScreen" Background="#E8F4F8" ResizeMode="NoResize">
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок -->
+        <TextBlock Grid.Row="0" Text="Расторжение договора аренды" FontSize="22" FontWeight="Bold" Foreground="#2C5F7F" Margin="0,0,0,15"/>
+
+        <!-- Информация о договоре -->
+        <Border Grid.Row="1" Background="White" BorderBrush="#CCCCCC" BorderThickness="1" CornerRadius="5" Padding="15" Margin="0,0,0,15">
+            <TextBlock x:Name="LblLeaseInfo" FontSize="14" LineHeight="20" Foreground="#333333"/>
+        </Border>
+
+        <!-- Причина расторжения -->
+        <TextBlock Grid.Row="2" Text="Причина расторжения:" Margin="0,0,0,5" FontWeight="SemiBold" Foreground="#333333"/>
+        <TextBox x:Name="TxtTerminationReason" Grid.Row="3" Height="80" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Margin="0,0,0,15"/>
+
+        <!-- Инициатор расторжения -->
+        <TextBlock Grid.Row="4" Text="Инициатор расторжения:" Margin="0,0,0,5" FontWeight="SemiBold" Foreground="#333333"/>
+        <ComboBox x:Name="CmbTerminatedBy" Grid.Row="4" Height="35" HorizontalAlignment="Right" Width="250">
+            <ComboBoxItem Content="По соглашению сторон"/>
+            <ComboBoxItem Content="По инициативе арендодателя"/>
+            <ComboBoxItem Content="По инициативе арендатора"/>
+        </ComboBox>
+
+        <!-- Кнопки -->
+        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <Button Content="Расторгнуть" Click="BtnTerminate_Click" Width="150" Height="40" Margin="0,0,15,0" Style="{StaticResource TabButtonStyle}" Background="#FF9800"/>
+            <Button Content="Отмена" Click="BtnCancel_Click" Width="150" Height="40"/>
+        </StackPanel>
+    </Grid>
+</Window>

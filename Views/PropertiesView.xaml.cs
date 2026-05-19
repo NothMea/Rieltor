@@ -28,7 +28,7 @@ namespace WpfApp1.Views
             LoadData();
         }
 
-        private void EditLeaseButton_Click(object sender, RoutedEventArgs e)
+        private void TerminateLeaseButton_Click(object sender, RoutedEventArgs e)
         {
             // Получаем DataContext кнопки — это объект DisplayProperty
             if (sender is FrameworkElement element && element.DataContext is DisplayProperty prop)

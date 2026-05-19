@@ -92,8 +92,8 @@
                                                     <Binding Path="ActiveLease.PaymentStatus" Converter="{StaticResource StatusColorConverter}"/>
                                                 </TextBlock.Foreground>
                                             </TextBlock>
-                                            <!-- Кнопка редактирования договора -->
-                                            <Button Content="Редактировать договор" Click="EditLeaseButton_Click" HorizontalAlignment="Left" Margin="0,10,0,0" Padding="10,5"/>
+                                            <!-- Кнопка расторжения договора -->
+                                            <Button Content="📄 Расторгнуть договор" Click="TerminateLeaseButton_Click" HorizontalAlignment="Left" Margin="0,10,0,0" Padding="10,5" Background="#FF9800" Foreground="White"/>
                                         </StackPanel>
                                     </Border>
                                     <TextBlock x:Name="NoLeaseText" Text="❌ Нет активных договоров" Foreground="#CD5C5C" FontWeight="Bold" Visibility="{Binding HasActiveLease, Converter={StaticResource InverseBoolToVisibilityConverter}}" Margin="0,5,0,0"/>

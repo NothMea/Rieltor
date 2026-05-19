@@ -37,7 +37,7 @@ namespace WpfApp1
                 
                 // При добавлении скрываем выбор статуса и панель последних платежей
                 LblStatus.Visibility = System.Windows.Visibility.Collapsed;
-                CmbStatus.Visibility = System.Windows.Visibility.Collapsed;
+                TxtStatus.Visibility = System.Windows.Visibility.Collapsed;
                 PaymentsBorder.Visibility = System.Windows.Visibility.Collapsed;
             }
         }

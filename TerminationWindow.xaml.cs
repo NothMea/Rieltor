@@ -13,6 +13,8 @@ namespace WpfApp1
     {
         private readonly int _leaseId;
 
+        private string _consentDocumentPath;
+
         public TerminationWindow(int leaseId)
         {
             InitializeComponent();
@@ -41,6 +43,26 @@ namespace WpfApp1
             this.Close();
         }
 
+        private void BtnBrowseDocument_Click(object sender, RoutedEventArgs e)
+        {
+            // Открываем диалог выбора файла
+            var openFileDialog = new Microsoft.Win32.OpenFileDialog
+            {
+                Title = "Выберите документ согласия (Word)",
+                Filter = "Документы Word (*.docx;*.doc)|*.docx;*.doc|Все файлы (*.*)|*.*",
+                DefaultExt = ".docx",
+                CheckFileExists = true
+            };
+
+            var result = openFileDialog.ShowDialog();
+
+            if (result == true)
+            {
+                _consentDocumentPath = openFileDialog.FileName;
+                TxtDocumentPath.Text = _consentDocumentPath;
+            }
+        }
+
         private async void BtnTerminate_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TxtTerminationReason.Text))
@@ -55,11 +77,20 @@ namespace WpfApp1
                 return;
             }
 
+            // Проверка: для расторжения по соглашению сторон требуется документ согласия
+            var selectedInitiator = (CmbTerminatedBy.SelectedItem as ComboBoxItem)?.Content?.ToString();
+            if (selectedInitiator == "По соглашению сторон" && string.IsNullOrEmpty(_consentDocumentPath))
+            {
+                MessageBox.Show("Для расторжения по соглашению сторон необходимо загрузить документ согласия в формате Word.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             var confirmResult = MessageBox.Show(
                 $"Вы уверены, что хотите расторгнуть договор?\n\n" +
                 $"Причина: {TxtTerminationReason.Text}\n" +
-                $"Инициатор: {CmbTerminatedBy.SelectedItem}\n\n" +
-                $"Это действие нельзя отменить!",
+                $"Инициатор: {selectedInitiator}\n" +
+                $"{(string.IsNullOrEmpty(_consentDocumentPath) ? "" : $"Документ: {_consentDocumentPath}\n")}" +
+                $"\nЭто действие нельзя отменить!",
                 "Подтверждение расторжения",
                 MessageBoxButton.YesNo,
                 MessageBoxImage.Question);
@@ -102,6 +133,7 @@ namespace WpfApp1
                     // Обновляем статус договора
                     lease.Status = "Расторгнут";
                     lease.TerminationReason = TxtTerminationReason.Text;
+                    lease.ConsentDocumentPath = _consentDocumentPath;
 
                     // Сохраняем изменения
                     await Task.Run(() => db.SaveChanges());
@@ -110,10 +142,11 @@ namespace WpfApp1
                     try
                     {
                         db.Database.ExecuteSqlCommand(
-                            "EXEC [dbo].[sp_ArchiveLease] @LeaseID = {0}, @TerminationReason = {1}, @TerminatedBy = {2}",
+                            "EXEC [dbo].[sp_ArchiveLease] @LeaseID = {0}, @TerminationReason = {1}, @TerminatedBy = {2}, @ConsentDocumentPath = {3}",
                             _leaseId,
                             TxtTerminationReason.Text,
-                            CmbTerminatedBy.SelectedItem.ToString());
+                            selectedInitiator,
+                            (object)_consentDocumentPath ?? DBNull.Value);
                     }
                     catch
                     {
@@ -123,6 +156,7 @@ namespace WpfApp1
                     MessageBox.Show(
                         $"Договор №{lease.LeaseNumber} расторгнут.\n" +
                         $"Причина: {lease.TerminationReason}\n" +
+                        $"{(string.IsNullOrEmpty(_consentDocumentPath) ? "" : $"Документ согласия сохранен.\n")}" +
                         $"Данные сохранены в истории договоров.",
                         "Расторжение успешно",
                         MessageBoxButton.OK,

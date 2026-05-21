@@ -49,7 +49,29 @@ BEGIN
     PRINT 'Поле TerminationReason уже существует в таблице Leases';
 END
 
--- 4. Создаем хранимую процедуру для переноса договора в историю
+-- 4. Добавляем поле ConsentDocumentPath в таблицу Leases для пути к документу согласия
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[Leases]') AND name = N'ConsentDocumentPath')
+BEGIN
+    ALTER TABLE [dbo].[Leases] ADD [ConsentDocumentPath] NVARCHAR(500) NULL;
+    PRINT 'Поле ConsentDocumentPath добавлено в таблицу Leases';
+END
+ELSE
+BEGIN
+    PRINT 'Поле ConsentDocumentPath уже существует в таблице Leases';
+END
+
+-- 5. Добавляем поле ConsentDocumentPath в таблицу LeaseHistory для пути к документу согласия
+IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID(N'[dbo].[LeaseHistory]') AND name = N'ConsentDocumentPath')
+BEGIN
+    ALTER TABLE [dbo].[LeaseHistory] ADD [ConsentDocumentPath] NVARCHAR(500) NULL;
+    PRINT 'Поле ConsentDocumentPath добавлено в таблицу LeaseHistory';
+END
+ELSE
+BEGIN
+    PRINT 'Поле ConsentDocumentPath уже существует в таблице LeaseHistory';
+END
+
+-- 6. Создаем хранимую процедуру для переноса договора в историю
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND name = 'sp_ArchiveLease')
     DROP PROCEDURE [dbo].[sp_ArchiveLease];
 GO
@@ -57,7 +79,8 @@ GO
 CREATE PROCEDURE [dbo].[sp_ArchiveLease]
     @LeaseID INT,
     @TerminationReason NVARCHAR(500) = NULL,
-    @TerminatedBy NVARCHAR(100) = NULL
+    @TerminatedBy NVARCHAR(100) = NULL,
+    @ConsentDocumentPath NVARCHAR(500) = NULL
 AS
 BEGIN
     SET NOCOUNT ON;
@@ -95,18 +118,19 @@ BEGIN
         INSERT INTO [dbo].[LeaseHistory] (
             LeaseID, LeaseNumber, PropertyID, TenantID, 
             StartDate, EndDate, MonthlyAmount, OriginalStatus,
-            TerminationDate, TerminationReason, TerminatedBy
+            TerminationDate, TerminationReason, TerminatedBy, ConsentDocumentPath
         )
         VALUES (
             @LeaseID, @LeaseNumber, @PropertyID, @TenantID,
             @StartDate, @EndDate, @MonthlyAmount, @Status,
-            GETDATE(), @TerminationReason, @TerminatedBy
+            GETDATE(), @TerminationReason, @TerminatedBy, @ConsentDocumentPath
         );
         
         -- Помечаем договор как архивированный в основной таблице
         UPDATE [dbo].[Leases]
         SET IsArchived = 1,
-            TerminationReason = @TerminationReason
+            TerminationReason = @TerminationReason,
+            ConsentDocumentPath = @ConsentDocumentPath
         WHERE LeaseID = @LeaseID;
         
         COMMIT TRANSACTION;

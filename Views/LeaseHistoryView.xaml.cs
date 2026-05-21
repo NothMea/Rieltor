@@ -68,10 +68,17 @@ namespace WpfApp1.Views
             FilterHistory();
         }
 
+        private void DateFilter_Changed(object sender, SelectionChangedEventArgs e)
+        {
+            FilterHistory();
+        }
+
         private void BtnResetFilters_Click(object sender, RoutedEventArgs e)
         {
             CmbStatusFilter.SelectedIndex = 0;
             TxtSearch.Text = "";
+            DateFromPicker.SelectedDate = null;
+            DateToPicker.SelectedDate = null;
             LoadHistory();
         }
 
@@ -85,6 +92,14 @@ namespace WpfApp1.Views
                 var selectedStatus = (CmbStatusFilter.SelectedItem as ComboBoxItem)?.Content?.ToString();
                 var searchText = TxtSearch.Text ?? string.Empty;
                 searchText = searchText.ToLower();
+                
+                DateTime? dateFrom = DateFromPicker?.SelectedDate;
+                DateTime? dateTo = DateToPicker?.SelectedDate;
+                // Если дата окончания не выбрана, но есть дата начала, считаем до конца дня
+                if (dateTo.HasValue)
+                {
+                    dateTo = dateTo.Value.Date.AddDays(1).AddTicks(-1); // Конец выбранного дня
+                }
 
                 var query = db.Leases
                     .Where(l => l.Status == "Завершен" || l.Status == "Расторгнут");
@@ -102,6 +117,16 @@ namespace WpfApp1.Views
                         l.LeaseNumber.ToLower().Contains(searchText) ||
                         l.Tenants.Name.ToLower().Contains(searchText) ||
                         (l.Property.Address != null && l.Property.Address.ToLower().Contains(searchText)));
+                }
+
+                // Фильтр по дате (диапазон дат окончания договора)
+                if (dateFrom.HasValue)
+                {
+                    query = query.Where(l => l.EndDate >= dateFrom.Value);
+                }
+                if (dateTo.HasValue)
+                {
+                    query = query.Where(l => l.EndDate <= dateTo.Value);
                 }
 
                 var historyQuery = query

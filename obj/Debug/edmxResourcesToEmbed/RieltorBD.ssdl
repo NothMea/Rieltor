@@ -17,6 +17,7 @@
     <Property Name="TerminationReason" Type="nvarchar" MaxLength="500" />
     <Property Name="TerminatedBy" Type="nvarchar" MaxLength="100" />
     <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+    <Property Name="ConsentDocumentPath" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="Leases">
     <Key>
@@ -32,6 +33,7 @@
     <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
     <Property Name="IsArchived" Type="bit" Nullable="false" />
     <Property Name="TerminationReason" Type="nvarchar" MaxLength="500" />
+    <Property Name="ConsentDocumentPath" Type="nvarchar" MaxLength="500" />
   </EntityType>
   <EntityType Name="Payments">
     <Key>

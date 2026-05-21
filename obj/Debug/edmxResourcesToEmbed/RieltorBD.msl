@@ -4,6 +4,7 @@
     <EntitySetMapping Name="Leases">
       <EntityTypeMapping TypeName="RieltorModel.Leases">
         <MappingFragment StoreEntitySet="Leases">
+          <ScalarProperty Name="ConsentDocumentPath" ColumnName="ConsentDocumentPath" />
           <ScalarProperty Name="TerminationReason" ColumnName="TerminationReason" />
           <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
           <ScalarProperty Name="LeaseID" ColumnName="LeaseID" />
@@ -67,6 +68,7 @@
     <EntitySetMapping Name="LeaseHistory">
       <EntityTypeMapping TypeName="RieltorModel.LeaseHistory">
         <MappingFragment StoreEntitySet="LeaseHistory">
+          <ScalarProperty Name="ConsentDocumentPath" ColumnName="ConsentDocumentPath" />
           <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
           <ScalarProperty Name="TerminatedBy" ColumnName="TerminatedBy" />
           <ScalarProperty Name="TerminationReason" ColumnName="TerminationReason" />

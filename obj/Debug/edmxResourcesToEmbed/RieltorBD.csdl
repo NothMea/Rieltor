@@ -18,6 +18,7 @@
     <Property Name="IsArchived" Type="Boolean" Nullable="false" />
     <Property Name="TerminationReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="LeaseHistory" Relationship="RieltorModel.FK_LeaseHistory_Leases" FromRole="Leases" ToRole="LeaseHistory" />
+    <Property Name="ConsentDocumentPath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="Payments">
     <Key>
@@ -161,6 +162,7 @@
     <NavigationProperty Name="Leases" Relationship="RieltorModel.FK_LeaseHistory_Leases" FromRole="LeaseHistory" ToRole="Leases" />
     <NavigationProperty Name="Property" Relationship="RieltorModel.FK_LeaseHistory_Property" FromRole="LeaseHistory" ToRole="Property" />
     <NavigationProperty Name="Tenants" Relationship="RieltorModel.FK_LeaseHistory_Tenants" FromRole="LeaseHistory" ToRole="Tenants" />
+    <Property Name="ConsentDocumentPath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
   </EntityType>
   <Association Name="FK_LeaseHistory_Leases">
     <End Type="RieltorModel.Leases" Role="Leases" Multiplicity="1" />

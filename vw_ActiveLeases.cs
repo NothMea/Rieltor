@@ -12,14 +12,8 @@ namespace WpfApp1
     using System;
     using System.Collections.Generic;
     
-    public partial class Leases
+    public partial class vw_ActiveLeases
     {
-        public Leases()
-        {
-            this.Payments = new HashSet<Payments>();
-            this.LeaseHistory = new HashSet<LeaseHistory>();
-        }
-    
         public int LeaseID { get; set; }
         public string LeaseNumber { get; set; }
         public int PropertyID { get; set; }
@@ -31,10 +25,5 @@ namespace WpfApp1
         public bool IsArchived { get; set; }
         public string TerminationReason { get; set; }
         public string ConsentDocumentPath { get; set; }
-    
-        public virtual Property Property { get; set; }
-        public virtual Tenants Tenants { get; set; }
-        public virtual ICollection<Payments> Payments { get; set; }
-        public virtual ICollection<LeaseHistory> LeaseHistory { get; set; }
     }
 }

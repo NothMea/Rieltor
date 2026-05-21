@@ -26,8 +26,8 @@ namespace WpfApp1
         public System.DateTime TerminationDate { get; set; }
         public string TerminationReason { get; set; }
         public string TerminatedBy { get; set; }
-        public string ConsentDocumentPath { get; set; }
         public System.DateTime CreatedAt { get; set; }
+        public string ConsentDocumentPath { get; set; }
     
         public virtual Leases Leases { get; set; }
         public virtual Property Property { get; set; }

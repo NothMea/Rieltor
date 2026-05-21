@@ -22,6 +22,7 @@
           <Property Name="TerminationReason" Type="nvarchar" MaxLength="500" />
           <Property Name="TerminatedBy" Type="nvarchar" MaxLength="100" />
           <Property Name="CreatedAt" Type="datetime" Nullable="false" />
+          <Property Name="ConsentDocumentPath" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Leases">
           <Key>
@@ -37,6 +38,7 @@
           <Property Name="Status" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="IsArchived" Type="bit" Nullable="false" />
           <Property Name="TerminationReason" Type="nvarchar" MaxLength="500" />
+          <Property Name="ConsentDocumentPath" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="Payments">
           <Key>
@@ -213,6 +215,7 @@
           <Property Name="IsArchived" Type="Boolean" Nullable="false" />
           <Property Name="TerminationReason" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="LeaseHistory" Relationship="RieltorModel.FK_LeaseHistory_Leases" FromRole="Leases" ToRole="LeaseHistory" />
+          <Property Name="ConsentDocumentPath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Payments">
           <Key>
@@ -356,6 +359,7 @@
           <NavigationProperty Name="Leases" Relationship="RieltorModel.FK_LeaseHistory_Leases" FromRole="LeaseHistory" ToRole="Leases" />
           <NavigationProperty Name="Property" Relationship="RieltorModel.FK_LeaseHistory_Property" FromRole="LeaseHistory" ToRole="Property" />
           <NavigationProperty Name="Tenants" Relationship="RieltorModel.FK_LeaseHistory_Tenants" FromRole="LeaseHistory" ToRole="Tenants" />
+          <Property Name="ConsentDocumentPath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <Association Name="FK_LeaseHistory_Leases">
           <End Type="RieltorModel.Leases" Role="Leases" Multiplicity="1" />
@@ -402,6 +406,7 @@
           <EntitySetMapping Name="Leases">
             <EntityTypeMapping TypeName="RieltorModel.Leases">
               <MappingFragment StoreEntitySet="Leases">
+                <ScalarProperty Name="ConsentDocumentPath" ColumnName="ConsentDocumentPath" />
                 <ScalarProperty Name="TerminationReason" ColumnName="TerminationReason" />
                 <ScalarProperty Name="IsArchived" ColumnName="IsArchived" />
                 <ScalarProperty Name="LeaseID" ColumnName="LeaseID" />
@@ -465,6 +470,7 @@
           <EntitySetMapping Name="LeaseHistory">
             <EntityTypeMapping TypeName="RieltorModel.LeaseHistory">
               <MappingFragment StoreEntitySet="LeaseHistory">
+                <ScalarProperty Name="ConsentDocumentPath" ColumnName="ConsentDocumentPath" />
                 <ScalarProperty Name="CreatedAt" ColumnName="CreatedAt" />
                 <ScalarProperty Name="TerminatedBy" ColumnName="TerminatedBy" />
                 <ScalarProperty Name="TerminationReason" ColumnName="TerminationReason" />

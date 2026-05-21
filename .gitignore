@@ -1,1 +1,43 @@
-Nothing should be ignored based on the provided file changes. The only modified file is 'TerminationWindow.xaml.cs', which appears to be a source code file and should not be added to .gitignore. Since there are no build artifacts, dependencies, or temporary files in the changes, no additional ignore rules are needed.
+```
+# Compiled files
+*.dll
+*.exe
+*.pdb
+*.obj
+*.lib
+*.so
+*.dylib
+
+# Build outputs
+bin/
+obj/
+out/
+dist/
+build/
+
+# Dependencies
+packages/
+node_modules/
+vendor/
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.local
+.env.*
+
+# Editors
+.vscode/
+.idea/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# OS
+.DS_Store
+Thumbs.db
+```
+/.vs

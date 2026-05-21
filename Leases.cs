@@ -28,6 +28,8 @@ namespace WpfApp1
         public System.DateTime EndDate { get; set; }
         public decimal MonthlyAmount { get; set; }
         public string Status { get; set; }
+        public string TerminationReason { get; set; }
+        public string ConsentDocumentPath { get; set; }
     
         public virtual Property Property { get; set; }
         public virtual Tenants Tenants { get; set; }

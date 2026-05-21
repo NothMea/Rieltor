@@ -9,14 +9,7 @@ namespace WpfApp1
     
     public partial class Leases
     {
-        /// <summary>
-        /// Причина расторжения/завершения договора
-        /// </summary>
-        public string TerminationReason { get; set; }
-        
-        /// <summary>
-        /// Флаг архивации договора
-        /// </summary>
-        public bool IsArchived { get; set; }
+        // Свойства TerminationReason, ConsentDocumentPath и IsArchived теперь находятся в основном файле Leases.cs
+        // и генерируются автоматически из базы данных Entity Framework
     }
 }

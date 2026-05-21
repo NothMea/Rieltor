@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp1"
         mc:Ignorable="d"
-        Title="Расторжение договора аренды" Height="465" Width="600"
+        Title="Расторжение договора аренды" Height="520" Width="600"
         WindowStartupLocation="CenterScreen" Background="#E8F4F8" ResizeMode="NoResize">
     <Grid Margin="20">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
@@ -30,15 +31,26 @@
         <TextBox x:Name="TxtTerminationReason" Grid.Row="3" Height="80" AcceptsReturn="True" TextWrapping="Wrap" VerticalScrollBarVisibility="Auto" Margin="0,0,0,15"/>
 
         <!-- Инициатор расторжения -->
-        <TextBlock Grid.Row="4" Text="Инициатор расторжения:" VerticalAlignment="Center" Margin="0,0,0,5" FontWeight="SemiBold" Foreground="#333333"/>
-        <ComboBox x:Name="CmbTerminatedBy" Grid.Row="4" Height="25" VerticalAlignment="Center" HorizontalAlignment="Right" Width="250">
+        <TextBlock Grid.Row="4" Text="Инициатор расторжения:" VerticalAlignment="Top" Margin="0,0,0,5" FontWeight="SemiBold" Foreground="#333333"/>
+        <ComboBox x:Name="CmbTerminatedBy" Grid.Row="4" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="250">
             <ComboBoxItem Content="По соглашению сторон"/>
             <ComboBoxItem Content="По инициативе арендодателя"/>
             <ComboBoxItem Content="По инициативе арендатора"/>
         </ComboBox>
 
+        <!-- Загрузка документа согласия -->
+        <TextBlock Grid.Row="5" Text="Документ согласия (Word):" VerticalAlignment="Center" Margin="0,0,0,5" FontWeight="SemiBold" Foreground="#333333"/>
+        <Grid Grid.Row="5" Margin="0,25,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBox x:Name="TxtDocumentPath" IsReadOnly="True" VerticalAlignment="Center" Margin="0,0,10,0" Background="#F5F5F5"/>
+            <Button x:Name="BtnBrowseDocument" Grid.Column="1" Content="Обзор..." Click="BtnBrowseDocument_Click" Width="80" Height="25" Style="{StaticResource TabButtonStyle}"/>
+        </Grid>
+
         <!-- Кнопки -->
-        <StackPanel Grid.Row="5" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+        <StackPanel Grid.Row="6" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
             <Button Content="Расторгнуть" Click="BtnTerminate_Click" Width="188" Height="40" Margin="0,0,15,0" Style="{StaticResource TabButtonStyle}" Background="#FF9800"/>
             <Button Content="Отмена" Click="BtnCancel_Click" Width="150" Height="40"/>
         </StackPanel>

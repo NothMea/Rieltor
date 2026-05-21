@@ -78,13 +78,14 @@ namespace WpfApp1
                 return;
             }
 
-            // Проверка: для расторжения по соглашению сторон требуется документ согласия
-            var selectedInitiator = (CmbTerminatedBy.SelectedItem as ComboBoxItem)?.Content?.ToString();
-            if (selectedInitiator == "По соглашению сторон" && string.IsNullOrEmpty(_consentDocumentPath))
+            // Проверка: документ согласия (Word) обязателен для любого типа расторжения
+            if (string.IsNullOrEmpty(_consentDocumentPath))
             {
-                MessageBox.Show("Для расторжения по соглашению сторон необходимо загрузить документ согласия в формате Word.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Для расторжения договора необходимо загрузить документ согласия в формате Word.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
+
+            var selectedInitiator = (CmbTerminatedBy.SelectedItem as ComboBoxItem)?.Content?.ToString();
 
             var confirmResult = MessageBox.Show(
                 $"Вы уверены, что хотите расторгнуть договор?\n\n" +

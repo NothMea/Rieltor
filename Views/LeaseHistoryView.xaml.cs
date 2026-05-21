@@ -21,9 +21,6 @@ namespace WpfApp1.Views
     /// </summary>
     public partial class LeaseHistoryView : UserControl
     {
-        private DateTime? _fromDate;
-        private DateTime? _toDate;
-
         public LeaseHistoryView()
         {
             InitializeComponent();
@@ -32,6 +29,9 @@ namespace WpfApp1.Views
 
         private void LoadHistory()
         {
+            if (HistoryGrid == null)
+                return;
+
             using (var db = new RieltorEntities())
             {
                 // Загружаем историю из таблицы LeaseHistory если она существует
@@ -68,11 +68,6 @@ namespace WpfApp1.Views
             FilterHistory();
         }
 
-        private void TxtCitySearch_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            FilterHistory();
-        }
-
         private void DateFilter_Changed(object sender, SelectionChangedEventArgs e)
         {
             FilterHistory();
@@ -82,17 +77,14 @@ namespace WpfApp1.Views
         {
             CmbStatusFilter.SelectedIndex = 0;
             TxtSearch.Text = "";
-            TxtCitySearch.Text = "";
-            DpFromDate.SelectedDate = null;
-            DpToDate.SelectedDate = null;
-            _fromDate = null;
-            _toDate = null;
+            DateFromPicker.SelectedDate = null;
+            DateToPicker.SelectedDate = null;
             LoadHistory();
         }
 
         private void FilterHistory()
         {
-            if (CmbStatusFilter == null || TxtSearch == null)
+            if (CmbStatusFilter == null || TxtSearch == null || HistoryGrid == null)
                 return;
 
             using (var db = new RieltorEntities())
@@ -100,8 +92,14 @@ namespace WpfApp1.Views
                 var selectedStatus = (CmbStatusFilter.SelectedItem as ComboBoxItem)?.Content?.ToString();
                 var searchText = TxtSearch.Text ?? string.Empty;
                 searchText = searchText.ToLower();
-                var cityText = TxtCitySearch.Text ?? string.Empty;
-                cityText = cityText.ToLower();
+                
+                DateTime? dateFrom = DateFromPicker?.SelectedDate;
+                DateTime? dateTo = DateToPicker?.SelectedDate;
+                // Если дата окончания не выбрана, но есть дата начала, считаем до конца дня
+                if (dateTo.HasValue)
+                {
+                    dateTo = dateTo.Value.Date.AddDays(1).AddTicks(-1); // Конец выбранного дня
+                }
 
                 var query = db.Leases
                     .Where(l => l.Status == "Завершен" || l.Status == "Расторгнут");
@@ -112,31 +110,23 @@ namespace WpfApp1.Views
                     query = query.Where(l => l.Status == selectedStatus);
                 }
 
-                // Поиск по номеру договора или арендатору
+                // Поиск по номеру договора, арендатору или адресу объекта (в одном поле)
                 if (!string.IsNullOrWhiteSpace(searchText))
                 {
                     query = query.Where(l => 
                         l.LeaseNumber.ToLower().Contains(searchText) ||
-                        l.Tenants.Name.ToLower().Contains(searchText));
+                        l.Tenants.Name.ToLower().Contains(searchText) ||
+                        (l.Property.Address != null && l.Property.Address.ToLower().Contains(searchText)));
                 }
 
-                // Поиск по городу (в части адреса)
-                if (!string.IsNullOrWhiteSpace(cityText))
+                // Фильтр по дате (диапазон дат окончания договора)
+                if (dateFrom.HasValue)
                 {
-                    query = query.Where(l => l.Property.Address != null && l.Property.Address.ToLower().Contains(cityText));
+                    query = query.Where(l => l.EndDate >= dateFrom.Value);
                 }
-
-                // Фильтр по диапазону дат
-                if (DpFromDate.SelectedDate.HasValue)
+                if (dateTo.HasValue)
                 {
-                    _fromDate = DpFromDate.SelectedDate.Value.Date;
-                    query = query.Where(l => l.EndDate >= _fromDate.Value);
-                }
-
-                if (DpToDate.SelectedDate.HasValue)
-                {
-                    _toDate = DpToDate.SelectedDate.Value.Date.AddDays(1).AddTicks(-1); // Конец дня
-                    query = query.Where(l => l.EndDate <= _toDate.Value);
+                    query = query.Where(l => l.EndDate <= dateTo.Value);
                 }
 
                 var historyQuery = query

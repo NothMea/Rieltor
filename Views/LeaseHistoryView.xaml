@@ -23,7 +23,8 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="300"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="Auto"/>
@@ -47,7 +48,7 @@
                 <TextBlock Text="-" Grid.Column="6" VerticalAlignment="Center" Margin="0,0,5,0"/>
                 <DatePicker x:Name="DateToPicker" Grid.Column="7" Width="100" Margin="0,0,10,0" SelectedDateChanged="DateFilter_Changed"/>
                 
-                <Button Grid.Column="8" Content="Сброс" Width="60" Height="30" Margin="0,0,0,0" Click="BtnResetFilters_Click"/>
+                <Button Grid.Column="8" Content="Сброс" Width="170" Height="36" Margin="0,0,0,0" Click="BtnResetFilters_Click"/>
             </Grid>
         </Border>
 

@@ -29,6 +29,9 @@ namespace WpfApp1.Views
 
         private void LoadHistory()
         {
+            if (HistoryGrid == null)
+                return;
+
             using (var db = new RieltorEntities())
             {
                 // Загружаем историю из таблицы LeaseHistory если она существует
@@ -74,7 +77,7 @@ namespace WpfApp1.Views
 
         private void FilterHistory()
         {
-            if (CmbStatusFilter == null || TxtSearch == null)
+            if (CmbStatusFilter == null || TxtSearch == null || HistoryGrid == null)
                 return;
 
             using (var db = new RieltorEntities())

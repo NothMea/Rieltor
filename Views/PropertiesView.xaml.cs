@@ -312,12 +312,21 @@ namespace WpfApp1.Views
 
         private void BtnAddLease_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(
-                "Для создания нового договора аренды обратитесь к администратору системы.\n\n" +
-                "Создание договоров требует согласования и не может быть выполнено через данное приложение.",
-                "Информация",
-                MessageBoxButton.OK,
-                MessageBoxImage.Information);
+            var leaseEdit = new LeaseEditView(() => LoadData());
+            var window = new Window
+            {
+                Title = "Добавление договора аренды",
+                Width = 750,
+                Height = 750,
+                Content = leaseEdit,
+                WindowStartupLocation = WindowStartupLocation.CenterScreen,
+                Background = (Brush)new BrushConverter().ConvertFrom("#E8F4F8")
+            };
+
+            if (window.ShowDialog() == true)
+            {
+                LoadData();
+            }
         }
     }
 

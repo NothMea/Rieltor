@@ -80,6 +80,9 @@
     <Compile Include="LeaseHistory.cs">
       <DependentUpon>RieltorBD.tt</DependentUpon>
     </Compile>
+    <Compile Include="LeaseEditView.xaml.cs">
+      <DependentUpon>LeaseEditView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\BoolToVisibilityConverter.cs" />
     <Compile Include="Views\InverseBoolToVisibilityConverter.cs" />
     <Compile Include="Views\StatusColorConverter.cs" />
@@ -175,6 +178,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LeaseEditView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -230,6 +237,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Resources\logo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\LeaseTemplate.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Resource Include="Resources\Амбар.png.jpg" />

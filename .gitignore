@@ -1,101 +1,75 @@
-```
-# Build outputs
-bin/
-obj/
-*.exe
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+*.o
+*.obj
 *.dll
-*.pdb
-*.userprefs
-*.cache
-*.suo
-*.user
-*.aps
-*.ncb
-*.ilk
-*.iobj
-*.ipdb
-*.tlog
-*.exp
-*.lib
-*.manifest
-*.res
-*.metagen
-*.metaxml
-*.pidb
-*.shfbx
-*.sln.docstates
-*.userosscache
-*.sln.cache
-*.VC.db
-*.VC.VC.opendb
-*.VC.VC.opendb-shm
-*.VC.VC.opendb-wal
-*.VC.VC.opendb-shm
-*.VC.VC.opendb-wal
-*.VC.VC.opendb-shm
-*.VC.VC.opendb-wal
-Debug/
-Release/
-x64/
-x86/
-build/
-dist/
+*.so
+*.exe
+*.class
+*.out
 
 # Dependencies
-packages/
 node_modules/
-.nuget/
-.nuget/packages/
-packages.lock.json
-
-# Environment
+venv/
+.venv/
 .env
 .env.local
 *.env.*
 
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-desktop.ini
-Icon?
-VolumeIcon.icns
-
-# Logs
+# Logs and temp files
 *.log
-*.bak
 *.tmp
+*.swp
+*.swo
 
-# User-specific files
-.vs/
+# Editors
 .vscode/
 .idea/
-*.userprefs
-*.suo
-*.user
 
-# Testing
-TestResults/
+# Build directories
+dist/
+build/
+target/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.PythonCache/
+.mypy_cache/
+.pytest_cache/
+.coverage
 coverage/
-*.coverage
 htmlcov/
 
-# Local DB
-*.mdb
-*.accdb
-*.sqlite
-*.sqlite3
+# System files
+.DS_Store
+Thumbs.db
+.zshrc.swp
+*.swp
+*.swo
 
-# Output of the dotnet cli
-**/[Dd]ebug/
-**/[Rr]elease/
-**/[Xx]64/
-**/[Xx]86/
-**/bin/
-**/obj/
-**/logs/
-```
+# Compressed files
+*.zip
+*.gz
+*.tar
+*.tgz
+*.bz2
+*.xz
+*.7z
+*.rar
+*.zst
+*.lz4
+*.lzh
+*.cab
+*.arj
+*.rpm
+*.deb
+*.Z
+*.lz
+*.lzo
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.tar.zst

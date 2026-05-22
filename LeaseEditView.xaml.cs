@@ -190,10 +190,11 @@ namespace WpfApp1
 
                     _onSaveCallback?.Invoke();
 
-                    if (Window.GetWindow(this) != null)
+                    var parentWindow = System.Windows.Window.GetWindow(this);
+                    if (parentWindow != null)
                     {
-                        Window.GetWindow(this).DialogResult = true;
-                        Window.GetWindow(this).Close();
+                        parentWindow.DialogResult = true;
+                        parentWindow.Close();
                     }
                 }
             }
@@ -439,7 +440,7 @@ namespace WpfApp1
                 wordApp.Visible = false;
                 wordApp.DisplayAlerts = Microsoft.Office.Interop.Word.WdAlertLevel.wdAlertsNone;
                 wordApp.ScreenUpdating = false;
-                wordApp.AutomationSecurity = MsoAutomationSecurity.msoAutomationSecurityLow;
+                wordApp.AutomationSecurity = Microsoft.Office.Interop.Word.MsoAutomationSecurity.msoAutomationSecurityLow;
 
                 // 3. Открываем документ
                 object path = documentPath;
@@ -543,10 +544,11 @@ namespace WpfApp1
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            if (Window.GetWindow(this) != null)
+            var parentWindow = System.Windows.Window.GetWindow(this);
+            if (parentWindow != null)
             {
-                Window.GetWindow(this).DialogResult = false;
-                Window.GetWindow(this).Close();
+                parentWindow.DialogResult = false;
+                parentWindow.Close();
             }
         }
     }

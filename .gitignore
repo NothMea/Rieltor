@@ -1,40 +1,30 @@
 ```
 # Build artifacts
-*.obj
+bin/
+obj/
 *.exe
 *.dll
 *.pdb
-*.user
-*.aps
-*.ilk
-*.iobj
-*.ipdb
-*.tlog
-*.log
-*.tmp
+*.userprefs
+*.cache
+*.compiled
 
 # Dependencies
 packages/
-bin/
-obj/
 
-# Visual Studio files
-*.userprefs
-.vs/
-*.suo
+# Logs
+*.log
+
+# User-specific files
 *.user
-*.cache
-*.VC.db
-*.VC.VC.opendb
+*.userosscache
+*.suo
+*.userprefs
 
-# Environment
-.env
-.env.local
-*.env.*
+# Visual Studio Code
+.vscode/
 
-# OS generated files
-.DS_Store
-Thumbs.db
-desktop.ini
-$RECYCLE.BIN/
+# Temporary files
+*.tmp
+*.temp
 ```

@@ -1,1 +1,32 @@
-Nothing should be ignored based on the provided file changes. The only modified file is 'LeaseEditView.xaml.cs', which is a source code file and should not be added to .gitignore. Since there are no build artifacts, dependencies, or temporary files in the changes, no additional rules are needed.
+```
+# Build artifacts
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.userprefs
+*.cache
+*.compiled
+
+# Dependencies
+packages/
+
+# Logs
+*.log
+
+# User-specific files
+*.user
+*.userosscache
+*.suo
+*.userprefs
+
+# Visual Studio Code
+.vscode/
+
+# Temporary files
+*.tmp
+*.temp
+```
+/.vs
+/.gitignore

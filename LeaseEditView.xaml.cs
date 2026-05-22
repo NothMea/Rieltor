@@ -440,8 +440,7 @@ namespace WpfApp1
                 wordApp.Visible = false;
                 wordApp.DisplayAlerts = Microsoft.Office.Interop.Word.WdAlertLevel.wdAlertsNone;
                 wordApp.ScreenUpdating = false;
-                // Настройки безопасности (1 = msoAutomationSecurityLow)
-                wordApp.AutomationSecurity = 1;
+                wordApp.AutomationSecurity = Microsoft.Office.Interop.Word.MsoAutomationSecurity.msoAutomationSecurityLow;
 
                 // 3. Открываем документ
                 object path = documentPath;

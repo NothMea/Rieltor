@@ -78,3 +78,6 @@ C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\WpfApp1.csproj.CoreCo
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\WpfApp1.csproj.Up2Date
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\WpfApp1.exe
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\WpfApp1.pdb
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\bin\Debug\Resources\LeaseTemplate.docx
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\LeaseEditView.g.cs
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\LeaseEditView.baml

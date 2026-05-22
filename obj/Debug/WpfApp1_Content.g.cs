@@ -14,6 +14,7 @@
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/shop.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/storage.png")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/logo.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/leasetemplate.docx")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("rieltorbd.context.tt")]
 [assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("rieltorbd.tt")]
 

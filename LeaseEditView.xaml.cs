@@ -208,6 +208,14 @@ namespace WpfApp1
             {
                 using (var db = new RieltorEntities())
                 {
+                    // Прикрепляем сущность к новому контексту
+                    var trackedLease = db.Leases.Find(lease.LeaseID);
+                    if (trackedLease == null)
+                    {
+                        MessageBox.Show("Договор не найден в базе данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
                     var tenant = db.Tenants.Find(lease.TenantID);
                     var property = db.Property.Find(lease.PropertyID);
 
@@ -231,7 +239,7 @@ namespace WpfApp1
                     }
 
                     // Создаем копию шаблона с уникальным именем
-                    string outputFileName = $"Договор_{lease.LeaseNumber}_{DateTime.Now:yyyyMMdd_HHmmss}.docx";
+                    string outputFileName = $"Договор_{trackedLease.LeaseNumber}_{DateTime.Now:yyyyMMdd_HHmmss}.docx";
                     string outputPath = Path.Combine(
                         Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
                         "Договоры аренды",
@@ -247,10 +255,10 @@ namespace WpfApp1
                     File.Copy(templatePath, outputPath, true);
 
                     // Заполняем документ данными
-                    FillWordDocument(outputPath, lease, tenant, property);
+                    FillWordDocument(outputPath, trackedLease, tenant, property);
 
                     // Сохраняем путь к документу в базе
-                    lease.ConsentDocumentPath = outputPath;
+                    trackedLease.ConsentDocumentPath = outputPath;
                     db.SaveChanges();
 
                     // Предлагаем открыть документ

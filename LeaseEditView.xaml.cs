@@ -259,7 +259,38 @@ namespace WpfApp1
 
                     // Сохраняем путь к документу в базе
                     trackedLease.ConsentDocumentPath = outputPath;
-                    db.SaveChanges();
+                    
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (System.Data.Entity.Infrastructure.DbUpdateException dbEx)
+                    {
+                        string detailedError = $"Ошибка сохранения в базе данных: {dbEx.Message}";
+                        
+                        if (dbEx.InnerException != null)
+                        {
+                            detailedError += $"\n\nSQL Error: {dbEx.InnerException.Message}";
+                            
+                            // Проверяем на нарушение ограничений NOT NULL
+                            if (dbEx.InnerException.Message.Contains("cannot be null") || 
+                                dbEx.InnerException.Message.Contains("не может быть пустым"))
+                            {
+                                detailedError += "\n\nВозможно, поле ConsentDocumentPath имеет ограничение NOT NULL в базе данных,\n" +
+                                               "но значение не было сохранено корректно.";
+                            }
+                            
+                            // Проверяем на превышение длины строки
+                            if (dbEx.InnerException.Message.Contains("String or binary data would be truncated") ||
+                                dbEx.InnerException.Message.Contains("слишком длинная"))
+                            {
+                                detailedError += "\n\nПуть к файлу слишком длинный для поля в базе данных.\n" +
+                                               $"Длина пути: {outputPath.Length} символов.";
+                            }
+                        }
+                        
+                        throw new Exception(detailedError, dbEx);
+                    }
 
                     // Предлагаем открыть документ
                     var result = MessageBox.Show(
@@ -276,7 +307,28 @@ namespace WpfApp1
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при создании документа: {ex.Message}\n\n{ex.StackTrace}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                string errorMessage = $"Ошибка при создании документа: {ex.Message}";
+                
+                if (ex.InnerException != null)
+                {
+                    errorMessage += $"\n\nВнутренняя ошибка: {ex.InnerException.Message}";
+                    
+                    if (ex.InnerException.InnerException != null)
+                    {
+                        errorMessage += $"\n\nДетали: {ex.InnerException.InnerException.Message}";
+                    }
+                }
+                
+                // Если это DbUpdateException, покажем детали ошибок валидации
+                if (ex is System.Data.Entity.Infrastructure.DbUpdateException dbEx)
+                {
+                    if (dbEx.InnerException != null)
+                    {
+                        errorMessage += $"\n\nSQL Error: {dbEx.InnerException.Message}";
+                    }
+                }
+                
+                MessageBox.Show(errorMessage, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Office.Core;
+using Microsoft.Office.Interop.Word;
 using Microsoft.Win32;
 
 namespace WpfApp1

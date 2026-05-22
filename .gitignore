@@ -1,1 +1,27 @@
-Nothing should be ignored based on the provided file changes. The only modified file is 'LeaseEditView.xaml.cs', which appears to be a source code file (.cs extension) and should not be added to .gitignore according to rule #7. Since there are no build artifacts, dependencies, or temporary files in the changes, no additional ignore rules are needed.
+```
+# Compiled and build artifacts
+*.pyc
+__pycache__/
+
+# Dependencies
+node_modules/
+venv/
+.venv/
+.env
+.env.local
+*.env.*
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+
+# Editors
+.vscode/
+.idea/
+
+# Build outputs
+dist/
+build/
+target/
+```

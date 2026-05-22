@@ -196,9 +196,73 @@ namespace WpfApp1
                     }
                 }
             }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException dbEx)
+            {
+                string detailedError = $"Ошибка DbUpdateException при сохранении договора: {dbEx.Message}";
+                
+                // Получаем информацию о сущности, вызвавшей ошибку
+                if (dbEx.Entries != null && dbEx.Entries.Count > 0)
+                {
+                    foreach (var entry in dbEx.Entries)
+                    {
+                        detailedError += $"\n\nСущность: {entry.Entity.GetType().Name}";
+                        
+                        var properties = entry.CurrentValues.PropertyNames;
+                        foreach (var propName in properties)
+                        {
+                            var value = entry.CurrentValues[propName];
+                            detailedError += $"\n  {propName}: {(value ?? "null")}";
+                            
+                            if (value is string strValue)
+                            {
+                                detailedError += $" (длина: {strValue.Length})";
+                            }
+                        }
+                    }
+                }
+                
+                if (dbEx.InnerException != null)
+                {
+                    detailedError += $"\n\nSQL Error: {dbEx.InnerException.Message}";
+                    
+                    if (dbEx.InnerException.InnerException != null)
+                    {
+                        detailedError += $"\n\nДетали SQL: {dbEx.InnerException.InnerException.Message}";
+                    }
+                    
+                    // Проверяем на нарушение ограничений NOT NULL
+                    if (dbEx.InnerException.Message.Contains("cannot be null") || 
+                        dbEx.InnerException.Message.Contains("не может быть пустым") ||
+                        dbEx.InnerException.Message.Contains("Cannot insert the value NULL into column"))
+                    {
+                        detailedError += "\n\n=== ВОЗМОЖНАЯ ПРИЧИНА ===\nПоле ConsentDocumentPath имеет ограничение NOT NULL в базе данных.\nВыполните скрипт FixConsentDocumentPath.sql для исправления.";
+                    }
+                    
+                    // Проверяем на превышение длины строки
+                    if (dbEx.InnerException.Message.Contains("String or binary data would be truncated") ||
+                        dbEx.InnerException.Message.Contains("слишком длинная"))
+                    {
+                        detailedError += "\n\n=== ВОЗМОЖНАЯ ПРИЧИНА ===\nПуть к файлу слишком длинный для поля в базе данных.";
+                    }
+                }
+                
+                MessageBox.Show(detailedError, "DbUpdateException", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                string errorMsg = $"Ошибка при сохранении: {ex.Message}";
+                
+                if (ex.InnerException != null)
+                {
+                    errorMsg += $"\n\nВнутренняя ошибка: {ex.InnerException.Message}";
+                    
+                    if (ex.InnerException.InnerException != null)
+                    {
+                        errorMsg += $"\n\nДетали: {ex.InnerException.InnerException.Message}";
+                    }
+                }
+                
+                MessageBox.Show(errorMsg, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -268,24 +332,46 @@ namespace WpfApp1
                     {
                         string detailedError = $"Ошибка сохранения в базе данных: {dbEx.Message}";
                         
+                        // Получаем информацию о сущности, вызвавшей ошибку
+                        if (dbEx.Entries != null && dbEx.Entries.Count > 0)
+                        {
+                            foreach (var entry in dbEx.Entries)
+                            {
+                                detailedError += $"\n\nСущность: {entry.Entity.GetType().Name}";
+                                
+                                // Получаем все свойства и их значения
+                                var properties = entry.CurrentValues.PropertyNames;
+                                foreach (var propName in properties)
+                                {
+                                    var value = entry.CurrentValues[propName];
+                                    detailedError += $"\n  {propName}: {(value ?? "null")}";
+                                    
+                                    // Проверяем длину строковых полей
+                                    if (value is string strValue)
+                                    {
+                                        detailedError += $" (длина: {strValue.Length})";
+                                    }
+                                }
+                            }
+                        }
+                        
                         if (dbEx.InnerException != null)
                         {
                             detailedError += $"\n\nSQL Error: {dbEx.InnerException.Message}";
                             
                             // Проверяем на нарушение ограничений NOT NULL
                             if (dbEx.InnerException.Message.Contains("cannot be null") || 
-                                dbEx.InnerException.Message.Contains("не может быть пустым"))
+                                dbEx.InnerException.Message.Contains("не может быть пустым") ||
+                                dbEx.InnerException.Message.Contains("Cannot insert the value NULL into column"))
                             {
-                                detailedError += "\n\nВозможно, поле ConsentDocumentPath имеет ограничение NOT NULL в базе данных,\n" +
-                                               "но значение не было сохранено корректно.";
+                                detailedError += "\n\nВОЗМОЖНАЯ ПРИЧИНА: Поле ConsentDocumentPath имеет ограничение NOT NULL в базе данных.";
                             }
                             
                             // Проверяем на превышение длины строки
                             if (dbEx.InnerException.Message.Contains("String or binary data would be truncated") ||
                                 dbEx.InnerException.Message.Contains("слишком длинная"))
                             {
-                                detailedError += "\n\nПуть к файлу слишком длинный для поля в базе данных.\n" +
-                                               $"Длина пути: {outputPath.Length} символов.";
+                                detailedError += $"\n\nПуть к файлу слишком длинный для поля в базе данных.\nДлина пути: {outputPath.Length} символов.";
                             }
                         }
                         

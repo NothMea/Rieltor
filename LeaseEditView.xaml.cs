@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Office.Interop.Word;
 using Microsoft.Win32;
 
 namespace WpfApp1
@@ -189,16 +190,81 @@ namespace WpfApp1
 
                     _onSaveCallback?.Invoke();
 
-                    if (Window.GetWindow(this) != null)
+                    var parentWindow = System.Windows.Window.GetWindow(this);
+                    if (parentWindow != null)
                     {
-                        Window.GetWindow(this).DialogResult = true;
-                        Window.GetWindow(this).Close();
+                        parentWindow.DialogResult = true;
+                        parentWindow.Close();
                     }
                 }
             }
+            catch (System.Data.Entity.Infrastructure.DbUpdateException dbEx)
+            {
+                string detailedError = $"Ошибка DbUpdateException при сохранении договора: {dbEx.Message}";
+                
+                // Получаем информацию о сущности, вызвавшей ошибку
+                if (dbEx.Entries != null && dbEx.Entries.Count() > 0)
+                {
+                    foreach (var entry in dbEx.Entries)
+                    {
+                        detailedError += $"\n\nСущность: {entry.Entity.GetType().Name}";
+                        
+                        var properties = entry.CurrentValues.PropertyNames;
+                        foreach (var propName in properties)
+                        {
+                            var value = entry.CurrentValues[propName];
+                            detailedError += $"\n  {propName}: {(value ?? "null")}";
+                            
+                            if (value is string strValue)
+                            {
+                                detailedError += $" (длина: {strValue.Length})";
+                            }
+                        }
+                    }
+                }
+                
+                if (dbEx.InnerException != null)
+                {
+                    detailedError += $"\n\nSQL Error: {dbEx.InnerException.Message}";
+                    
+                    if (dbEx.InnerException.InnerException != null)
+                    {
+                        detailedError += $"\n\nДетали SQL: {dbEx.InnerException.InnerException.Message}";
+                    }
+                    
+                    // Проверяем на нарушение ограничений NOT NULL
+                    if (dbEx.InnerException.Message.Contains("cannot be null") || 
+                        dbEx.InnerException.Message.Contains("не может быть пустым") ||
+                        dbEx.InnerException.Message.Contains("Cannot insert the value NULL into column"))
+                    {
+                        detailedError += "\n\n=== ВОЗМОЖНАЯ ПРИЧИНА ===\nПоле ConsentDocumentPath имеет ограничение NOT NULL в базе данных.\nВыполните скрипт FixConsentDocumentPath.sql для исправления.";
+                    }
+                    
+                    // Проверяем на превышение длины строки
+                    if (dbEx.InnerException.Message.Contains("String or binary data would be truncated") ||
+                        dbEx.InnerException.Message.Contains("слишком длинная"))
+                    {
+                        detailedError += "\n\n=== ВОЗМОЖНАЯ ПРИЧИНА ===\nПуть к файлу слишком длинный для поля в базе данных.";
+                    }
+                }
+                
+                MessageBox.Show(detailedError, "DbUpdateException", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при сохранении: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                string errorMsg = $"Ошибка при сохранении: {ex.Message}";
+                
+                if (ex.InnerException != null)
+                {
+                    errorMsg += $"\n\nВнутренняя ошибка: {ex.InnerException.Message}";
+                    
+                    if (ex.InnerException.InnerException != null)
+                    {
+                        errorMsg += $"\n\nДетали: {ex.InnerException.InnerException.Message}";
+                    }
+                }
+                
+                MessageBox.Show(errorMsg, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -259,7 +325,60 @@ namespace WpfApp1
 
                     // Сохраняем путь к документу в базе
                     trackedLease.ConsentDocumentPath = outputPath;
-                    db.SaveChanges();
+                    
+                    try
+                    {
+                        db.SaveChanges();
+                    }
+                    catch (System.Data.Entity.Infrastructure.DbUpdateException dbEx)
+                    {
+                        string detailedError = $"Ошибка сохранения в базе данных: {dbEx.Message}";
+                        
+                        // Получаем информацию о сущности, вызвавшей ошибку
+                        if (dbEx.Entries != null && dbEx.Entries.Count() > 0)
+                        {
+                            foreach (var entry in dbEx.Entries)
+                            {
+                                detailedError += $"\n\nСущность: {entry.Entity.GetType().Name}";
+                                
+                                // Получаем все свойства и их значения
+                                var properties = entry.CurrentValues.PropertyNames;
+                                foreach (var propName in properties)
+                                {
+                                    var value = entry.CurrentValues[propName];
+                                    detailedError += $"\n  {propName}: {(value ?? "null")}";
+                                    
+                                    // Проверяем длину строковых полей
+                                    if (value is string strValue)
+                                    {
+                                        detailedError += $" (длина: {strValue.Length})";
+                                    }
+                                }
+                            }
+                        }
+                        
+                        if (dbEx.InnerException != null)
+                        {
+                            detailedError += $"\n\nSQL Error: {dbEx.InnerException.Message}";
+                            
+                            // Проверяем на нарушение ограничений NOT NULL
+                            if (dbEx.InnerException.Message.Contains("cannot be null") || 
+                                dbEx.InnerException.Message.Contains("не может быть пустым") ||
+                                dbEx.InnerException.Message.Contains("Cannot insert the value NULL into column"))
+                            {
+                                detailedError += "\n\nВОЗМОЖНАЯ ПРИЧИНА: Поле ConsentDocumentPath имеет ограничение NOT NULL в базе данных.";
+                            }
+                            
+                            // Проверяем на превышение длины строки
+                            if (dbEx.InnerException.Message.Contains("String or binary data would be truncated") ||
+                                dbEx.InnerException.Message.Contains("слишком длинная"))
+                            {
+                                detailedError += $"\n\nПуть к файлу слишком длинный для поля в базе данных.\nДлина пути: {outputPath.Length} символов.";
+                            }
+                        }
+                        
+                        throw new Exception(detailedError, dbEx);
+                    }
 
                     // Предлагаем открыть документ
                     var result = MessageBox.Show(
@@ -276,83 +395,140 @@ namespace WpfApp1
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Ошибка при создании документа: {ex.Message}\n\n{ex.StackTrace}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                string errorMessage = $"Ошибка при создании документа: {ex.Message}";
+                
+                if (ex.InnerException != null)
+                {
+                    errorMessage += $"\n\nВнутренняя ошибка: {ex.InnerException.Message}";
+                    
+                    if (ex.InnerException.InnerException != null)
+                    {
+                        errorMessage += $"\n\nДетали: {ex.InnerException.InnerException.Message}";
+                    }
+                }
+                
+                // Если это DbUpdateException, покажем детали ошибок валидации
+                if (ex is System.Data.Entity.Infrastructure.DbUpdateException dbEx)
+                {
+                    if (dbEx.InnerException != null)
+                    {
+                        errorMessage += $"\n\nSQL Error: {dbEx.InnerException.Message}";
+                    }
+                }
+                
+                MessageBox.Show(errorMessage, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
         private void FillWordDocument(string documentPath, Leases lease, Tenants tenant, Property property)
         {
-            // Используем COM-автоматизацию для заполнения Word документа
-            // Для этого требуется установленный Microsoft Office
+            Microsoft.Office.Interop.Word.Application wordApp = null;
+            Microsoft.Office.Interop.Word.Document doc = null;
+            object missing = System.Reflection.Missing.Value;
+
             try
             {
-                // Создаем объект Word Application через позднюю привязку
-                Type wordType = Type.GetTypeFromProgID("Word.Application");
-                if (wordType == null)
+                // 1. Убиваем все зависшие процессы WINWORD перед запуском
+                foreach (var proc in System.Diagnostics.Process.GetProcessesByName("WINWORD"))
                 {
-                    throw new Exception("Microsoft Word не установлен на этом компьютере");
+                    try { proc.Kill(); proc.WaitForExit(1000); } catch { }
                 }
+                System.Threading.Thread.Sleep(500);
 
-                dynamic wordApp = Activator.CreateInstance(wordType);
+                // 2. Создаем экземпляр Word с явной типизацией
+                wordApp = new Microsoft.Office.Interop.Word.Application();
                 wordApp.Visible = false;
-                wordApp.DisplayAlerts = false;
+                wordApp.DisplayAlerts = Microsoft.Office.Interop.Word.WdAlertLevel.wdAlertsNone;
+                wordApp.ScreenUpdating = false;
+                wordApp.AutomationSecurity = Microsoft.Office.Interop.Word.MsoAutomationSecurity.msoAutomationSecurityLow;
 
-                try
+                // 3. Открываем документ
+                object path = documentPath;
+                object readOnly = false;
+                object isVisible = false;
+
+                doc = wordApp.Documents.Open(ref path, ref missing, ref readOnly, ref missing, 
+                                            ref missing, ref missing, ref missing, ref missing, 
+                                            ref missing, ref missing, ref missing, ref isVisible, 
+                                            ref missing, ref missing, ref missing, ref missing);
+
+                // 4. Функция замены закладок
+                void ReplaceBookmark(string bookmarkName, string value)
                 {
-                    // Открываем документ
-                    object path = documentPath;
-                    object readOnly = false;
-                    object isVisible = false;
-
-                    dynamic doc = wordApp.Documents.Open(ref path, ref readOnly, ref isVisible);
-
-                    // Заполняем поля формы (закладки)
-                    ReplaceBookmark(doc, "LeaseNumber", lease.LeaseNumber);
-                    ReplaceBookmark(doc, "LeaseDate", DateTime.Now.ToShortDateString());
-                    ReplaceBookmark(doc, "StartDate", lease.StartDate.ToShortDateString());
-                    ReplaceBookmark(doc, "EndDate", lease.EndDate.ToShortDateString());
-                    ReplaceBookmark(doc, "MonthlyAmount", lease.MonthlyAmount.ToString("N2"));
-                    
-                    // Данные арендатора
-                    ReplaceBookmark(doc, "TenantName", tenant.Name ?? "");
-                    ReplaceBookmark(doc, "TenantINN", tenant.INN ?? "");
-                    ReplaceBookmark(doc, "TenantPhone", tenant.Phone ?? "");
-                    ReplaceBookmark(doc, "TenantEmail", tenant.Email ?? "");
-                    
-                    // Данные объекта
-                    ReplaceBookmark(doc, "PropertyAddress", property.Address ?? "");
-                    ReplaceBookmark(doc, "PropertyArea", property.Area.ToString("F2"));
-                    ReplaceBookmark(doc, "PropertyType", property.PropertyType ?? "");
-                    ReplaceBookmark(doc, "MonthlyRent", property.MonthlyRent.ToString("N2"));
-
-                    // Сохраняем документ
-                    doc.Save();
-                    doc.Close();
+                    if (doc.Bookmarks.Exists(bookmarkName))
+                    {
+                        var range = doc.Bookmarks[bookmarkName].Range;
+                        range.Text = value ?? "";
+                    }
                 }
-                finally
-                {
-                    wordApp.Quit();
-                    System.Runtime.InteropServices.Marshal.ReleaseComObject(wordApp);
-                }
+
+                // 5. Заполняем данные
+                ReplaceBookmark("LeaseNumber", lease.LeaseNumber ?? "");
+                ReplaceBookmark("LeaseDate", DateTime.Now.ToShortDateString());
+                ReplaceBookmark("StartDate", lease.StartDate.ToShortDateString());
+                ReplaceBookmark("EndDate", lease.EndDate.ToShortDateString());
+                ReplaceBookmark("MonthlyAmount", lease.MonthlyAmount.ToString("N2"));
+
+                // Данные арендатора
+                ReplaceBookmark("TenantName", tenant.Name ?? "");
+                ReplaceBookmark("TenantINN", tenant.INN ?? "");
+                ReplaceBookmark("TenantPhone", tenant.Phone ?? "");
+                ReplaceBookmark("TenantEmail", tenant.Email ?? "");
+
+                // Данные объекта
+                ReplaceBookmark("PropertyAddress", property.Address ?? "");
+                ReplaceBookmark("PropertyArea", property.Area.ToString("F2"));
+                ReplaceBookmark("PropertyType", property.PropertyType ?? "");
+                ReplaceBookmark("MonthlyRent", property.MonthlyRent.ToString("N2"));
+
+                // 6. Сохраняем
+                doc.Save();
+            }
+            catch (System.Runtime.InteropServices.COMException comEx)
+            {
+                throw new Exception(
+                    $"COM-ошибка при работе с Word (0x{comEx.ErrorCode:X}): {comEx.Message}\n\n" +
+                    $"Возможные решения:\n" +
+                    $"1. Выполните восстановление Office (Control Panel > Programs > Microsoft Office > Change > Repair)\n" +
+                    $"2. Убедитесь, что версии Office и приложения совпадают (обе 32-bit или обе 64-bit)\n" +
+                    $"3. Проверьте антивирус - он может блокировать автоматизацию Office\n" +
+                    $"4. Перезапустите компьютер для очистки зависших процессов Word");
             }
             catch (Exception ex)
             {
-                throw new Exception($"Ошибка при заполнении Word документа: {ex.Message}");
+                throw new Exception($"Ошибка при заполнении Word документа: {ex.Message}", ex);
             }
-        }
-
-        private void ReplaceBookmark(dynamic doc, string bookmarkName, string value)
-        {
-            try
+            finally
             {
-                if (doc.Bookmarks.Exists(bookmarkName))
+                // 7. Корректное закрытие ресурсов
+                if (doc != null)
                 {
-                    doc.Bookmarks[bookmarkName].Range.Text = value;
+                    try
+                    {
+                        object saveChanges = Microsoft.Office.Interop.Word.WdSaveOptions.wdSaveChanges;
+                        doc.Close(ref saveChanges, ref missing, ref missing);
+                    }
+                    catch { }
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(doc);
                 }
-            }
-            catch
-            {
-                // Закладка не найдена - пропускаем
+
+                if (wordApp != null)
+                {
+                    try
+                    {
+                        wordApp.Quit(ref missing, ref missing, ref missing);
+                    }
+                    catch { }
+                    System.Runtime.InteropServices.Marshal.ReleaseComObject(wordApp);
+                }
+
+                doc = null;
+                wordApp = null;
+
+                // Принудительная сборка мусора для освобождения COM
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
+                GC.Collect();
             }
         }
 
@@ -368,10 +544,11 @@ namespace WpfApp1
 
         private void BtnCancel_Click(object sender, RoutedEventArgs e)
         {
-            if (Window.GetWindow(this) != null)
+            var parentWindow = System.Windows.Window.GetWindow(this);
+            if (parentWindow != null)
             {
-                Window.GetWindow(this).DialogResult = false;
-                Window.GetWindow(this).Close();
+                parentWindow.DialogResult = false;
+                parentWindow.Close();
             }
         }
     }

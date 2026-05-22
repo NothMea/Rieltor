@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Win32;
 
@@ -440,7 +441,7 @@ namespace WpfApp1
                 wordApp.Visible = false;
                 wordApp.DisplayAlerts = Microsoft.Office.Interop.Word.WdAlertLevel.wdAlertsNone;
                 wordApp.ScreenUpdating = false;
-                wordApp.AutomationSecurity = Microsoft.Office.Interop.Word.MsoAutomationSecurity.msoAutomationSecurityLow;
+                wordApp.AutomationSecurity = MsoAutomationSecurity.msoAutomationSecurityLow;
 
                 // 3. Открываем документ
                 object path = documentPath;

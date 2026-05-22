@@ -1,27 +1,39 @@
 ```
-# Compiled and build artifacts
-*.pyc
-__pycache__/
+# Build artifacts
+obj/
+bin/
+*.exe
+*.dll
+*.pdb
+*.userprefs
 
 # Dependencies
+packages/
 node_modules/
-venv/
-.venv/
-.env
-.env.local
-*.env.*
 
-# Logs and temp files
+# Logs
 *.log
-*.tmp
-*.swp
 
-# Editors
-.vscode/
+# OS generated files
+Thumbs.db
+.DS_Store
+
+# Visual Studio files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# IDE files
+.vs/
 .idea/
 
-# Build outputs
-dist/
-build/
-target/
+# Configuration files
+*.config
+app.config
+web.config
+
+# Temporary files
+*.tmp
+*.temp
 ```

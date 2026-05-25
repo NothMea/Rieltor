@@ -119,7 +119,7 @@ namespace WpfApp1
                     }
 
                     // Проверка на наличие задолженностей
-                    var unpaidPayments = db.Payments.Count(p => p.LeaseID == _leaseId && (p.Status == "Просрочен" || p.Status == "Ожидает"));
+                    var unpaidPayments = db.Payments.Count(p => p.LeaseID == _leaseId && (p.Status == "Просрочен" || p.Status == "В ожидании"));
                     if (unpaidPayments > 0)
                     {
                         var debtConfirm = MessageBox.Show(

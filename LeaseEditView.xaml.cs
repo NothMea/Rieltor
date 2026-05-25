@@ -177,10 +177,7 @@ namespace WpfApp1
         /// </summary>
         private void CmbProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CmbProperty.SelectedItem is Property selectedProperty)
-            {
-                TxtMonthlyAmount.Text = selectedProperty.MonthlyRent.ToString();
-            }
+            // Плата теперь берется из объекта напрямую при сохранении, поле удалено из формы
         }
 
         private void LoadLeaseData()
@@ -197,7 +194,6 @@ namespace WpfApp1
                 CmbProperty.SelectedValue = lease.PropertyID;
                 DpStartDate.SelectedDate = lease.StartDate;
                 DpEndDate.SelectedDate = lease.EndDate;
-                TxtMonthlyAmount.Text = lease.MonthlyAmount.ToString();
             }
         }
 
@@ -239,19 +235,15 @@ namespace WpfApp1
                 return false;
             }
 
-            // Ежемесячная плата проверяется, но она всегда берется из объекта и не может быть изменена пользователем
-            decimal monthlyAmount;
-            if (!decimal.TryParse(TxtMonthlyAmount.Text, out monthlyAmount) || monthlyAmount <= 0)
-            {
-                MessageBox.Show("Ежемесячная плата должна быть больше нуля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
             return true;
         }
 
         private Leases CreateLeaseFromForm()
         {
+            var selectedProperty = CmbProperty.SelectedItem as Property;
+            if (selectedProperty == null)
+                throw new InvalidOperationException("Объект недвижимости не выбран");
+
             var lease = new Leases
             {
                 LeaseNumber = TxtLeaseNumber.Text.Trim(),
@@ -259,7 +251,7 @@ namespace WpfApp1
                 PropertyID = (int)CmbProperty.SelectedValue,
                 StartDate = DpStartDate.SelectedDate.Value,
                 EndDate = DpEndDate.SelectedDate.Value,
-                MonthlyAmount = decimal.Parse(TxtMonthlyAmount.Text),
+                MonthlyAmount = selectedProperty.MonthlyRent, // Берется из объекта автоматически
                 Status = "Активен",
                 IsArchived = false,
                 TerminationReason = null,
@@ -293,7 +285,12 @@ namespace WpfApp1
                         lease.PropertyID = (int)CmbProperty.SelectedValue;
                         lease.StartDate = DpStartDate.SelectedDate.Value;
                         lease.EndDate = DpEndDate.SelectedDate.Value;
-                        lease.MonthlyAmount = decimal.Parse(TxtMonthlyAmount.Text);
+                        // MonthlyAmount берется из объекта недвижимости автоматически
+                        var selectedProperty = db.Property.Find(lease.PropertyID);
+                        if (selectedProperty != null)
+                        {
+                            lease.MonthlyAmount = selectedProperty.MonthlyRent;
+                        }
                     }
                     else
                     {

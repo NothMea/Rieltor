@@ -15,11 +15,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -43,22 +38,18 @@
 
             <!-- Дата начала -->
             <TextBlock Text="Дата начала:" Grid.Row="4" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
-            <DatePicker x:Name="DpStartDate" Grid.Row="4" Grid.Column="1" Margin="0,0,0,10" IsEnabled="False"/>
+            <DatePicker x:Name="DpStartDate" Grid.Row="4" Grid.Column="1" Margin="0,0,0,10"/>
 
             <!-- Дата окончания -->
             <TextBlock Text="Дата окончания:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
-            <DatePicker x:Name="DpEndDate" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10" IsEnabled="False"/>
-
-            <!-- Monthly Amount -->
-            <TextBlock Text="Ежемесячная плата (₽):" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
-            <TextBox x:Name="TxtMonthlyAmount" Grid.Row="6" Grid.Column="1" Margin="0,0,0,10" IsReadOnly="True" Background="#F0F0F0"/>
+            <DatePicker x:Name="DpEndDate" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10"/>
 
             <!-- Примечание -->
-            <TextBlock Text="Примечание:" Grid.Row="7" Grid.Column="0" VerticalAlignment="Top" Margin="0,0,0,5"/>
-            <TextBox x:Name="TxtNotes" Grid.Row="7" Grid.Column="1" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10"/>
+            <TextBlock Text="Примечание:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Margin="0,0,0,5"/>
+            <TextBox x:Name="TxtNotes" Grid.Row="6" Grid.Column="1" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10"/>
 
             <!-- Кнопки -->
-            <StackPanel Orientation="Horizontal" Grid.Row="8" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,20,0,0">
                 <Button Content="Сохранить и создать договор" Click="BtnSaveAndGenerate_Click" Width="220" Height="35" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}" Background="#4CAF50"/>
                 <Button Content="Сохранить" Click="BtnSave_Click" Width="150" Height="35" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
                 <Button Content="Отмена" Click="BtnCancel_Click" Width="150" Height="35" Style="{StaticResource TabButtonStyle}"/>

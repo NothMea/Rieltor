@@ -41,9 +41,9 @@
 
         <!-- Кнопки действий -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
-            <Button Content="Добавить платеж" Click="BtnAddPayment_Click" Width="150" Height="35" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
-            <Button Content="Отметить как оплаченный" Click="BtnMarkAsPaid_Click" Width="170" Height="35" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}" Background="#4CAF50"/>
-            <Button Content="Удалить" Click="BtnDeletePayment_Click" Width="120" Height="35" Style="{StaticResource TabButtonStyle}" Background="#f44336"/>
+            <Button Content="Добавить платеж" Click="BtnAddPayment_Click" Width="185" Height="35" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
+            <Button Content="Отметить как оплаченный" Click="BtnMarkAsPaid_Click" Width="190" Height="35" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}" Background="#4CAF50"/>
+            <Button Content="Удалить" Click="BtnDeletePayment_Click" Width="180" Height="35" Style="{StaticResource TabButtonStyle}" Background="#f44336"/>
         </StackPanel>
 
         <!-- Таблица платежей -->

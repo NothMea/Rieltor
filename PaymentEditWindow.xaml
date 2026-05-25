@@ -52,9 +52,9 @@
         <!-- Кнопки -->
         <StackPanel Grid.Row="6" Grid.ColumnSpan="2" Orientation="Horizontal" 
                     HorizontalAlignment="Right" Margin="0,20,0,0">
-            <Button Content="Сохранить" Click="BtnSave_Click" Width="150" Height="35" 
+            <Button Content="Сохранить" Click="BtnSave_Click" Width="180" Height="35" 
                     Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
-            <Button Content="Отмена" Click="BtnCancel_Click" Width="150" Height="35" 
+            <Button Content="Отмена" Click="BtnCancel_Click" Width="180" Height="35" 
                     Style="{StaticResource TabButtonStyle}"/>
         </StackPanel>
     </Grid>

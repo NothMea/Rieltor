@@ -22,18 +22,11 @@ namespace WpfApp1.Views
     public partial class PropertiesView : UserControl
     {
         private List<DisplayProperty> _allProperties;
-        private static PropertiesView _currentInstance;
 
         public PropertiesView()
         {
             InitializeComponent();
-            _currentInstance = this;
             LoadData();
-        }
-
-        ~PropertiesView()
-        {
-            _currentInstance = null;
         }
 
         /// <summary>
@@ -45,17 +38,10 @@ namespace WpfApp1.Views
             // Находим главное окно и обновляем контент если там открыт PropertiesView
             Application.Current.Dispatcher.Invoke(() =>
             {
-                if (_currentInstance != null)
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                if (mainWindow?.MainContent.Content is PropertiesView propertiesView)
                 {
-                    _currentInstance.LoadData();
-                }
-                else
-                {
-                    var mainWindow = Application.Current.MainWindow as MainWindow;
-                    if (mainWindow?.MainContent.Content is PropertiesView propertiesView)
-                    {
-                        propertiesView.LoadData();
-                    }
+                    propertiesView.LoadData();
                 }
             });
         }
@@ -249,7 +235,7 @@ namespace WpfApp1.Views
                     if (lease.StartDate <= DateTime.Today)
                         return "Просрочен";
                     else
-                        return "В ожидании";
+                        return "Ожидает";
                 }
 
                 // Проверяем, есть ли оплаченный платеж за текущий период
@@ -257,9 +243,9 @@ namespace WpfApp1.Views
                 var monthsSinceStart = (DateTime.Today.Year - lease.StartDate.Year) * 12 + (DateTime.Today.Month - lease.StartDate.Month);
                 var expectedPaymentDate = lease.StartDate.AddMonths(monthsSinceStart);
 
-                // Если ожидаемая дата платежа в будущем — статус "В ожидании"
+                // Если ожидаемая дата платежа в будущем — статус "Ожидает"
                 if (expectedPaymentDate > DateTime.Today)
-                    return "В ожидании";
+                    return "Ожидает";
 
                 // Ищем платеж с датой >= expectedPaymentDate и статусом "Оплачен"
                 var paidPayment = payments

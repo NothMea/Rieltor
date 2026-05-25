@@ -137,6 +137,13 @@ namespace WpfApp1
                     lease.TerminationReason = TxtTerminationReason.Text;
                     lease.ConsentDocumentPath = _consentDocumentPath;
 
+                    // Обновляем статус объекта на "Свободен"
+                    var property = db.Properties.Find(lease.PropertyID);
+                    if (property != null)
+                    {
+                        property.Status = "Свободен";
+                    }
+
                     // Сохраняем изменения
                     await Task.Run(() => db.SaveChanges());
 

@@ -2,23 +2,32 @@
 # Build artifacts
 bin/
 obj/
-*.exe
 *.dll
+*.exe
 *.pdb
 *.userprefs
+*.cache
+*.tmp
 
 # Dependencies
 packages/
+node_modules/
 
 # Logs
 *.log
 
-# User-specific files
-*.user
-*.suo
-*.userosscache
-*.sln.docstates
+# Environment
+.env
+.env.local
+*.env.*
 
-# Visual Studio files
-.vs/
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+Thumbs.db
 ```

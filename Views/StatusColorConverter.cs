@@ -18,7 +18,7 @@ namespace WpfApp1.Views
                         return Brushes.Green;
                     case "Просрочен":
                         return Brushes.Red;
-                    case "Ожидает":
+                    case "В ожидании":
                         return Brushes.Orange;
                     default:
                         return Brushes.Gray;

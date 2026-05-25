@@ -43,9 +43,14 @@ namespace WpfApp1
                 // Загружаем арендаторов
                 CmbTenant.ItemsSource = db.Tenants.OrderBy(t => t.Name).ToList();
 
-                // Загружаем объекты (только свободные или все)
+                // Загружаем все свободные объекты (у которых нет активных договоров)
+                var activeLeaseIds = db.Leases
+                    .Where(l => l.Status == "Активен" && !l.IsArchived)
+                    .Select(l => l.PropertyID)
+                    .ToList();
+
                 CmbProperty.ItemsSource = db.Property
-                    .Where(p => p.Status == "Свободен" || (_leaseId.HasValue && p.Leases.Any(l => l.LeaseID == _leaseId.Value)))
+                    .Where(p => !activeLeaseIds.Contains(p.PropertyID) || (_leaseId.HasValue && p.Leases.Any(l => l.LeaseID == _leaseId.Value)))
                     .OrderBy(p => p.Address)
                     .ToList();
             }

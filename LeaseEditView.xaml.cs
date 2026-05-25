@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Win32;
@@ -25,6 +24,7 @@ namespace WpfApp1
             InitializeComponent();
             _onSaveCallback = onSaveCallback;
             LoadComboBoxes();
+            SetDefaultValues();
         }
 
         public LeaseEditView(int leaseId, Action onSaveCallback = null)
@@ -34,6 +34,117 @@ namespace WpfApp1
             _onSaveCallback = onSaveCallback;
             LoadComboBoxes();
             LoadLeaseData();
+        }
+
+        /// <summary>
+        /// Устанавливает значения по умолчанию для нового договора
+        /// </summary>
+        private void SetDefaultValues()
+        {
+            // Дата начала - сегодня
+            DpStartDate.SelectedDate = DateTime.Today;
+            
+            // Дата окончания - через год
+            DpEndDate.SelectedDate = DateTime.Today.AddYears(1);
+        }
+
+        /// <summary>
+        /// Публичный метод для генерации договора Word по ID договора
+        /// Может вызываться из других окон, например из карточки объекта
+        /// </summary>
+        public static void GenerateLeaseDocumentById(int leaseId)
+        {
+            try
+            {
+                using (var db = new RieltorEntities())
+                {
+                    var lease = db.Leases.Find(leaseId);
+                    if (lease == null)
+                    {
+                        MessageBox.Show("Договор не найден в базе данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    var tenant = db.Tenants.Find(lease.TenantID);
+                    var property = db.Property.Find(lease.PropertyID);
+
+                    if (tenant == null || property == null)
+                    {
+                        MessageBox.Show("Не удалось загрузить данные для формирования документа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    // Путь к шаблону
+                    string templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "LeaseTemplate.docx");
+                    
+                    if (!File.Exists(templatePath))
+                    {
+                        MessageBox.Show(
+                            $"Шаблон договора не найден по пути: {templatePath}\n\nПожалуйста, поместите файл LeaseTemplate.docx в папку Resources.",
+                            "Ошибка",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                        return;
+                    }
+
+                    // Создаем копию шаблона с уникальным именем
+                    string outputFileName = $"Договор_{lease.LeaseNumber}_{DateTime.Now:yyyyMMdd_HHmmss}.docx";
+                    string outputPath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                        "Договоры аренды",
+                        outputFileName);
+
+                    string outputDir = Path.GetDirectoryName(outputPath);
+                    if (!Directory.Exists(outputDir))
+                    {
+                        Directory.CreateDirectory(outputDir);
+                    }
+
+                    // Копируем шаблон
+                    File.Copy(templatePath, outputPath, true);
+
+                    // Заполняем документ данными
+                    FillWordDocumentStatic(outputPath, lease, tenant, property);
+
+                    // Сохраняем путь к документу в базе
+                    lease.ConsentDocumentPath = outputPath;
+                    
+                    try
+                    {
+                        db.SaveChanges();
+                        MessageBox.Show($"Договор успешно создан и сохранен!\n\nФайл: {outputPath}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (System.Data.Entity.Infrastructure.DbUpdateException dbEx)
+                    {
+                        string detailedError = $"Ошибка сохранения в базе данных: {dbEx.Message}";
+                        
+                        if (dbEx.InnerException != null)
+                        {
+                            detailedError += $"\n\nSQL Error: {dbEx.InnerException.Message}";
+                            
+                            if (dbEx.InnerException.Message.Contains("cannot be null") || 
+                                dbEx.InnerException.Message.Contains("не может быть пустым") ||
+                                dbEx.InnerException.Message.Contains("Cannot insert the value NULL into column"))
+                            {
+                                detailedError += "\n\nВОЗМОЖНАЯ ПРИЧИНА: Поле ConsentDocumentPath имеет ограничение NOT NULL в базе данных.";
+                            }
+                        }
+                        
+                        MessageBox.Show(detailedError, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = $"Ошибка при создании документа: {ex.Message}";
+                
+                if (ex.InnerException != null)
+                {
+                    errorMessage += $"\n\nВнутренняя ошибка: {ex.InnerException.Message}";
+                }
+                
+                MessageBox.Show(errorMessage, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void LoadComboBoxes()
@@ -49,11 +160,24 @@ namespace WpfApp1
                     .Select(l => l.PropertyID)
                     .ToList();
 
-                CmbProperty.ItemsSource = db.Property
+                var properties = db.Property
                     .Where(p => !activeLeaseIds.Contains(p.PropertyID) || (_leaseId.HasValue && p.Leases.Any(l => l.LeaseID == _leaseId.Value)))
                     .OrderBy(p => p.Address)
                     .ToList();
+                
+                CmbProperty.ItemsSource = properties;
+                
+                // Добавляем обработчик выбора объекта для автозаполнения ежемесячной платы
+                CmbProperty.SelectionChanged += CmbProperty_SelectionChanged;
             }
+        }
+
+        /// <summary>
+        /// Обработчик выбора объекта - автоматически устанавливает ежемесячную плату из объекта
+        /// </summary>
+        private void CmbProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Плата теперь берется из объекта напрямую при сохранении, поле удалено из формы
         }
 
         private void LoadLeaseData()
@@ -70,14 +194,7 @@ namespace WpfApp1
                 CmbProperty.SelectedValue = lease.PropertyID;
                 DpStartDate.SelectedDate = lease.StartDate;
                 DpEndDate.SelectedDate = lease.EndDate;
-                TxtMonthlyAmount.Text = lease.MonthlyAmount.ToString();
             }
-        }
-
-        private void TxtMonthlyAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            // Разрешаем только цифры
-            e.Handled = !Regex.IsMatch(e.Text, @"^\d+$");
         }
 
         private bool ValidateForm()
@@ -118,18 +235,15 @@ namespace WpfApp1
                 return false;
             }
 
-            decimal monthlyAmount;
-            if (!decimal.TryParse(TxtMonthlyAmount.Text, out monthlyAmount) || monthlyAmount <= 0)
-            {
-                MessageBox.Show("Введите корректную сумму ежемесячной платы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-
             return true;
         }
 
         private Leases CreateLeaseFromForm()
         {
+            var selectedProperty = CmbProperty.SelectedItem as Property;
+            if (selectedProperty == null)
+                throw new InvalidOperationException("Объект недвижимости не выбран");
+
             var lease = new Leases
             {
                 LeaseNumber = TxtLeaseNumber.Text.Trim(),
@@ -137,7 +251,7 @@ namespace WpfApp1
                 PropertyID = (int)CmbProperty.SelectedValue,
                 StartDate = DpStartDate.SelectedDate.Value,
                 EndDate = DpEndDate.SelectedDate.Value,
-                MonthlyAmount = decimal.Parse(TxtMonthlyAmount.Text),
+                MonthlyAmount = selectedProperty.MonthlyRent, // Берется из объекта автоматически
                 Status = "Активен",
                 IsArchived = false,
                 TerminationReason = null,
@@ -171,7 +285,12 @@ namespace WpfApp1
                         lease.PropertyID = (int)CmbProperty.SelectedValue;
                         lease.StartDate = DpStartDate.SelectedDate.Value;
                         lease.EndDate = DpEndDate.SelectedDate.Value;
-                        lease.MonthlyAmount = decimal.Parse(TxtMonthlyAmount.Text);
+                        // MonthlyAmount берется из объекта недвижимости автоматически
+                        var selectedProperty = db.Property.Find(lease.PropertyID);
+                        if (selectedProperty != null)
+                        {
+                            lease.MonthlyAmount = selectedProperty.MonthlyRent;
+                        }
                     }
                     else
                     {
@@ -426,7 +545,10 @@ namespace WpfApp1
             }
         }
 
-        private void FillWordDocument(string documentPath, Leases lease, Tenants tenant, Property property)
+        /// <summary>
+        /// Статический метод для заполнения Word документа (может вызываться из статического метода)
+        /// </summary>
+        private static void FillWordDocumentStatic(string documentPath, Leases lease, Tenants tenant, Property property)
         {
             Microsoft.Office.Interop.Word.Application wordApp = null;
             Microsoft.Office.Interop.Word.Document doc = null;
@@ -536,6 +658,11 @@ namespace WpfApp1
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
             }
+        }
+
+        private void FillWordDocument(string documentPath, Leases lease, Tenants tenant, Property property)
+        {
+            FillWordDocumentStatic(documentPath, lease, tenant, property);
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)

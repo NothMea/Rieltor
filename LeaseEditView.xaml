@@ -15,11 +15,6 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -49,32 +44,12 @@
             <TextBlock Text="Дата окончания:" Grid.Row="5" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
             <DatePicker x:Name="DpEndDate" Grid.Row="5" Grid.Column="1" Margin="0,0,0,10"/>
 
-            <!-- Monthly Amount -->
-            <TextBlock Text="Ежемесячная плата (₽):" Grid.Row="6" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
-            <TextBox x:Name="TxtMonthlyAmount" Grid.Row="6" Grid.Column="1" Margin="0,0,0,10" PreviewTextInput="TxtMonthlyAmount_PreviewTextInput"/>
-
-            <!-- Обеспечительный платеж -->
-            <TextBlock Text="Обеспечительный платеж (₽):" Grid.Row="7" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
-            <TextBox x:Name="TxtSecurityDeposit" Grid.Row="7" Grid.Column="1" Margin="0,0,0,10" PreviewTextInput="TxtMonthlyAmount_PreviewTextInput"/>
-
-            <!-- Способ оплаты -->
-            <TextBlock Text="Способ оплаты:" Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
-            <ComboBox x:Name="CmbPaymentMethod" Grid.Row="8" Grid.Column="1" Margin="0,0,0,10">
-                <ComboBoxItem Content="Банковский перевод"/>
-                <ComboBoxItem Content="Наличные"/>
-                <ComboBoxItem Content="Безналичный расчет"/>
-            </ComboBox>
-
-            <!-- День оплаты -->
-            <TextBlock Text="День оплаты (число месяца):" Grid.Row="9" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,5"/>
-            <TextBox x:Name="TxtPaymentDay" Grid.Row="9" Grid.Column="1" Margin="0,0,0,10" PreviewTextInput="TxtMonthlyAmount_PreviewTextInput"/>
-
             <!-- Примечание -->
-            <TextBlock Text="Примечание:" Grid.Row="10" Grid.Column="0" VerticalAlignment="Top" Margin="0,0,0,5"/>
-            <TextBox x:Name="TxtNotes" Grid.Row="10" Grid.Column="1" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10"/>
+            <TextBlock Text="Примечание:" Grid.Row="6" Grid.Column="0" VerticalAlignment="Top" Margin="0,0,0,5"/>
+            <TextBox x:Name="TxtNotes" Grid.Row="6" Grid.Column="1" Height="80" TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto" Margin="0,0,0,10"/>
 
             <!-- Кнопки -->
-            <StackPanel Orientation="Horizontal" Grid.Row="11" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <StackPanel Orientation="Horizontal" Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Right" Margin="0,20,0,0">
                 <Button Content="Сохранить и создать договор" Click="BtnSaveAndGenerate_Click" Width="220" Height="35" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}" Background="#4CAF50"/>
                 <Button Content="Сохранить" Click="BtnSave_Click" Width="150" Height="35" Margin="0,0,10,0" Style="{StaticResource TabButtonStyle}"/>
                 <Button Content="Отмена" Click="BtnCancel_Click" Width="150" Height="35" Style="{StaticResource TabButtonStyle}"/>

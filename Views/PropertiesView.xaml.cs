@@ -328,6 +328,18 @@ namespace WpfApp1.Views
                 LoadData();
             }
         }
+
+        private void GenerateLeaseDocumentButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is FrameworkElement element && element.DataContext is DisplayProperty prop)
+            {
+                if (prop.ActiveLease != null)
+                {
+                    // Вызываем публичный статический метод для генерации договора
+                    LeaseEditView.GenerateLeaseDocumentById(prop.ActiveLease.LeaseID);
+                }
+            }
+        }
     }
 
     // Класс для отображения

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -24,8 +25,9 @@ namespace WpfApp1.Views
         {
             using (var db = new RieltorEntities())
             {
-                // Загружаем все платежи с данными договоров
+                // Загружаем все платежи с данными договоров (включаем навигационное свойство Leases)
                 _allPayments = db.Payments
+                    .Include(p => p.Leases)
                     .OrderByDescending(p => p.PaymentDate)
                     .ToList();
 

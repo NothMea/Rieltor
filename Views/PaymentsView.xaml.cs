@@ -13,7 +13,6 @@ namespace WpfApp1.Views
     public partial class PaymentsView : UserControl
     {
         private List<Payments> _allPayments;
-        private List<Leases> _allLeases;
 
         public PaymentsView()
         {
@@ -30,20 +29,8 @@ namespace WpfApp1.Views
                     .OrderByDescending(p => p.PaymentDate)
                     .ToList();
 
-                // Загружаем все активные договоры для фильтра
-                _allLeases = db.Leases
-                    .Where(l => l.Status == "Активен")
-                    .OrderBy(l => l.LeaseNumber)
-                    .ToList();
-
-                // Заполняем фильтр по договорам
-                CmbLeaseFilter.ItemsSource = _allLeases;
-                CmbLeaseFilter.DisplayMemberPath = "LeaseNumber";
-                CmbLeaseFilter.SelectedValuePath = "LeaseID";
-
                 // Сбрасываем фильтры
                 CmbStatusFilter.SelectedIndex = 0;
-                CmbLeaseFilter.SelectedIndex = -1;
 
                 ApplyFilters();
             }
@@ -52,13 +39,6 @@ namespace WpfApp1.Views
         private void ApplyFilters()
         {
             var filtered = _allPayments.AsEnumerable();
-
-            // Фильтр по договору
-            if (CmbLeaseFilter.SelectedItem != null)
-            {
-                var selectedLeaseId = ((Leases)CmbLeaseFilter.SelectedItem).LeaseID;
-                filtered = filtered.Where(p => p.LeaseID == selectedLeaseId);
-            }
 
             // Фильтр по статусу
             if (CmbStatusFilter.SelectedItem is ComboBoxItem statusItem)
@@ -79,11 +59,6 @@ namespace WpfApp1.Views
             TxtTotalPayments.Text = payments.Count.ToString();
             TxtTotalAmount.Text = payments.Sum(p => p.Amount).ToString("N2");
             TxtOverdueCount.Text = payments.Count(p => p.Status == "Просрочен").ToString();
-        }
-
-        private void CmbLeaseFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            ApplyFilters();
         }
 
         private void CmbStatusFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -29,6 +29,23 @@ namespace WpfApp1.Views
             LoadData();
         }
 
+        /// <summary>
+        /// Публичный статический метод для обновления данных в окне объектов
+        /// Может вызываться из других мест, например после изменения статуса платежа
+        /// </summary>
+        public static void RefreshPropertiesView()
+        {
+            // Находим главное окно и обновляем контент если там открыт PropertiesView
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                var mainWindow = Application.Current.MainWindow as MainWindow;
+                if (mainWindow?.MainContent.Content is PropertiesView propertiesView)
+                {
+                    propertiesView.LoadData();
+                }
+            });
+        }
+
         private void TerminateLeaseButton_Click(object sender, RoutedEventArgs e)
         {
             // Получаем DataContext кнопки — это объект DisplayProperty

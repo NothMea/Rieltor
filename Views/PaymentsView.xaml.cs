@@ -102,9 +102,24 @@ namespace WpfApp1.Views
                         if (trackedPayment != null)
                         {
                             trackedPayment.Status = "Оплачен";
+                            
+                            // Обновляем статус объекта недвижимости на "Сдан"
+                            var lease = db.Leases.Find(trackedPayment.LeaseID);
+                            if (lease != null)
+                            {
+                                var property = db.Property.Find(lease.PropertyID);
+                                if (property != null)
+                                {
+                                    property.Status = "Сдан";
+                                }
+                            }
+                            
                             db.SaveChanges();
                             MessageBox.Show("Платеж отмечен как оплаченный", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
                             LoadData();
+                            
+                            // Обновляем окно объектов, чтобы отобразить новый статус
+                            PropertiesView.RefreshPropertiesView();
                         }
                     }
                 }

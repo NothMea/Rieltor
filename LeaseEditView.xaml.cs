@@ -293,7 +293,16 @@ namespace WpfApp1
                         db.Leases.Add(lease);
                     }
 
-                    db.SaveChanges();
+                    // Если это новый договор, обновляем статус объекта на "Сдан"
+                    if (!_leaseId.HasValue)
+                    {
+                        var property = db.Property.Find(lease.PropertyID);
+                        if (property != null)
+                        {
+                            property.Status = "Сдан";
+                            db.SaveChanges();
+                        }
+                    }
 
                     if (generateDocument)
                     {

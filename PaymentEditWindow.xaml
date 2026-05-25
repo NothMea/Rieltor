@@ -25,7 +25,7 @@
 
         <!-- Выбор договора -->
         <TextBlock Text="Договор аренды:" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" Margin="0,0,0,10"/>
-        <ComboBox x:Name="CmbLease" Grid.Row="1" Grid.Column="1" DisplayMemberPath="LeaseNumber" 
+        <ComboBox x:Name="CmbLease" Grid.Row="1" Grid.Column="1" DisplayMemberPath="DisplayText" 
                   SelectedValuePath="LeaseID" Margin="0,0,0,15"/>
 
         <!-- Дата платежа -->

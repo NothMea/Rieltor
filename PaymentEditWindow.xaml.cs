@@ -1,4 +1,5 @@
 using System;
+using System.Data.Entity;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -33,11 +34,21 @@ namespace WpfApp1
         {
             using (var db = new RieltorEntities())
             {
-                // Загружаем активные договоры
-                CmbLease.ItemsSource = db.Leases
+                // Загружаем активные договоры с дополнительной информацией
+                var leases = db.Leases
                     .Where(l => l.Status == "Активен")
                     .OrderBy(l => l.LeaseNumber)
+                    .Select(l => new LeaseDisplayItem
+                    {
+                        LeaseID = l.LeaseID,
+                        LeaseNumber = l.LeaseNumber,
+                        TenantName = l.Tenants.Name,
+                        PropertyAddress = l.Property.Address,
+                        DisplayText = $"{l.LeaseNumber} | {l.Tenants.Name} | {l.Property.Address}"
+                    })
                     .ToList();
+
+                CmbLease.ItemsSource = leases;
             }
         }
 
@@ -152,6 +163,20 @@ namespace WpfApp1
                         payment.Amount = decimal.Parse(TxtAmount.Text);
                         payment.Status = ((ComboBoxItem)CmbStatus.SelectedItem).Content.ToString();
                         payment.Notes = TxtNotes.Text.Trim();
+                        
+                        // Если статус изменился на "Оплачен", обновляем связанные данные
+                        if (payment.Status == "Оплачен")
+                        {
+                            var lease = db.Leases.Find(payment.LeaseID);
+                            if (lease != null)
+                            {
+                                var property = db.Property.Find(lease.PropertyID);
+                                if (property != null)
+                                {
+                                    property.Status = "Сдан";
+                                }
+                            }
+                        }
                     }
                     else
                     {
@@ -166,6 +191,20 @@ namespace WpfApp1
                         };
 
                         db.Payments.Add(payment);
+                        
+                        // Если статус "Оплачен", обновляем статус объекта
+                        if (payment.Status == "Оплачен")
+                        {
+                            var lease = db.Leases.Find(payment.LeaseID);
+                            if (lease != null)
+                            {
+                                var property = db.Property.Find(lease.PropertyID);
+                                if (property != null)
+                                {
+                                    property.Status = "Сдан";
+                                }
+                            }
+                        }
                     }
 
                     db.SaveChanges();
@@ -205,5 +244,15 @@ namespace WpfApp1
             Regex regex = new Regex("[^0-9,.]+");
             e.Handled = regex.IsMatch(e.Text);
         }
+    }
+
+    // Класс для отображения договора в ComboBox с дополнительной информацией
+    public class LeaseDisplayItem
+    {
+        public int LeaseID { get; set; }
+        public string LeaseNumber { get; set; }
+        public string TenantName { get; set; }
+        public string PropertyAddress { get; set; }
+        public string DisplayText { get; set; }
     }
 }

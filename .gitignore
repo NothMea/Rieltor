@@ -1,2 +1,48 @@
-Nothing should be ignored based on the provided file changes. The modified files (`Views/PaymentsView.xaml.cs` and `Views/PropertiesView.xaml.cs`) are source code files that should be tracked in version control. Since there are no build artifacts, dependency directories, temporary files, or other items that should be ignored in the changes list, no modifications to the .gitignore file are needed.
-/.vs
+```
+# Compiled and build artifacts
+*.o
+*.obj
+*.exe
+*.dll
+*.so
+*.a
+*.out
+
+# Dependencies
+node_modules/
+venv/
+.venv/
+__pycache__/
+.mypy_cache/
+.pytest_cache/
+target/
+.gradle/
+
+# Logs and temp files
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Environment
+.env
+.env.local
+*.env.*
+
+# Editors
+.vscode/
+.idea/
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Build outputs
+dist/
+build/
+```

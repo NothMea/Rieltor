@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -34,6 +35,105 @@ namespace WpfApp1
             _onSaveCallback = onSaveCallback;
             LoadComboBoxes();
             LoadLeaseData();
+        }
+
+        /// <summary>
+        /// Публичный метод для генерации договора Word по ID договора
+        /// Может вызываться из других окон, например из карточки объекта
+        /// </summary>
+        public static void GenerateLeaseDocumentById(int leaseId)
+        {
+            try
+            {
+                using (var db = new RieltorEntities())
+                {
+                    var lease = db.Leases.Find(leaseId);
+                    if (lease == null)
+                    {
+                        MessageBox.Show("Договор не найден в базе данных", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    var tenant = db.Tenants.Find(lease.TenantID);
+                    var property = db.Property.Find(lease.PropertyID);
+
+                    if (tenant == null || property == null)
+                    {
+                        MessageBox.Show("Не удалось загрузить данные для формирования документа", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                        return;
+                    }
+
+                    // Путь к шаблону
+                    string templatePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Resources", "LeaseTemplate.docx");
+                    
+                    if (!File.Exists(templatePath))
+                    {
+                        MessageBox.Show(
+                            $"Шаблон договора не найден по пути: {templatePath}\n\nПожалуйста, поместите файл LeaseTemplate.docx в папку Resources.",
+                            "Ошибка",
+                            MessageBoxButton.OK,
+                            MessageBoxImage.Error);
+                        return;
+                    }
+
+                    // Создаем копию шаблона с уникальным именем
+                    string outputFileName = $"Договор_{lease.LeaseNumber}_{DateTime.Now:yyyyMMdd_HHmmss}.docx";
+                    string outputPath = Path.Combine(
+                        Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
+                        "Договоры аренды",
+                        outputFileName);
+
+                    string outputDir = Path.GetDirectoryName(outputPath);
+                    if (!Directory.Exists(outputDir))
+                    {
+                        Directory.CreateDirectory(outputDir);
+                    }
+
+                    // Копируем шаблон
+                    File.Copy(templatePath, outputPath, true);
+
+                    // Заполняем документ данными
+                    FillWordDocumentStatic(outputPath, lease, tenant, property);
+
+                    // Сохраняем путь к документу в базе
+                    lease.ConsentDocumentPath = outputPath;
+                    
+                    try
+                    {
+                        db.SaveChanges();
+                        MessageBox.Show($"Договор успешно создан и сохранен!\n\nФайл: {outputPath}", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    }
+                    catch (System.Data.Entity.Infrastructure.DbUpdateException dbEx)
+                    {
+                        string detailedError = $"Ошибка сохранения в базе данных: {dbEx.Message}";
+                        
+                        if (dbEx.InnerException != null)
+                        {
+                            detailedError += $"\n\nSQL Error: {dbEx.InnerException.Message}";
+                            
+                            if (dbEx.InnerException.Message.Contains("cannot be null") || 
+                                dbEx.InnerException.Message.Contains("не может быть пустым") ||
+                                dbEx.InnerException.Message.Contains("Cannot insert the value NULL into column"))
+                            {
+                                detailedError += "\n\nВОЗМОЖНАЯ ПРИЧИНА: Поле ConsentDocumentPath имеет ограничение NOT NULL в базе данных.";
+                            }
+                        }
+                        
+                        MessageBox.Show(detailedError, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                string errorMessage = $"Ошибка при создании документа: {ex.Message}";
+                
+                if (ex.InnerException != null)
+                {
+                    errorMessage += $"\n\nВнутренняя ошибка: {ex.InnerException.Message}";
+                }
+                
+                MessageBox.Show(errorMessage, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void LoadComboBoxes()
@@ -426,7 +526,10 @@ namespace WpfApp1
             }
         }
 
-        private void FillWordDocument(string documentPath, Leases lease, Tenants tenant, Property property)
+        /// <summary>
+        /// Статический метод для заполнения Word документа (может вызываться из статического метода)
+        /// </summary>
+        private static void FillWordDocumentStatic(string documentPath, Leases lease, Tenants tenant, Property property)
         {
             Microsoft.Office.Interop.Word.Application wordApp = null;
             Microsoft.Office.Interop.Word.Document doc = null;
@@ -536,6 +639,11 @@ namespace WpfApp1
                 GC.WaitForPendingFinalizers();
                 GC.Collect();
             }
+        }
+
+        private void FillWordDocument(string documentPath, Leases lease, Tenants tenant, Property property)
+        {
+            FillWordDocumentStatic(documentPath, lease, tenant, property);
         }
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)

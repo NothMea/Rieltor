@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -26,6 +25,8 @@ namespace WpfApp1
             InitializeComponent();
             _onSaveCallback = onSaveCallback;
             LoadComboBoxes();
+            SetDefaultDates();
+            CmbProperty.SelectionChanged += CmbProperty_SelectionChanged;
         }
 
         public LeaseEditView(int leaseId, Action onSaveCallback = null)
@@ -35,6 +36,7 @@ namespace WpfApp1
             _onSaveCallback = onSaveCallback;
             LoadComboBoxes();
             LoadLeaseData();
+            CmbProperty.SelectionChanged += CmbProperty_SelectionChanged;
         }
 
         /// <summary>
@@ -174,10 +176,22 @@ namespace WpfApp1
             }
         }
 
-        private void TxtMonthlyAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        private void SetDefaultDates()
         {
-            // Разрешаем только цифры
-            e.Handled = !Regex.IsMatch(e.Text, @"^\d+$");
+            // Устанавливаем дату начала - сегодня
+            DpStartDate.SelectedDate = DateTime.Today;
+            
+            // Устанавливаем дату окончания - через год
+            DpEndDate.SelectedDate = DateTime.Today.AddYears(1);
+        }
+
+        private void CmbProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Автозаполнение ежемесячной платы из выбранного объекта
+            if (CmbProperty.SelectedItem is Property selectedProperty)
+            {
+                TxtMonthlyAmount.Text = selectedProperty.MonthlyRent.ToString();
+            }
         }
 
         private bool ValidateForm()
@@ -279,7 +293,16 @@ namespace WpfApp1
                         db.Leases.Add(lease);
                     }
 
-                    db.SaveChanges();
+                    // Если это новый договор, обновляем статус объекта на "Сдан"
+                    if (!_leaseId.HasValue)
+                    {
+                        var property = db.Property.Find(lease.PropertyID);
+                        if (property != null)
+                        {
+                            property.Status = "Сдан";
+                            db.SaveChanges();
+                        }
+                    }
 
                     if (generateDocument)
                     {

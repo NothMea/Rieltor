@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\App.xaml
-10-1249708195
+11-330534635
 9-2100082660
-272021145848
+281246973000
 201292854040
-MainWindow.xaml;Views\DashboardView.xaml;Views\LeaseHistoryView.xaml;Views\PropertiesView.xaml;Views\PropertyEditView.xaml;TenantEditView.xaml;TerminationWindow.xaml;Views\TenantsView.xaml;Views\PaymentsView.xaml;LeaseEditView.xaml;
+MainWindow.xaml;Views\DashboardView.xaml;Views\LeaseHistoryView.xaml;Views\PropertiesView.xaml;Views\PropertyEditView.xaml;TenantEditView.xaml;TerminationWindow.xaml;Views\TenantsView.xaml;Views\PaymentsView.xaml;LeaseEditView.xaml;PaymentEditWindow.xaml;
 
-True
+False
 

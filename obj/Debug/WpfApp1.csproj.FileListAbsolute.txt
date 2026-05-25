@@ -82,3 +82,6 @@ C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\bin\Debug\Resources\LeaseTempla
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\LeaseEditView.g.cs
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\LeaseEditView.baml
 C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\Views\PaymentsView.g.cs
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\PaymentEditWindow.baml
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\PaymentEditWindow.g.cs
+C:\Users\LEnovo\Desktop\Ганей\ВОТ ОНО\obj\Debug\Views\PaymentsView.baml

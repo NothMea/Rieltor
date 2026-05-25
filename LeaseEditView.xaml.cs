@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.Word;
 using Microsoft.Win32;
@@ -26,6 +24,7 @@ namespace WpfApp1
             InitializeComponent();
             _onSaveCallback = onSaveCallback;
             LoadComboBoxes();
+            SetDefaultValues();
         }
 
         public LeaseEditView(int leaseId, Action onSaveCallback = null)
@@ -35,6 +34,18 @@ namespace WpfApp1
             _onSaveCallback = onSaveCallback;
             LoadComboBoxes();
             LoadLeaseData();
+        }
+
+        /// <summary>
+        /// Устанавливает значения по умолчанию для нового договора
+        /// </summary>
+        private void SetDefaultValues()
+        {
+            // Дата начала - сегодня
+            DpStartDate.SelectedDate = DateTime.Today;
+            
+            // Дата окончания - через год
+            DpEndDate.SelectedDate = DateTime.Today.AddYears(1);
         }
 
         /// <summary>
@@ -149,10 +160,26 @@ namespace WpfApp1
                     .Select(l => l.PropertyID)
                     .ToList();
 
-                CmbProperty.ItemsSource = db.Property
+                var properties = db.Property
                     .Where(p => !activeLeaseIds.Contains(p.PropertyID) || (_leaseId.HasValue && p.Leases.Any(l => l.LeaseID == _leaseId.Value)))
                     .OrderBy(p => p.Address)
                     .ToList();
+                
+                CmbProperty.ItemsSource = properties;
+                
+                // Добавляем обработчик выбора объекта для автозаполнения ежемесячной платы
+                CmbProperty.SelectionChanged += CmbProperty_SelectionChanged;
+            }
+        }
+
+        /// <summary>
+        /// Обработчик выбора объекта - автоматически устанавливает ежемесячную плату из объекта
+        /// </summary>
+        private void CmbProperty_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CmbProperty.SelectedItem is Property selectedProperty)
+            {
+                TxtMonthlyAmount.Text = selectedProperty.MonthlyRent.ToString();
             }
         }
 
@@ -172,12 +199,6 @@ namespace WpfApp1
                 DpEndDate.SelectedDate = lease.EndDate;
                 TxtMonthlyAmount.Text = lease.MonthlyAmount.ToString();
             }
-        }
-
-        private void TxtMonthlyAmount_PreviewTextInput(object sender, TextCompositionEventArgs e)
-        {
-            // Разрешаем только цифры
-            e.Handled = !Regex.IsMatch(e.Text, @"^\d+$");
         }
 
         private bool ValidateForm()
@@ -218,10 +239,11 @@ namespace WpfApp1
                 return false;
             }
 
+            // Ежемесячная плата проверяется, но она всегда берется из объекта и не может быть изменена пользователем
             decimal monthlyAmount;
             if (!decimal.TryParse(TxtMonthlyAmount.Text, out monthlyAmount) || monthlyAmount <= 0)
             {
-                MessageBox.Show("Введите корректную сумму ежемесячной платы", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Ежемесячная плата должна быть больше нуля", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return false;
             }
 

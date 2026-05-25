@@ -19,10 +19,16 @@
         </Grid.RowDefinitions>
 
         <!-- Заголовок и фильтры -->
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="SpaceBetween" Margin="0,0,0,15">
-            <TextBlock Text="Управление платежами" FontSize="24" FontWeight="Bold" Foreground="#2C5F7F"/>
+        <Grid Grid.Row="0" Margin="0,0,0,15">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
             
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,0,0,0">
+            <TextBlock Grid.Column="0" Text="Управление платежами" FontSize="24" FontWeight="Bold" Foreground="#2C5F7F" VerticalAlignment="Center"/>
+            
+            <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
                 <TextBlock Text="Фильтр по договору:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                 <ComboBox x:Name="CmbLeaseFilter" Width="200" Margin="0,0,15,0" SelectionChanged="CmbLeaseFilter_SelectionChanged"/>
                 <TextBlock Text="Статус:" VerticalAlignment="Center" Margin="0,0,10,0"/>
@@ -33,7 +39,7 @@
                     <ComboBoxItem Content="Просрочен"/>
                 </ComboBox>
             </StackPanel>
-        </StackPanel>
+        </Grid>
 
         <!-- Кнопки действий -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">

@@ -35,27 +35,18 @@ namespace WpfApp1
             using (var db = new RieltorEntities())
             {
                 // Загружаем активные договоры с дополнительной информацией
-                // Сначала получаем данные из БД, затем формируем DisplayText в памяти
-                var leasesData = db.Leases
+                var leases = db.Leases
                     .Where(l => l.Status == "Активен")
                     .OrderBy(l => l.LeaseNumber)
-                    .Select(l => new 
+                    .Select(l => new LeaseDisplayItem
                     {
                         LeaseID = l.LeaseID,
                         LeaseNumber = l.LeaseNumber,
                         TenantName = l.Tenants.Name,
-                        PropertyAddress = l.Property.Address
+                        PropertyAddress = l.Property.Address,
+                        DisplayText = $"{l.LeaseNumber} | {l.Tenants.Name} | {l.Property.Address}"
                     })
                     .ToList();
-
-                var leases = leasesData.Select(l => new LeaseDisplayItem
-                {
-                    LeaseID = l.LeaseID,
-                    LeaseNumber = l.LeaseNumber,
-                    TenantName = l.TenantName,
-                    PropertyAddress = l.PropertyAddress,
-                    DisplayText = $"{l.LeaseNumber} | {l.TenantName} | {l.PropertyAddress}"
-                }).ToList();
 
                 CmbLease.ItemsSource = leases;
             }

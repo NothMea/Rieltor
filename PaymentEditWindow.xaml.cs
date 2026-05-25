@@ -44,9 +44,15 @@ namespace WpfApp1
                         LeaseNumber = l.LeaseNumber,
                         TenantName = l.Tenants.Name,
                         PropertyAddress = l.Property.Address,
-                        DisplayText = $"{l.LeaseNumber} | {l.Tenants.Name} | {l.Property.Address}"
+                        DisplayText = null // Будет заполнено после загрузки
                     })
                     .ToList();
+
+                // Формируем DisplayText в памяти (не в LINQ to Entities)
+                foreach (var lease in leases)
+                {
+                    lease.DisplayText = $"{lease.LeaseNumber} | {lease.TenantName} | {lease.PropertyAddress}";
+                }
 
                 CmbLease.ItemsSource = leases;
             }

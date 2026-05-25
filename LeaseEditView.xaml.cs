@@ -293,15 +293,29 @@ namespace WpfApp1
                         db.Leases.Add(lease);
                     }
 
-                    // Если это новый договор, обновляем статус объекта на "Сдан"
+                    // Если это новый договор, обновляем статус объекта на "Сдан" и создаем первый платеж
                     if (!_leaseId.HasValue)
                     {
                         var property = db.Property.Find(lease.PropertyID);
                         if (property != null)
                         {
                             property.Status = "Сдан";
-                            db.SaveChanges();
                         }
+                        
+                        // Сохраняем договор, чтобы получить LeaseID
+                        db.SaveChanges();
+                        
+                        // Создаем первый платеж с статусом "В ожидании"
+                        var firstPayment = new Payments
+                        {
+                            LeaseID = lease.LeaseID,
+                            PaymentDate = lease.StartDate,
+                            Amount = lease.MonthlyAmount,
+                            Status = "В ожидании",
+                            Notes = "Первый платеж по договору"
+                        };
+                        db.Payments.Add(firstPayment);
+                        db.SaveChanges();
                     }
 
                     if (generateDocument)

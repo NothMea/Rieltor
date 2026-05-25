@@ -29,8 +29,6 @@
             <TextBlock Grid.Column="0" Text="Управление платежами" FontSize="24" FontWeight="Bold" Foreground="#2C5F7F" VerticalAlignment="Center"/>
             
             <StackPanel Grid.Column="2" Orientation="Horizontal" HorizontalAlignment="Right">
-                <TextBlock Text="Фильтр по договору:" VerticalAlignment="Center" Margin="0,0,10,0"/>
-                <ComboBox x:Name="CmbLeaseFilter" Width="200" Margin="0,0,15,0" SelectionChanged="CmbLeaseFilter_SelectionChanged"/>
                 <TextBlock Text="Статус:" VerticalAlignment="Center" Margin="0,0,10,0"/>
                 <ComboBox x:Name="CmbStatusFilter" Width="150" SelectionChanged="CmbStatusFilter_SelectionChanged">
                     <ComboBoxItem Content="Все"/>
